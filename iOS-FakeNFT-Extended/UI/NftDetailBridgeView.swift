@@ -18,5 +18,5 @@ struct NftDetailBridgeView: UIViewControllerRepresentable {
 }
 
 private enum Constants {
-    static let testNftId = "22"
+    static let testNftId = "7773e33c-ec15-4230-a102-92426a3a6d5a"
 }
