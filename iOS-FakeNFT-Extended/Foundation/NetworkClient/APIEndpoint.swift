@@ -10,9 +10,13 @@ import Foundation
 
 // Список всех эндпоинтов FakeNFT API
 enum APIEndpoint {
-    static let baseURL = "https://example.com/api/v1"
+    static let baseURL = "\(RequestConstants.baseURL)/api/v1"
 
     enum Profile {
+        //Получение профиля пользователя
+        static let get: (url: String, method: HTTPMethod) =
+            ("\(baseURL)/profile/1", .get)
+        
         // Обновить данные профиля пользователя
         static let update: (url: String, method: HTTPMethod) =
             ("\(baseURL)/profile/1", .put)
