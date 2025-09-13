@@ -174,8 +174,11 @@
 			isa = PBXGroup;
 			children = (
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 				4893EFCE2E759ADA00051A95 /* Info.plist */,
+=======
+>>>>>>> 098d63a (feature: добавлены модели и сервис)
 				4893EF9A2E74C7BF00051A95 /* Screens */,
 				4893EF8C2E74A3DB00051A95 /* Components */,
 >>>>>>> 9a4d165 (feature: сверстана ячейка каталога)

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct NftCollection: Identifiable, Sendable, Equatable, Hashable {
+struct NftCollection: Identifiable, Sendable, Equatable {
     let id: String
     let title: String
     let coverURL: URL?
