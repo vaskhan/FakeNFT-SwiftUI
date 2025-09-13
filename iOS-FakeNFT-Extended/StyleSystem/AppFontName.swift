@@ -19,51 +19,45 @@
 
 import SwiftUI
 
-enum AppFontName {
-    static let regular = "SFProText-Regular"
-    static let medium  = "SFProText-Medium"
-    static let bold    = "SFProText-Bold"
-}
-
 extension Font {
 
     /// Medium 10
     static var appMedium10: Font {
-        .custom(AppFontName.medium, size: 10)
+        .system(size: 10, weight: .medium)
     }
 
     /// Bold 22 (22/28)
     static var appBold22: Font {
-        .custom(AppFontName.bold, size: 22)
+        .system(size: 22, weight: .bold)
     }
 
     /// Bold 17 (17/22)
     static var appBold17: Font {
-        .custom(AppFontName.bold, size: 17)
+        .system(size: 17, weight: .bold)
     }
 
     /// Regular 13 (13/18)
     static var appRegular13: Font {
-        .custom(AppFontName.regular, size: 13)
+        .system(size: 13, weight: .regular)
     }
 
     /// Regular 15 (15/20)
     static var appRegular15: Font {
-        .custom(AppFontName.regular, size: 15)
+        .system(size: 15, weight: .regular)
     }
 
     /// Regular 17 (17/22)
     static var appRegular17: Font {
-        .custom(AppFontName.regular, size: 17)
+        .system(size: 17, weight: .regular)
     }
 
     /// Bold 34 (34/41)
     static var appBold34: Font {
-        .custom(AppFontName.bold, size: 34)
+        .system(size: 34, weight: .bold)
     }
 
     /// Bold 32 (32/41)
     static var appBold32: Font {
-        .custom(AppFontName.bold, size: 32)
+        .system(size: 32, weight: .bold)
     }
 }
