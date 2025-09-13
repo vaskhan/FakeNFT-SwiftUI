@@ -1,10 +1,10 @@
 import Foundation
 
 enum NetworkClientError: Error {
-    case httpStatusCode(Int)
-    case urlRequestError(Error)
-    case urlSessionError
-    case parsingError
+    case httpStatusCode(Int)      // Сервер вернул код ошибки
+    case urlRequestError(Error)   // Ошибка формирования запроса
+    case urlSessionError          // Ошибка в работе URLSession
+    case parsingError             // Ошибка при декодировании JSON
 }
 
 // Протокол сетевого клиента
@@ -22,7 +22,12 @@ actor DefaultNetworkClient: NetworkClient {
     
     init(
         session: URLSession = .shared,
-        decoder: JSONDecoder = JSONDecoder(),
+        decoder: JSONDecoder = {
+            let decoder = JSONDecoder()
+            // Автоматическая конвертация snake_case → camelCase
+            decoder.keyDecodingStrategy = .convertFromSnakeCase
+            return decoder
+        }(),
         encoder: JSONEncoder = JSONEncoder(),
         token: String = RequestConstants.token
     ) {
@@ -48,7 +53,7 @@ actor DefaultNetworkClient: NetworkClient {
         return data
     }
     
-    // для отправки запроса и сразу распарсить JSON в модель Decodable
+    // Отправить запрос и сразу распарсить JSON в модель Decodable
     func send<T: Decodable>(urlRequest: URLRequest) async throws -> T {
         let data = try await send(urlRequest: urlRequest)
         return try parse(data: data)
@@ -64,6 +69,7 @@ actor DefaultNetworkClient: NetworkClient {
         }
         return request
     }
+    
     // Для декодирования ответа сервера в модель Decodable
     private func parse<T: Decodable>(data: Data) throws -> T {
         do {
