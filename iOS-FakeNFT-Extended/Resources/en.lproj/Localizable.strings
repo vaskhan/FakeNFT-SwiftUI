@@ -1,13 +1,19 @@
-// MARK: - Default
-"Tab.catalog" = "Catalog";
-"Catalog.openNft" = "Open NFT";
-"Error.network" = "A network error occurred";
-"Error.unknown" = "An unknown error occurred";
-"Error.repeat" = "Retry";
-"Error.title" = "Error";
+/* MARK: - Default */
+"Tab.catalog"    = "Catalog";
+"Catalog.openNft"= "Open NFT";
+"Error.network"  = "A network error occurred";
+"Error.unknown"  = "An unknown error occurred";
+"Error.repeat"   = "Retry";
+"Error.title"    = "Error";
 
-// MARK: - TabView
-"tab_basket" = "Basket";
-"tab_catalog" = "Catalog";
-"tab_profile" = "Profile";
+/* MARK: - TabView */
+"tab_basket"     = "Basket";
+"tab_catalog"    = "Catalog";
+"tab_profile"    = "Profile";
 "tab_statistics" = "Statistics";
+
+/* MARK: - Sorting */
+"Sorting.title"  = "Sorting";
+"by_name"        = "by name";
+"by_count"       = "by count";
+"Close"          = "Close";
