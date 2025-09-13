@@ -10,13 +10,15 @@ import SwiftUI
 
 @main
 struct FakeNFTApp: App {
-    init() {
-        UITabBar.appearance().unselectedItemTintColor = UIColor(named: "blackAndWhite")
-    }
-
+    private let services = ServicesAssembly(
+        networkClient: DefaultNetworkClient(),
+        nftStorage: NftStorageImpl()
+    )
+    
     var body: some Scene {
         WindowGroup {
             MainTabView(initialTab: .catalog)
+                .environment(services)
                 .tint(Color(.blueUniversal))
         }
     }
