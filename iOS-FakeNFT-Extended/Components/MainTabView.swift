@@ -38,7 +38,7 @@ struct MainTabView: View {
                 .tag(AppTab.profile)
             
             // Catalog
-            Text("Catalog Screen")
+            CatalogView()
                 .tabItem {
                     VStack(spacing: 1) {
                         Image(selectedTab == .catalog ? "ActiveCatalog" : "NoActiveCatalog")
