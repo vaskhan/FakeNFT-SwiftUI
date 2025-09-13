@@ -11,14 +11,9 @@ import Observation
 
 // Сортировка
 enum CatalogSort: String, CaseIterable, Sendable {
-    case byTitle      = "by_name"
-    case byItemsCount = "by_count"
-
-    var localized: String {
-        String(localized: String.LocalizationValue(rawValue))
-    }
+    case byTitle     = "По названию"
+    case byItemsCount = "По количеству NFT"
 }
-
 
 @Observable
 @MainActor
