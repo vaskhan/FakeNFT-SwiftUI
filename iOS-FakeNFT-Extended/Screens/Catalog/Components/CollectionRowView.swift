@@ -21,7 +21,7 @@ struct CollectionRowView: View {
                         AsyncImage(url: url) { phase in
                             switch phase {
                             case .empty:
-                                ProgressView()
+                                AssetSpinner()
                             case .success(let image):
                                 image
                                     .resizable()

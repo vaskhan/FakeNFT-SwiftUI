@@ -20,7 +20,7 @@ struct CatalogView: View {
                 if let vm = viewModel {
                     ScrollView {
                         if vm.isLoading {
-                            AssetSpinner(size: 30)
+                            AssetSpinner()
                         } else if let error = vm.errorMessage {
                             VStack(spacing: 12) {
                                 Text(error).multilineTextAlignment(.center)
@@ -70,7 +70,7 @@ struct CatalogView: View {
                             .font(.appBold32)
                     }
                 } else {
-                    AssetSpinner(size: 30)
+                    AssetSpinner()
                 }
             }
         }
