@@ -5,6 +5,7 @@
 "Error.unknown"  = "An unknown error occurred";
 "Error.repeat"   = "Retry";
 "Error.title"    = "Error";
+"Catalog.empty"  = "Collection is empty";
 
 /* MARK: - TabView */
 "tab_basket"     = "Basket";

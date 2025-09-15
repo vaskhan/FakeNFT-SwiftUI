@@ -31,6 +31,14 @@ struct CatalogView: View {
                             }
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                             .padding(.top, 32)
+                            
+                        } else if vm.collections.isEmpty {
+                            Text(String(localized: "Catalog.empty", defaultValue: "Коллекций пока нет"))
+                                .font(.appRegular15)
+                                .foregroundStyle(.secondary)
+                                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                                .padding(.top, 32)
+                            
                         } else {
                             LazyVStack(spacing: 0) {
                                 ForEach(vm.collections) { collection in

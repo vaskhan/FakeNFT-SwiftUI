@@ -5,15 +5,14 @@
 //  Created by Василий Ханин on 13.09.2025.
 //
 
-
-import Foundation
 import Observation
+import SwiftUI
 
 // Сортировка
 enum CatalogSort: String, CaseIterable, Sendable {
     case byTitle      = "by_name"
     case byItemsCount = "by_count"
-
+    
     var localized: String {
         String(localized: String.LocalizationValue(rawValue))
     }
@@ -24,19 +23,21 @@ enum CatalogSort: String, CaseIterable, Sendable {
 @MainActor
 final class CatalogViewModel {
     // Input
-    var selectedSort: CatalogSort = .byItemsCount
-
+    var selectedSort: CatalogSort = UserDefaults.standard.catalogSort {
+        didSet { UserDefaults.standard.catalogSort = selectedSort }
+    }
+    
     // State
     var isLoading: Bool = false
     var collections: [NftCollection] = []
     var errorMessage: String?
-
+    
     private let collectionService: NftCollectionServiceProtocol
-
+    
     init(collectionService: NftCollectionServiceProtocol) {
         self.collectionService = collectionService
     }
-
+    
     func load() async {
         guard !isLoading else { return }
         isLoading = true
@@ -49,12 +50,12 @@ final class CatalogViewModel {
         }
         isLoading = false
     }
-
+    
     func changeSort(to sort: CatalogSort) {
         selectedSort = sort
         collections = applySort(to: collections, sort: sort)
     }
-
+    
     private func applySort(to input: [NftCollection], sort: CatalogSort) -> [NftCollection] {
         switch sort {
         case .byTitle:
@@ -66,5 +67,14 @@ final class CatalogViewModel {
                 $0.itemsCount > $1.itemsCount
             }
         }
+    }
+}
+
+extension UserDefaults {
+    private enum Keys { static let catalogSort = "catalog_sort" }
+    
+    var catalogSort: CatalogSort {
+        get { CatalogSort(rawValue: string(forKey: Keys.catalogSort) ?? "") ?? .byItemsCount }
+        set { set(newValue.rawValue, forKey: Keys.catalogSort) }
     }
 }
