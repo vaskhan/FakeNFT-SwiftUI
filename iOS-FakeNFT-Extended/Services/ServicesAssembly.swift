@@ -14,12 +14,9 @@ final class ServicesAssembly {
     init(networkClient: NetworkClient, nftStorage: NftStorage) {
         self.networkClient = networkClient
         self.nftStorage = nftStorage
-<<<<<<< HEAD
         
         self.profileService = ProfileService(networkClient: networkClient)
-=======
         self.nftCollectionService = NftCollectionService(networkClient: networkClient)
->>>>>>> develop
     }
 
 //    var nftService: NftService {
