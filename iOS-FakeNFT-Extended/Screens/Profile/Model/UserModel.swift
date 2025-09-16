@@ -5,20 +5,12 @@
 //  Created by Артем Солодовников on 13.09.2025.
 //
 
-struct nftModel: Hashable {
-    let id: String
-}
-
-struct likeModel: Hashable {
-    let id: String
-}
-
-struct userModel: Hashable {
+struct UserModel: Decodable, Hashable {
     let name: String
     let avatar: String
-    let description: String
+    let description: String?
     let website: String
-    let nfts: [nftModel]
-    let likes: [likeModel]
+    let nfts: [String]
+    let likes: [String]
     let id: String
 }
