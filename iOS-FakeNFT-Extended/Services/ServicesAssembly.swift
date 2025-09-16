@@ -3,20 +3,29 @@ import Foundation
 @Observable
 @MainActor
 final class ServicesAssembly {
-
     private let networkClient: NetworkClient
     private let nftStorage: NftStorage
     
     
     let profileService: ProfileServiceProtocol
 
-    init(
-        networkClient: NetworkClient,
-        nftStorage: NftStorage
-    ) {
+    let nftCollectionService: NftCollectionServiceProtocol
+
+    init(networkClient: NetworkClient, nftStorage: NftStorage) {
         self.networkClient = networkClient
         self.nftStorage = nftStorage
+<<<<<<< HEAD
         
         self.profileService = ProfileService(networkClient: networkClient)
+=======
+        self.nftCollectionService = NftCollectionService(networkClient: networkClient)
+>>>>>>> develop
     }
+
+//    var nftService: NftService {
+//        NftServiceImpl(
+//            networkClient: networkClient,
+//            storage: nftStorage
+//        )
+//    }
 }
