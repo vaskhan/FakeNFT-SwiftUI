@@ -10,13 +10,14 @@ import SwiftUI
 struct ProfileView: View {
     @Environment(ServicesAssembly.self) private var services: ServicesAssembly?
     @State private var viewModel: ProfileViewModel?
+    @State private var isShowingProfileEditing = false
     
     var body: some View {
         
         NavigationStack{
             VStack(alignment: .leading, spacing: 20) {
                 HStack(spacing: 16) {
-                    userPhoto
+                    ProfilePhotoView()
                     userName
                     Spacer()
                 }
@@ -55,6 +56,31 @@ struct ProfileView: View {
             }
             .padding(.horizontal, 20)
             .padding(.top, 20)
+            
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        isShowingProfileEditing.toggle()
+                    } label: {
+                        Image(.editor)
+                    }
+                }
+            }
+            .navigationDestination(isPresented: $isShowingProfileEditing) {
+                if let viewModel {
+                    ProfileEditingView(viewModel: viewModel)
+                        .toolbar {
+                            ToolbarItem(placement: .navigationBarLeading) {
+                                Button {
+                                    isShowingProfileEditing.toggle()
+                                } label: {
+                                    Image(.navigationChevronLeft)
+                                }
+                            }
+                        }
+                        .navigationBarBackButtonHidden(true)
+                }
+            }
         }
         .task {
             if viewModel == nil, let services = services {
@@ -64,15 +90,7 @@ struct ProfileView: View {
             }
         }
     }
-    //MARK: -
-    private var userPhoto: some View {
-        Image(.avatar)
-            .resizable()
-            .frame(width: 70, height: 70)
-            .scaledToFill()
-            .clipShape(Circle())
-    }
-    
+    // MARK: - UI Components
     private var userName: some View {
         Text(viewModel?.userName ?? "")
             .font(.system(size: 22, weight: .bold))
