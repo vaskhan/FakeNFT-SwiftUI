@@ -25,7 +25,9 @@ struct CartCollectionRow: View {
                                     .resizable()
                                     .scaledToFill()
                             case .failure:
-                                Image(systemName: "photo")
+                                Image("NFTcard")
+                                    .resizable()
+                                    .scaledToFill()
                                     .font(.appBold32)
                             @unknown default:
                                 EmptyView()
@@ -53,7 +55,7 @@ struct CartCollectionRow: View {
                 }
                 
                 VStack(alignment: .leading, spacing: 2){
-                    Text("Цена")
+                    Text(String(localized: "Cart.itemPrice"))
                         .font(.appRegular13)
                     Text("\(String(format: "%.2f", item.price)) ETH")
                         .font(.appBold17)

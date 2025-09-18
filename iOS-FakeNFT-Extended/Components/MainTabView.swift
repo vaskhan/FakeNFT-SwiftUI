@@ -50,7 +50,7 @@ struct MainTabView: View {
                 .tag(AppTab.catalog)
             
             // Basket
-            Text("Basket Screen")
+            CartView()
                 .tabItem {
                     VStack(spacing: 1) {
                         Image(selectedTab == .basket ? "ActiveBasket" : "NoActiveBasket")
@@ -76,4 +76,12 @@ struct MainTabView: View {
     }
 }
 
-#Preview { MainTabView(initialTab: .catalog) }
+#Preview {
+    MainTabView(initialTab: .catalog)
+        .environment(
+            ServicesAssembly(
+                networkClient: DefaultNetworkClient(),
+                nftStorage: NftStorageImpl()
+            )
+        )
+}

@@ -15,6 +15,19 @@
 
 /* MARK: - Sorting */
 "Sorting.title"  = "Sorting";
-"by_name"        = "by name";
-"by_count"       = "by count";
+"by_name"        = "By name";
+"by_count"       = "By count";
+"by_rating"      = "By rating";
+"by_price"       = "By price";
 "Close"          = "Close";
+
+/* MARK: - Cart */
+"Cart.payButton"= "Go to payment";
+"Cart.empty"    = "Cart is empty";
+"Cart.itemPrice" = "Price";
+
+/* MARK: - Payment method */
+"Payment.agreement1" = "By making a purchase, you agree to the terms of the";
+"Payment.agreement2" = "User agreement";
+"Payment.payButton"  = "Pay";
+"Payment.title"      = "Choose payment method";

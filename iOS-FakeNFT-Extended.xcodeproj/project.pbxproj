@@ -14,11 +14,11 @@
 		4893EF942E74A3DB00051A95 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4893EF842E74A3DB00051A95 /* Assets.xcassets */; };
 		4893EF972E74BEA000051A95 /* APIEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4893EF962E74BEA000051A95 /* APIEndpoint.swift */; };
 		4893EF992E74C06B00051A95 /* APIRequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4893EF982E74C06B00051A95 /* APIRequestBuilder.swift */; };
-		5D87690F2E75D4250057D69C /* BlackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D87690E2E75D41A0057D69C /* BlackButton.swift */; };
 		4893EFCB2E759A1A00051A95 /* SF-Pro-Text-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4893EFC92E759A1A00051A95 /* SF-Pro-Text-Medium.otf */; };
 		4893EFCC2E759A1A00051A95 /* SF-Pro-Text-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4893EFC82E759A1A00051A95 /* SF-Pro-Text-Bold.otf */; };
 		4893EFCD2E759A1A00051A95 /* SF-Pro-Text-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4893EFCA2E759A1A00051A95 /* SF-Pro-Text-Regular.otf */; };
 		4893EFD42E75B29E00051A95 /* AssetSpinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4893EFD32E75B29E00051A95 /* AssetSpinner.swift */; };
+		5D87690F2E75D4250057D69C /* BlackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D87690E2E75D41A0057D69C /* BlackButton.swift */; };
 		ABC5E1732C31F5AF002B4068 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ABC5E1722C31F5AF002B4068 /* Preview Assets.xcassets */; };
 		ABC5E17D2C31F5B0002B4068 /* iOS_FakeNFT_ExtendedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC5E17C2C31F5B0002B4068 /* iOS_FakeNFT_ExtendedTests.swift */; };
 		ABC5E1872C31F5B0002B4068 /* iOS_FakeNFT_ExtendedUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC5E1862C31F5B0002B4068 /* iOS_FakeNFT_ExtendedUITests.swift */; };
@@ -170,8 +170,6 @@
 		ABC5E16A2C31F5AF002B4068 /* iOS-FakeNFT-Extended */ = {
 			isa = PBXGroup;
 			children = (
-				5D8769792E775B1C0057D69C /* Screens */,
-				4893EF8C2E74A3DB00051A95 /* Components */,
 				4893EF8A2E74A3DB00051A95 /* App */,
 				4893EF8C2E74A3DB00051A95 /* Components */,
 				ABC5E19A2C31F687002B4068 /* Foundation */,

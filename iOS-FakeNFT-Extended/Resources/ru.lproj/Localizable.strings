@@ -17,4 +17,17 @@
 "Sorting.title" = "Сортировка";
 "by_name"       = "По названию";
 "by_count"      = "По количеству NFT";
+"by_rating"     = "По рейтингу";
+"by_price"      = "По цене";
 "Close"         = "Закрыть";
+
+/* MARK: - Cart */
+"Cart.payButton"= "К оплате";
+"Cart.empty"    = "Корзина пуста";
+"Cart.itemPrice" = "Цена";
+
+/* MARK: - Payment method */
+"Payment.agreement1" = "Совершая покупку, вы соглашаетесь с условиями";
+"Payment.agreement2" = "Пользовательского соглашения";
+"Payment.payButton"  = "Оплатить";
+"Payment.title"      = "Выберите способ оплаты";
