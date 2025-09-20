@@ -56,12 +56,18 @@ actor ProfileService: ProfileServiceProtocol {
     
     func saveProfile(_ user: UserModel) async throws {
         // Подготавливаем параметры для запроса
-        let parameters: [String: Any] = [
+        var parameters: [String: Any] = [
             "name": user.name,
             "website": user.website,
             "description": user.description ?? "",
             "likes": user.likes
         ]
+        
+        if let avatarString = user.avatar?.absoluteString {
+            parameters["avatar"] = avatarString
+        } else {
+            parameters["avatar"] = "" // или null в зависимости от требований API
+        }
         
         // Создаем запрос с помощью специального билдера
         let request = try APIPutRequestBuilder.makeFormURLEncodedRequest(

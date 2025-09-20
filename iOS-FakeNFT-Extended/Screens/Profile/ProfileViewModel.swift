@@ -24,6 +24,10 @@ final class ProfileViewModel: ProfileViewModelProtocol {
         profile?.name
     }
     
+    var userAvatar: URL? {
+        profile?.avatar
+    }
+    
     var userDescription: String? {
         profile?.description
     }
@@ -43,6 +47,10 @@ final class ProfileViewModel: ProfileViewModelProtocol {
     //MARK: - обновление профиля
     func updateName(_ newName: String) {
         profile?.name = newName
+    }
+    
+    func updateAvatar(_ newAvatar: URL) {
+        profile?.avatar = newAvatar
     }
     
     func updateDescription(_ newDescription: String) {
@@ -94,6 +102,36 @@ final class ProfileViewModel: ProfileViewModelProtocol {
         do {
             try await profileService.saveProfile(updatedProfile)
             // Если успешно, обновляем локальный профиль
+            self.profile = updatedProfile
+        } catch {
+            errorMessage = String(localized: "Error.network", defaultValue: "A network error occurred")
+        }
+        
+        isLoading = false
+    }
+    
+    func setUserAvatar(avatar: URL) async {
+        isLoading = true
+        
+        guard let currentProfile = profile else {
+            errorMessage = String(localized: "Profile not loaded", defaultValue: "Profile not loaded")
+            isLoading = false
+            return
+        }
+        
+        let updatedProfile = UserModel(
+            name: currentProfile.name,
+            avatar: avatar,
+            description: currentProfile.description,
+            website: currentProfile.website,
+            nfts: currentProfile.nfts,
+            likes: currentProfile.likes,
+            id: currentProfile.id
+        )
+        
+        do {
+            try await profileService.saveProfile(updatedProfile)
+
             self.profile = updatedProfile
         } catch {
             errorMessage = String(localized: "Error.network", defaultValue: "A network error occurred")

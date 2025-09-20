@@ -19,7 +19,7 @@ struct ProfileView: View {
                     // Основной контент
                     VStack(alignment: .leading, spacing: 20) {
                         HStack(spacing: 16) {
-                            ProfilePhotoView()
+                            ProfilePhotoView(avatarUrl: viewModel?.userAvatar)
                             userName
                             Spacer()
                         }
@@ -73,16 +73,6 @@ struct ProfileView: View {
                 .navigationDestination(isPresented: $isShowingProfileEditing) {
                     if let viewModel {
                         ProfileEditingView(viewModel: viewModel)
-                            .toolbar {
-                                ToolbarItem(placement: .navigationBarLeading) {
-                                    Button {
-                                        isShowingProfileEditing.toggle()
-                                    } label: {
-                                        Image(.navigationChevronLeft)
-                                    }
-                                }
-                            }
-                            .navigationBarBackButtonHidden(true)
                     }
                 }
             }
@@ -93,7 +83,6 @@ struct ProfileView: View {
                     .background(.lightgrey)
             }
         }
-        
         .task {
             if viewModel == nil, let services = services {
                 let newViewModel = ProfileViewModel(profileService: services.profileService)
