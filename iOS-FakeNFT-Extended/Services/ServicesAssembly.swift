@@ -4,15 +4,15 @@ import Foundation
 @MainActor
 final class ServicesAssembly {
     private let networkClient: NetworkClient
-    private let nftStorage: NftStorage
+//    private let nftStorage: NftStorage
 
     let nftCollectionService: NftCollectionServiceProtocol
-    let NftService: NftServiceProtocol
+    let nftService: NftServiceProtocol
     
-    init(networkClient: NetworkClient, nftStorage: NftStorage) {
+    init(networkClient: NetworkClient) {
         self.networkClient = networkClient
-        self.nftStorage = nftStorage
+//        self.nftStorage = nftStorage
         self.nftCollectionService = NftCollectionService(networkClient: networkClient)
-        self.NftService = iOS_FakeNFT_Extended.NftService(networkClient: networkClient)
+        self.nftService = NftService(networkClient: networkClient)
     }
 }

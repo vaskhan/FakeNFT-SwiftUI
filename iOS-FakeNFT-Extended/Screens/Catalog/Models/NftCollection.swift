@@ -14,4 +14,5 @@ struct NftCollection: Identifiable, Sendable, Equatable, Hashable {
     let itemsCount: Int
     let description: String?
     let author: String?
+    let nftIDs: [String]
 }

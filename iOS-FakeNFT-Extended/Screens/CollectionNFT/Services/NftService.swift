@@ -13,26 +13,26 @@ protocol NftServiceProtocol: Sendable {
 
 actor NftService: NftServiceProtocol {
     private let networkClient: NetworkClient
-
+    
     init(networkClient: NetworkClient) {
         self.networkClient = networkClient
     }
-
+    
     func loadItems(ids: [String]) async throws -> [NftItem] {
         guard !ids.isEmpty else { return [] }
-
-        return try await withThrowingTaskGroup(of: (String, NftItem).self) { taskGroup in
-            for nftIdentifier in ids {
+        
+        return try await withThrowingTaskGroup(of: (Int, NftItem).self) { taskGroup in
+            for (index, nftID) in ids.enumerated() {
                 taskGroup.addTask { [networkClient] in
                     // 1) Запрос
                     let request = try APIRequestBuilder.makeRequest(
-                        from: APIEndpoint.NFT.details(id: nftIdentifier),
+                        from: APIEndpoint.NFT.details(id: nftID),
                         query: nil,
                         body: nil
                     )
                     // 2) Декодирование DTO
                     let nftDTO: NftDTO = try await networkClient.send(urlRequest: request)
-
+                    
                     // 3) Маппим в доменные модели
                     let nftItem = NftItem(
                         id: nftDTO.id,
@@ -43,17 +43,13 @@ actor NftService: NftServiceProtocol {
                         price: nftDTO.price,
                         author: nftDTO.author
                     )
-
-                    return (nftIdentifier, nftItem)
+                    
+                    return (index, nftItem)
                 }
             }
-
-            var itemsByIdentifier: [String: NftItem] = [:]
-            for try await (nftIdentifier, nftItem) in taskGroup {
-                itemsByIdentifier[nftIdentifier] = nftItem
-            }
-
-            return ids.compactMap { itemsByIdentifier[$0] }
+            var result = Array<NftItem?>(repeating: nil, count: ids.count)
+            for try await (index, item) in taskGroup { result[index] = item }
+            return result.compactMap { $0 }
         }
     }
 }
