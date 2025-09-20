@@ -13,8 +13,13 @@ final class ProfileViewModel: ProfileViewModelProtocol {
     var isLoading: Bool = false
     var errorMessage: String?
     var profile: UserModel?
+    private let profileService: ProfileServiceProtocol
     
-    // Вычисляемые свойства для упрощения доступа из View
+    init(profileService: ProfileServiceProtocol) {
+        self.profileService = profileService
+    }
+    
+    //MARK: - Вычисляемые свойства
     var userName: String? {
         profile?.name
     }
@@ -35,6 +40,7 @@ final class ProfileViewModel: ProfileViewModelProtocol {
         profile?.nfts.count
     }
     
+    //MARK: - обновление профиля
     func updateName(_ newName: String) {
         profile?.name = newName
     }
@@ -47,12 +53,6 @@ final class ProfileViewModel: ProfileViewModelProtocol {
         profile?.website = newWebsite
     }
     
-    private let profileService: ProfileServiceProtocol
-    
-    init(profileService: ProfileServiceProtocol) {
-        self.profileService = profileService
-    }
-    
     func getUserInfo() async {
         guard !isLoading else { return }
         isLoading = true
@@ -61,6 +61,7 @@ final class ProfileViewModel: ProfileViewModelProtocol {
         do {
             let response = try await profileService.loadProfile()
             profile = response
+            print("Профиль загружен")
         } catch {
             errorMessage = String(localized: "Error.network", defaultValue: "A network error occurred")
         }
@@ -70,6 +71,7 @@ final class ProfileViewModel: ProfileViewModelProtocol {
     
     func setUserInfo(name: String, description: String, website: String) async {
         isLoading = true
+        errorMessage = nil
         
         //Проверка, что профиль загружен
         guard let currentProfile = profile else {

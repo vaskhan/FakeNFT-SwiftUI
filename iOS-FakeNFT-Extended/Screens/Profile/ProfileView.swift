@@ -13,75 +13,87 @@ struct ProfileView: View {
     @State private var isShowingProfileEditing = false
     
     var body: some View {
-        
-        NavigationStack{
-            VStack(alignment: .leading, spacing: 20) {
-                HStack(spacing: 16) {
-                    ProfilePhotoView()
-                    userName
-                    Spacer()
-                }
-                .frame(maxWidth: .infinity)
-                
-                personalInfo
-                personalSite
-                VStack(spacing: 32) {
-                    NavigationLink(destination: MyNftView()) {
-                        Text("Мои NFT (\(viewModel?.nftsCount ?? 0))")
-                            .font(.system(size: 17, weight: .bold))
-                            .foregroundColor(.blackAndWhite)
+        ZStack {
+            NavigationStack {
+                ZStack {
+                    // Основной контент
+                    VStack(alignment: .leading, spacing: 20) {
+                        HStack(spacing: 16) {
+                            ProfilePhotoView()
+                            userName
+                            Spacer()
+                        }
+                        .frame(maxWidth: .infinity)
                         
-                        Spacer()
-                        
-                        Image(.chevronRight)
-                            .renderingMode(.template)
-                            .foregroundStyle(.blackAndWhite)
-                    }
-                    
-                    NavigationLink(destination: FavouriteNftsView()) {
-                        Text("Избранные NFT (\(viewModel?.likesCount ?? 0))")
-                            .font(.system(size: 17, weight: .bold))
-                            .foregroundColor(.blackAndWhite)
-                        
-                        Spacer()
-                        
-                        Image(.chevronRight)
-                            .renderingMode(.template)
-                            .foregroundStyle(.blackAndWhite)
-                    }
-                }
-                .padding(.top, 56)
-                
-                Spacer()
-            }
-            .padding(.horizontal, 20)
-            .padding(.top, 20)
-            
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        isShowingProfileEditing.toggle()
-                    } label: {
-                        Image(.editor)
-                    }
-                }
-            }
-            .navigationDestination(isPresented: $isShowingProfileEditing) {
-                if let viewModel {
-                    ProfileEditingView(viewModel: viewModel)
-                        .toolbar {
-                            ToolbarItem(placement: .navigationBarLeading) {
-                                Button {
-                                    isShowingProfileEditing.toggle()
-                                } label: {
-                                    Image(.navigationChevronLeft)
-                                }
+                        personalInfo
+                        personalSite
+                        VStack(spacing: 32) {
+                            NavigationLink(destination: MyNftView()) {
+                                Text("Мои NFT (\(viewModel?.nftsCount ?? 0))")
+                                    .font(.system(size: 17, weight: .bold))
+                                    .foregroundColor(.blackAndWhite)
+                                
+                                Spacer()
+                                
+                                Image(.chevronRight)
+                                    .renderingMode(.template)
+                                    .foregroundStyle(.blackAndWhite)
+                            }
+                            
+                            NavigationLink(destination: FavouriteNftsView()) {
+                                Text("Избранные NFT (\(viewModel?.likesCount ?? 0))")
+                                    .font(.system(size: 17, weight: .bold))
+                                    .foregroundColor(.blackAndWhite)
+                                
+                                Spacer()
+                                
+                                Image(.chevronRight)
+                                    .renderingMode(.template)
+                                    .foregroundStyle(.blackAndWhite)
                             }
                         }
-                        .navigationBarBackButtonHidden(true)
+                        .padding(.top, 56)
+                        
+                        Spacer()
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.top, 20)
+                    .disabled(viewModel?.isLoading == true)
+                }
+                .toolbar {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button {
+                            isShowingProfileEditing.toggle()
+                        } label: {
+                            Image(.editor)
+                        }
+                        .disabled(viewModel?.isLoading == true) // Блокировка кнопки редактирования
+                    }
+                }
+                .navigationDestination(isPresented: $isShowingProfileEditing) {
+                    if let viewModel {
+                        ProfileEditingView(viewModel: viewModel)
+                            .toolbar {
+                                ToolbarItem(placement: .navigationBarLeading) {
+                                    Button {
+                                        isShowingProfileEditing.toggle()
+                                    } label: {
+                                        Image(.navigationChevronLeft)
+                                    }
+                                }
+                            }
+                            .navigationBarBackButtonHidden(true)
+                    }
                 }
             }
+            // Спиннер загрузки
+            if viewModel?.isLoading == true {
+                AssetSpinner()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(.lightgrey)
+            }
         }
+        
         .task {
             if viewModel == nil, let services = services {
                 let newViewModel = ProfileViewModel(profileService: services.profileService)
@@ -90,6 +102,7 @@ struct ProfileView: View {
             }
         }
     }
+    
     // MARK: - UI Components
     private var userName: some View {
         Text(viewModel?.userName ?? "")
