@@ -9,6 +9,7 @@ import Foundation
 
 protocol ProfileServiceProtocol: Sendable {
     func loadProfile() async throws -> UserModel
+    func saveProfile(_ user: UserModel) async throws
 }
 
 actor ProfileService: ProfileServiceProtocol {
@@ -20,26 +21,20 @@ actor ProfileService: ProfileServiceProtocol {
     }
     
     func loadProfile() async throws -> UserModel {
-        print("ProfileService: loadProfile")
         let request = try APIRequestBuilder.makeRequest(
             from: APIEndpoint.Profile.get,
             query: nil,
             body: nil
         )
         
-        let profileData = try await networkClient.send(urlRequest: request)
-        
-        if let responseString = String(data: profileData, encoding: .utf8) {
-            print("Ответ сервера: \(responseString)")
-        }
+        let (profileData, _)  = try await networkClient.send(urlRequest: request)
+    
         let decoder = JSONDecoder()
         
         do {
             let user = try decoder.decode(UserModel.self, from: profileData)
-            print("Профиль успешно декодирован: \(user)")
             return user
         } catch {
-            print("Ошибка декодирования: \(error)")
             
             if let decodingError = error as? DecodingError {
                 switch decodingError {
@@ -57,5 +52,38 @@ actor ProfileService: ProfileServiceProtocol {
             }
             throw error
         }
+    }
+    
+    func saveProfile(_ user: UserModel) async throws {
+        // Подготавливаем параметры для запроса
+        let parameters: [String: Any] = [
+            "name": user.name,
+            "website": user.website,
+            "description": user.description ?? "",
+            "likes": user.likes
+        ]
+        
+        // Создаем запрос с помощью специального билдера
+        let request = try APIPutRequestBuilder.makeFormURLEncodedRequest(
+            from: APIEndpoint.Profile.update,
+            parameters: parameters
+        )
+        
+        // Отправка запроса и получение ответа
+        let (data, response) = try await networkClient.send(urlRequest: request)
+        
+        // Проверка статус кода
+        if response.statusCode != 200 {
+            print("Ошибка сохранения профиля: статус код \(response.statusCode)")
+            
+            // Можно также вывести тело ответа для отладки
+            if let responseBody = String(data: data, encoding: .utf8) {
+                print("Тело ответа: \(responseBody)")
+            }
+            
+            throw URLError(.badServerResponse)
+        }
+        
+        print("Профиль успешно сохранен")
     }
 }

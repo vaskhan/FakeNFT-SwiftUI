@@ -9,7 +9,7 @@ enum NetworkClientError: Error {
 
 // Протокол сетевого клиента
 protocol NetworkClient {
-    func send(urlRequest: URLRequest) async throws -> Data
+    func send(urlRequest: URLRequest) async throws -> (Data, HTTPURLResponse)
     func send<T: Decodable>(urlRequest: URLRequest) async throws -> T
 }
 
@@ -40,7 +40,7 @@ actor DefaultNetworkClient: NetworkClient {
     }
     
     // Отправить запрос и вернуть «сырые» данные
-    func send(urlRequest: URLRequest) async throws -> Data {
+    func send(urlRequest: URLRequest) async throws -> (Data, HTTPURLResponse) {
         let prepared = applyCommonHeaders(to: urlRequest)
         let (data, response) = try await session.data(for: prepared)
         
@@ -50,12 +50,12 @@ actor DefaultNetworkClient: NetworkClient {
         guard 200..<300 ~= http.statusCode else {
             throw NetworkClientError.httpStatusCode(http.statusCode)
         }
-        return data
+        return (data, http)
     }
     
     // Отправить запрос и сразу распарсить JSON в модель Decodable
     func send<T: Decodable>(urlRequest: URLRequest) async throws -> T {
-        let data = try await send(urlRequest: urlRequest)
+        let (data, _) = try await send(urlRequest: urlRequest)
         return try parse(data: data)
     }
     

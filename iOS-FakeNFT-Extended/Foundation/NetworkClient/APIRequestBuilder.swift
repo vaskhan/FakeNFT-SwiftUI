@@ -55,3 +55,46 @@ struct APIRequestBuilder {
         return request
     }
 }
+
+// Билдер для PUT запросов с form-urlencoded данными
+struct APIPutRequestBuilder {
+    static func makeFormURLEncodedRequest(
+        from endpoint: (url: String, method: HTTPMethod),
+        parameters: [String: Any],
+        headers: [String: String] = [:]
+    ) throws -> URLRequest {
+        // Разбираем URL
+        guard let url = URL(string: endpoint.url) else {
+            throw URLError(.badURL)
+        }
+        
+        // Собираем request
+        var request = URLRequest(url: url)
+        request.httpMethod = endpoint.method.rawValue
+        
+        // Подготавливаем тело запроса в формате form-urlencoded
+        var components = URLComponents()
+        components.queryItems = parameters.map { key, value in
+            if let array = value as? [String] {
+                // Для массивов создаем несколько параметров с одинаковым именем
+                return array.map { URLQueryItem(name: key, value: $0) }
+            } else {
+                return [URLQueryItem(name: key, value: "\(value)")]
+            }
+        }.flatMap { $0 }
+        
+        guard let queryString = components.percentEncodedQuery else {
+            throw URLError(.badURL)
+        }
+        
+        request.httpBody = queryString.data(using: .utf8)
+        
+        // Устанавливаем заголовки
+        headers.forEach { request.addValue($1, forHTTPHeaderField: $0) }
+        
+        // Обязательный заголовок для form-urlencoded
+        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        
+        return request
+    }
+}

@@ -67,4 +67,36 @@ final class ProfileViewModel: ProfileViewModelProtocol {
     
         isLoading = false
     }
+    
+    func setUserInfo(name: String, description: String, website: String) async {
+        isLoading = true
+        
+        //Проверка, что профиль загружен
+        guard let currentProfile = profile else {
+            errorMessage = String(localized: "Profile not loaded", defaultValue: "Profile not loaded")
+            isLoading = false
+            return
+        }
+        
+        // обновленная модель на основе текущего профиля и новых значений
+        let updatedProfile = UserModel(
+            name: name,
+            avatar: currentProfile.avatar,
+            description: description,
+            website: website,
+            nfts: currentProfile.nfts,
+            likes: currentProfile.likes,
+            id: currentProfile.id
+        )
+
+        do {
+            try await profileService.saveProfile(updatedProfile)
+            // Если успешно, обновляем локальный профиль
+            self.profile = updatedProfile
+        } catch {
+            errorMessage = String(localized: "Error.network", defaultValue: "A network error occurred")
+        }
+        
+        isLoading = false
+    }
 }

@@ -9,10 +9,16 @@ import SwiftUI
 
 struct ProfileEditingView: View {
     @Environment(\.dismiss) private var dismiss
-    var viewModel: ProfileViewModel
+    @State private var viewModel: ProfileViewModel
     @State private var editedName: String
     @State private var editedDescription: String
     @State private var editedWebsite: String
+    
+    private var hasChanges: Bool {
+        editedName != viewModel.userName ||
+        editedDescription != viewModel.userDescription ||
+        editedWebsite != viewModel.userWebsite
+    }
     
     init(viewModel: ProfileViewModel) {
         self.viewModel = viewModel
@@ -42,10 +48,18 @@ struct ProfileEditingView: View {
             
             Spacer()
             
-            Button("Сохранить") {
-                
+            if hasChanges {
+                Button("Сохранить") {
+                    Task {
+                        await viewModel.setUserInfo(
+                            name: editedName,
+                            description: editedDescription,
+                            website: editedWebsite
+                        )
+                    }
+                }
+                .buttonStyle(BlackButton())
             }
-            .buttonStyle(BlackButton())
         }
         .padding(.horizontal, 16)
         
