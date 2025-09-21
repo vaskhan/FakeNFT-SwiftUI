@@ -63,7 +63,8 @@ final class ProfileEditingViewModel {
         
         do {
             try await profileService.saveProfile(currentProfile)
-            await profileViewModel.getUserInfo() // Обновляем основную VM
+            await profileViewModel.getUserInfo()
+            print("Профиль успешно сохранен")
         } catch {
             errorMessage = String(localized: "Error.network", defaultValue: "A network error occurred")
         }
@@ -88,6 +89,8 @@ final class ProfileEditingViewModel {
             try await profileService.saveProfile(currentProfile)
             await profileViewModel.getUserInfo() // Обновляем основную VM
             editedAvatar = avatar
+            
+            print("Аватар успешно сохранен")
         } catch {
             errorMessage = String(localized: "Error.network", defaultValue: "A network error occurred")
         }

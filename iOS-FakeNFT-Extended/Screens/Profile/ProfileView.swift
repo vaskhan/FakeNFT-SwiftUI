@@ -6,13 +6,6 @@
 //
 
 import SwiftUI
-import Observation
-
-@Observable
-class ProfileNavigationModel {
-    var editingPath: NavigationPath = NavigationPath()
-    var isShowingProfileEditing = false
-}
 
 struct ProfileView: View {
     @Environment(ServicesAssembly.self) private var services: ServicesAssembly?
@@ -20,9 +13,9 @@ struct ProfileView: View {
     @State private var navigationModel = ProfileNavigationModel()
     
     var body: some View {
-        NavigationStack(path: $navigationModel.editingPath) {
+        NavigationStack(path: $navigationModel.path) {
             ZStack {
-                // Основной контент
+
                 VStack(alignment: .leading, spacing: 20) {
                     HStack(spacing: 16) {
                         ProfilePhotoView(avatarString: viewModel?.userAvatar ?? "")
@@ -70,34 +63,31 @@ struct ProfileView: View {
                 .padding(.top, 20)
                 .disabled(viewModel?.isLoading == true)
                 
-                // Спиннер загрузки
                 if viewModel?.isLoading == true {
                     AssetSpinner()
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .background(.lightgrey)
                 }
             }
-            .navigationDestination(for: String.self) { destination in
+            .navigationDestination(for: ProfileRoute.self) { destination in
                 switch destination {
-                case "myNFTs":
+                case .myNFTs:
                     MyNftView()
-                case "favoriteNFTs":
+                case .favoriteNFTs:
                     FavouriteNftsView()
-                case "profileEditing":
+                case .profileEditing:
                     if let viewModel, let services = services {
                         ProfileEditingView(
                             profileViewModel: viewModel,
                             profileService: services.profileService
                         )
                     }
-                default:
-                    EmptyView()
                 }
             }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
-                        navigationModel.editingPath.append("profileEditing")
+                        navigationModel.path.append(ProfileRoute.profileEditing)
                     } label: {
                         Image(.editor)
                     }
@@ -111,11 +101,6 @@ struct ProfileView: View {
                 let newViewModel = ProfileViewModel(profileService: services.profileService)
                 self.viewModel = newViewModel
                 await newViewModel.getUserInfo()
-            }
-        }
-        .onChange(of: navigationModel.isShowingProfileEditing) { oldValue, newValue in
-            if newValue {
-                navigationModel.editingPath.append("profileEditing")
             }
         }
     }
@@ -150,8 +135,4 @@ struct ProfileView: View {
             }
         }
     }
-}
-
-#Preview {
-    ProfileView()
 }

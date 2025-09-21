@@ -27,6 +27,7 @@
 		ABC5E1E22C320535002B4068 /* ProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = ABC5E1E12C320535002B4068 /* ProgressHUD */; };
 		ACABAAE12E79F49B00830E48 /* AssetSpinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACABAAE02E79F49B00830E48 /* AssetSpinner.swift */; };
 		ACABAAE32E79F4C300830E48 /* BlackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACABAAE22E79F4C300830E48 /* BlackButton.swift */; };
+		ACABB7862E809A1100830E48 /* ProfileRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACABB7852E809A0400830E48 /* ProfileRoute.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +70,7 @@
 		ABC5E1B62C31FC70002B4068 /* ServicesAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicesAssembly.swift; sourceTree = "<group>"; };
 		ACABAAE02E79F49B00830E48 /* AssetSpinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetSpinner.swift; sourceTree = "<group>"; };
 		ACABAAE22E79F4C300830E48 /* BlackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlackButton.swift; sourceTree = "<group>"; };
+		ACABB7852E809A0400830E48 /* ProfileRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRoute.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -200,6 +202,7 @@
 		ABC5E19A2C31F687002B4068 /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
+				ACABB7852E809A0400830E48 /* ProfileRoute.swift */,
 				ABC5E19B2C31F69C002B4068 /* MemoryStorage */,
 				ABC5E1A22C31F7E8002B4068 /* NetworkClient */,
 				ABC5E1A72C31FA90002B4068 /* DateFormatters+Presets.swift */,
@@ -410,6 +413,7 @@
 				4893EF922E74A3DB00051A95 /* AppFontName.swift in Sources */,
 				ABC5E1A42C31F800002B4068 /* NetworkClient.swift in Sources */,
 				ACABAAE32E79F4C300830E48 /* BlackButton.swift in Sources */,
+				ACABB7862E809A1100830E48 /* ProfileRoute.swift in Sources */,
 				ACABAAE12E79F49B00830E48 /* AssetSpinner.swift in Sources */,
 				ABC5E1A12C31F6D7002B4068 /* Nft.swift in Sources */,
 				ABC5E1A82C31FA90002B4068 /* DateFormatters+Presets.swift in Sources */,

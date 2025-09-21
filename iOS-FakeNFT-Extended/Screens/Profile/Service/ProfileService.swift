@@ -89,7 +89,5 @@ actor ProfileService: ProfileServiceProtocol {
             
             throw URLError(.badServerResponse)
         }
-        
-        print("Профиль успешно сохранен")
     }
 }

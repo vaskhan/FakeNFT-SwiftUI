@@ -10,6 +10,7 @@ import SwiftUI
 struct ProfileEditingView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var viewModel: ProfileEditingViewModel
+    @State private var isShowingExitAlert = false
     
     init(profileViewModel: ProfileViewModel, profileService: ProfileServiceProtocol) {
         self._viewModel = State(
@@ -27,9 +28,11 @@ struct ProfileEditingView: View {
                     if let editedAvatar = viewModel.editedAvatar, !editedAvatar.isEmpty {
                         ProfilePhotoView(avatarString: editedAvatar)
                     } else {
-                        Circle()
-                            .fill(Color.gray)
-                            .frame(width: 100, height: 100)
+                        Image(systemName: "photo")
+                            .font(.appBold32)
+                            .foregroundColor(.gray)
+                            .frame(width: 70, height: 70)
+                            .clipShape(Circle())
                     }
                     
                     Image(.camera)
@@ -60,8 +63,8 @@ struct ProfileEditingView: View {
             .padding(.horizontal, 16)
             .disabled(viewModel.isLoading)
             .confirmationDialog("Фото профиля",
-                isPresented: $viewModel.showImageActionDialog,
-                titleVisibility: .visible
+                                isPresented: $viewModel.showImageActionDialog,
+                                titleVisibility: .visible
             ) {
                 Button("Изменить фото") {
                     viewModel.showImageActionDialog = false
@@ -88,20 +91,40 @@ struct ProfileEditingView: View {
                     }
                 }
             }
+            .alert("Уверены, что хотите выйти?", isPresented: $isShowingExitAlert) {
+                    Button("Остаться", role: .cancel) {}
+                    Button("Выйти") {
+                        dismiss()
+                    }
+                }
             
             if viewModel.isLoading {
-                Color.lightgrey
-                    .frame(width: 82, height: 82)
-                    .cornerRadius(8)
+                // На дизайне затемнения фона нет, но лоадер теряется в таком случае
+                Color.black.opacity(0.2)
+                    .edgesIgnoringSafeArea(.all)
+                    .zIndex(1)
                 
-                AssetSpinner()
-                    .frame(width: 50, height: 50)
+                ZStack {
+                    Color.lightgrey
+                        .frame(width: 82, height: 82)
+                        .cornerRadius(8)
+                    
+                    AssetSpinner()
+                        .frame(width: 50, height: 50)
+                }
+                .zIndex(2)
             }
         }
         .toolbar(.hidden, for: .tabBar)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
-                Button(action: { dismiss() }) {
+                Button(action: {
+                    if viewModel.hasChanges {
+                        isShowingExitAlert = true
+                    } else {
+                        dismiss()
+                    }
+                }) {
                     Image("NavigationChevronLeft")
                 }
             }
@@ -110,7 +133,3 @@ struct ProfileEditingView: View {
         .navigationBarTitleDisplayMode(.inline)
     }
 }
-
-//#Preview {
-//    ProfileEditingView(viewModel: <#ProfileViewModel#>)
-//}
