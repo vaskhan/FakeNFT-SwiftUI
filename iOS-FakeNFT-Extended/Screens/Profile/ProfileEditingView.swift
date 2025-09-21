@@ -13,7 +13,7 @@ struct ProfileEditingView: View {
     @State private var editedName: String
     @State private var editedDescription: String
     @State private var editedWebsite: String
-    @State private var editedAvatar: URL?
+    @State private var editedAvatar: String?
     @State private var showImageActionDialog = false
     @State private var showAvatarAlert = false
     @State private var avatarUrlString = ""
@@ -30,15 +30,15 @@ struct ProfileEditingView: View {
         self._editedName = State(initialValue: viewModel.userName ?? "")
         self._editedDescription = State(initialValue: viewModel.userDescription ?? "")
         self._editedWebsite = State(initialValue: viewModel.userWebsite ?? "")
-        self._editedAvatar = State(initialValue: viewModel.userAvatar)
+        self._editedAvatar = State(initialValue: viewModel.userAvatar ?? "")
     }
     
     var body: some View {
         ZStack {
             VStack {
                 ZStack(alignment: .bottomTrailing) {
-                    if let url = editedAvatar {
-                        ProfilePhotoView(avatarUrl: url)
+                    if let editedAvatar {
+                        ProfilePhotoView(avatarString: editedAvatar)
                     }
                     
                     Image(.camera)
@@ -86,11 +86,13 @@ struct ProfileEditingView: View {
                 Button("Изменить фото") {
                     showImageActionDialog = false
                     
-                    avatarUrlString = viewModel.userAvatar?.absoluteString ?? ""
+                    avatarUrlString = viewModel.userAvatar ?? ""
                     showAvatarAlert = true
                 }
                 Button("Удалить фото", role: .destructive) {
-                    // Обработка удаления фото
+                    Task {
+                        await viewModel.deleteUserAvatar()
+                    }
                 }
                 Button("Отмена", role: .cancel) {}
             }
@@ -100,19 +102,12 @@ struct ProfileEditingView: View {
                     .autocapitalization(.none)
                     .disableAutocorrection(true)
                 
-                Button("Отмена", role: .cancel) {
-                    
-                }
+                Button("Отмена", role: .cancel) { }
                 Button("Сохранить") {
-                    if let url = URL(string: avatarUrlString) {
-                        editedAvatar = url
                         Task {
-                            await viewModel.setUserAvatar(avatar: url)
+                            await viewModel.setUserAvatar(avatar: avatarUrlString)
+                            editedAvatar = avatarUrlString
                         }
-                        
-                    } else {
-                        editedAvatar = nil
-                    }
                 }
             }
             if viewModel.isLoading {

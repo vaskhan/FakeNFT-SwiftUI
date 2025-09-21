@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct ProfilePhotoView: View {
-    let avatarUrl: URL?
+    let avatarString: String
     
     var body: some View {
         Group {
-            if let avatarUrl {
+            if !avatarString.isEmpty, let avatarUrl = URL(string: avatarString){
                 AsyncImage(url: avatarUrl) { phase in
                     switch phase {
                     case .empty:
@@ -22,10 +22,6 @@ struct ProfilePhotoView: View {
                             .resizable()
                             .scaledToFill()
                     case .failure:
-                        Image(.avatar)
-                            .resizable()
-                            .scaledToFill()
-                    @unknown default:
                         Image(.avatar)
                             .resizable()
                             .scaledToFill()

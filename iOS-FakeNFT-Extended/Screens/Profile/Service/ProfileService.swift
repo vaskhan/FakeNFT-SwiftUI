@@ -63,10 +63,10 @@ actor ProfileService: ProfileServiceProtocol {
             "likes": user.likes
         ]
         
-        if let avatarString = user.avatar?.absoluteString {
+        if let avatarString = user.avatar {
             parameters["avatar"] = avatarString
         } else {
-            parameters["avatar"] = "" // или null в зависимости от требований API
+            parameters["avatar"] = nil // или null в зависимости от требований API
         }
         
         // Создаем запрос с помощью специального билдера

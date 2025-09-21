@@ -19,7 +19,7 @@ struct ProfileView: View {
                     // Основной контент
                     VStack(alignment: .leading, spacing: 20) {
                         HStack(spacing: 16) {
-                            ProfilePhotoView(avatarUrl: viewModel?.userAvatar)
+                            ProfilePhotoView(avatarString: viewModel?.userAvatar ?? "")
                             userName
                             Spacer()
                         }

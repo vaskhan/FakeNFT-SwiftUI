@@ -20,11 +20,12 @@ final class ProfileViewModel: ProfileViewModelProtocol {
     }
     
     //MARK: - Вычисляемые свойства
+    
     var userName: String? {
         profile?.name
     }
     
-    var userAvatar: URL? {
+    var userAvatar: String? {
         profile?.avatar
     }
     
@@ -44,22 +45,7 @@ final class ProfileViewModel: ProfileViewModelProtocol {
         profile?.nfts.count
     }
     
-    //MARK: - обновление профиля
-    func updateName(_ newName: String) {
-        profile?.name = newName
-    }
-    
-    func updateAvatar(_ newAvatar: URL) {
-        profile?.avatar = newAvatar
-    }
-    
-    func updateDescription(_ newDescription: String) {
-        profile?.description = newDescription
-    }
-    
-    func updateWebsite(_ newWebsite: String) {
-        profile?.website = newWebsite
-    }
+    //MARK: - Функции
     
     func getUserInfo() async {
         guard !isLoading else { return }
@@ -110,7 +96,7 @@ final class ProfileViewModel: ProfileViewModelProtocol {
         isLoading = false
     }
     
-    func setUserAvatar(avatar: URL) async {
+    func setUserAvatar(avatar: String) async {
         isLoading = true
         
         guard let currentProfile = profile else {
@@ -131,12 +117,15 @@ final class ProfileViewModel: ProfileViewModelProtocol {
         
         do {
             try await profileService.saveProfile(updatedProfile)
-
             self.profile = updatedProfile
         } catch {
             errorMessage = String(localized: "Error.network", defaultValue: "A network error occurred")
         }
         
         isLoading = false
+    }
+    
+    func deleteUserAvatar() async {
+        await setUserAvatar(avatar: "")
     }
 }
