@@ -9,71 +9,48 @@ import SwiftUI
 
 struct ProfileEditingView: View {
     @Environment(\.dismiss) private var dismiss
-    @State private var viewModel: ProfileViewModel
-    @State private var editedName: String
-    @State private var editedDescription: String
-    @State private var editedWebsite: String
-    @State private var editedAvatar: String?
-    @State private var showImageActionDialog = false
-    @State private var showAvatarAlert = false
-    @State private var avatarUrlString = ""
-    @State private var isSaving = false
+    @State private var viewModel: ProfileEditingViewModel
     
-    private var hasChanges: Bool {
-        editedName != viewModel.userName ||
-        editedDescription != viewModel.userDescription ||
-        editedWebsite != viewModel.userWebsite
-    }
-    
-    init(viewModel: ProfileViewModel) {
-        self.viewModel = viewModel
-        self._editedName = State(initialValue: viewModel.userName ?? "")
-        self._editedDescription = State(initialValue: viewModel.userDescription ?? "")
-        self._editedWebsite = State(initialValue: viewModel.userWebsite ?? "")
-        self._editedAvatar = State(initialValue: viewModel.userAvatar ?? "")
+    init(profileViewModel: ProfileViewModel, profileService: ProfileServiceProtocol) {
+        self._viewModel = State(
+            initialValue: ProfileEditingViewModel(
+                profileViewModel: profileViewModel,
+                profileService: profileService
+            )
+        )
     }
     
     var body: some View {
         ZStack {
             VStack {
                 ZStack(alignment: .bottomTrailing) {
-                    if let editedAvatar {
+                    if let editedAvatar = viewModel.editedAvatar, !editedAvatar.isEmpty {
                         ProfilePhotoView(avatarString: editedAvatar)
+                    } else {
+                        Circle()
+                            .fill(Color.gray)
+                            .frame(width: 100, height: 100)
                     }
                     
                     Image(.camera)
-                    .frame(width: 23, height: 23)
-                    .background(
-                        Circle()
-                        .fill(.lightgrey)
-                    )
-                    .onTapGesture {
-                        showImageActionDialog = true
-                    }
+                        .frame(width: 23, height: 23)
+                        .background(Circle().fill(.lightgrey))
+                        .onTapGesture {
+                            viewModel.showImageActionDialog = true
+                        }
                 }
                 
-                LabeledTextField(title: "Имя", text: $editedName)
-                
-                LabeledTextEditor(title: "Описание", text: $editedDescription)
-                
-                LabeledTextField(title: "Сайт", text: $editedWebsite)
+                LabeledTextField(title: "Имя", text: $viewModel.editedName)
+                LabeledTextEditor(title: "Описание", text: $viewModel.editedDescription)
+                LabeledTextField(title: "Сайт", text: $viewModel.editedWebsite)
                 
                 Spacer()
                 
-                if hasChanges && !viewModel.isLoading {
+                if viewModel.hasChanges && !viewModel.isLoading {
                     Button("Сохранить") {
                         Task {
-                            isSaving = true
-                            await viewModel.setUserInfo(
-                                name: editedName,
-                                description: editedDescription,
-                                website: editedWebsite
-                            )
-                            // Обновляем локальные состояния после успешного сохранения
-                            editedName = viewModel.userName ?? ""
-                            editedDescription = viewModel.userDescription ?? ""
-                            editedWebsite = viewModel.userWebsite ?? ""
-                            isSaving = false
+                            await viewModel.saveProfile()
+                            dismiss()
                         }
                     }
                     .buttonStyle(BlackButton())
@@ -81,35 +58,37 @@ struct ProfileEditingView: View {
                 }
             }
             .padding(.horizontal, 16)
-            .disabled(viewModel.isLoading) // Блокируем всю форму при загрузке
-            .confirmationDialog("Фото профиля", isPresented: $showImageActionDialog, titleVisibility: .visible) {
+            .disabled(viewModel.isLoading)
+            .confirmationDialog("Фото профиля",
+                isPresented: $viewModel.showImageActionDialog,
+                titleVisibility: .visible
+            ) {
                 Button("Изменить фото") {
-                    showImageActionDialog = false
-                    
-                    avatarUrlString = viewModel.userAvatar ?? ""
-                    showAvatarAlert = true
+                    viewModel.showImageActionDialog = false
+                    viewModel.avatarUrlString = viewModel.editedAvatar ?? ""
+                    viewModel.showAvatarAlert = true
                 }
                 Button("Удалить фото", role: .destructive) {
                     Task {
-                        await viewModel.deleteUserAvatar()
+                        await viewModel.deleteAvatar()
                     }
                 }
                 Button("Отмена", role: .cancel) {}
             }
-            .alert("Ссылка на фото", isPresented: $showAvatarAlert) {
-                TextField("Введите URL", text: $avatarUrlString)
+            .alert("Ссылка на фото", isPresented: $viewModel.showAvatarAlert) {
+                TextField("Введите URL", text: $viewModel.avatarUrlString)
                     .keyboardType(.URL)
                     .autocapitalization(.none)
                     .disableAutocorrection(true)
                 
                 Button("Отмена", role: .cancel) { }
                 Button("Сохранить") {
-                        Task {
-                            await viewModel.setUserAvatar(avatar: avatarUrlString)
-                            editedAvatar = avatarUrlString
-                        }
+                    Task {
+                        await viewModel.setAvatar(viewModel.avatarUrlString)
+                    }
                 }
             }
+            
             if viewModel.isLoading {
                 Color.lightgrey
                     .frame(width: 82, height: 82)
@@ -128,6 +107,7 @@ struct ProfileEditingView: View {
             }
         }
         .navigationBarBackButtonHidden(true)
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
