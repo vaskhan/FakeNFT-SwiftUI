@@ -1,20 +1,31 @@
 /* MARK: - Default */
-"Tab.catalog"   = "Каталог";
-"Catalog.openNft" = "Открыть Nft";
-"Error.network" = "Произошла ошибка сети";
-"Error.unknown" = "Произошла неизвестная ошибка";
-"Error.repeat"  = "Повторить";
-"Error.title"   = "Ошибка";
-"Catalog.empty" = "Коллекций пока нет";
+"CatalogFlow.Error.network" = "Произошла ошибка сети";
+"CatalogFlow.Error.unknown" = "Произошла неизвестная ошибка";
+"CatalogFlow.Error.repeat"  = "Повторить";
+"CatalogFlow.Error.title"   = "Ошибка";
+"CatalogFlow.Catalog.empty" = "Коллекций пока нет";
 
 /* MARK: - TabView */
-"tab_basket"    = "Корзина";
-"tab_catalog"   = "Каталог";
-"tab_profile"   = "Профиль";
-"tab_statistics" = "Статистика";
+"MainScreen.tabBasket"     = "Корзина";
+"MainScreen.tabCatalog"    = "Каталог";
+"MainScreen.tabProfile"    = "Профиль";
+"MainScreen.tabStatistics" = "Статистика";
 
 /* MARK: - Sorting */
-"Sorting.title" = "Сортировка";
-"by_name"       = "По названию";
-"by_count"      = "По количеству NFT";
-"Close"         = "Закрыть";
+"SortingMenu.title"    = "Сортировка";
+"SortingMenu.byName"   = "По названию";
+"SortingMenu.byCount"  = "По количеству NFT";
+"SortingMenu.byRating" = "По рейтингу";
+"SortingMenu.byPrice"  = "По цене";
+"SortingMenu.close"    = "Закрыть";
+
+/* MARK: - Cart */
+"CartFlow.Cart.payButton" = "К оплате";
+"CartFlow.Cart.empty"     = "Корзина пуста";
+"CartFlow.Cart.itemPrice" = "Цена";
+
+/* MARK: - Payment method */
+"CartFlow.Payment.agreement1" = "Совершая покупку, вы соглашаетесь с условиями";
+"CartFlow.Payment.agreement2" = "Пользовательского соглашения";
+"CartFlow.Payment.payButton"  = "Оплатить";
+"CartFlow.Payment.title"      = "Выберите способ оплаты";

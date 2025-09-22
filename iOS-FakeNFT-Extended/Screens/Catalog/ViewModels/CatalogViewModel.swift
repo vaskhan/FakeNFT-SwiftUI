@@ -10,8 +10,8 @@ import SwiftUI
 
 // Сортировка
 enum CatalogSort: String, CaseIterable, Sendable {
-    case byTitle      = "by_name"
-    case byItemsCount = "by_count"
+    case byTitle      = "SortingMenu.byName"
+    case byItemsCount = "SortingMenu.byCount"
     
     var localized: String {
         String(localized: String.LocalizationValue(rawValue))
@@ -46,7 +46,7 @@ final class CatalogViewModel {
             let loaded = try await collectionService.loadCollections()
             collections = applySort(to: loaded, sort: selectedSort)
         } catch {
-            errorMessage = String(localized: "Error.network", defaultValue: "A network error occurred")
+            errorMessage = String(localized: "CatalogFlow.Error.network", defaultValue: "A network error occurred")
         }
         isLoading = false
     }
