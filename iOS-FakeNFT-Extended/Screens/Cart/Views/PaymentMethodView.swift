@@ -38,14 +38,14 @@ struct PaymentMethodView: View {
             
             VStack(alignment: .leading, spacing: 2) {
                 VStack(alignment: .leading, spacing: 6) {
-                    Text(String(localized: "Payment.agreement1"))
+                    Text(String(localized: "CartFlow.Payment.agreement1"))
                         .font(.appRegular13)
-                    Text(String(localized: "Payment.agreement2"))
+                    Text(String(localized: "CartFlow.Payment.agreement2"))
                         .font(.appRegular13)
                         .foregroundColor(.blueUniversal)
                 }
                 .padding(EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 16))
-                Button(String(localized: "Payment.payButton")) {
+                Button(String(localized: "CartFlow.Payment.payButton")) {
                     //TODO действие оплаты
                 }
                 .buttonStyle(BlackButton())
@@ -70,7 +70,7 @@ struct PaymentMethodView: View {
             }
             
             ToolbarItem(placement: .principal) {
-                Text(String(localized: "Payment.title"))
+                Text(String(localized: "CartFlow.Payment.title"))
                     .font(.appBold17)
                     .foregroundColor(.blackAndWhite)
             }

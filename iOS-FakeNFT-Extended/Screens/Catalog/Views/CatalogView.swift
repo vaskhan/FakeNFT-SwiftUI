@@ -24,7 +24,7 @@ struct CatalogView: View {
                         } else if let error = vm.errorMessage {
                             VStack(spacing: 12) {
                                 Text(error).multilineTextAlignment(.center)
-                                Button(String(localized: "Error.repeat", defaultValue: "Retry")) {
+                                Button(String(localized: "CatalogFlow.Error.repeat", defaultValue: "Retry")) {
                                     Task { await vm.load() }
                                 }
                                 .buttonStyle(.borderedProminent)
@@ -33,7 +33,7 @@ struct CatalogView: View {
                             .padding(.top, 32)
                             
                         } else if vm.collections.isEmpty {
-                            Text(String(localized: "Catalog.empty", defaultValue: "Коллекций пока нет"))
+                            Text(String(localized: "CatalogFlow.Catalog.empty", defaultValue: "Коллекций пока нет"))
                                 .font(.appRegular15)
                                 .foregroundStyle(.secondary)
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -60,7 +60,7 @@ struct CatalogView: View {
                         }
                     }
                     .confirmationDialog(
-                        String(localized: "Sorting.title", defaultValue: "Сортировка"),
+                        String(localized: "SortingMenu.title", defaultValue: "Сортировка"),
                         isPresented: $isSortDialogPresented,
                         titleVisibility: .visible
                     ) {
@@ -70,7 +70,7 @@ struct CatalogView: View {
                         Button(CatalogSort.byItemsCount.localized) {
                             vm.changeSort(to: .byItemsCount)
                         }
-                        Button(String(localized: "Close", defaultValue: "Закрыть"), role: .cancel) { }
+                        Button(String(localized: "SortingMenu.close", defaultValue: "Закрыть"), role: .cancel) { }
                     }
                     .navigationDestination(for: NftCollection.self) { collection in
                         // TODO: Screen Collection

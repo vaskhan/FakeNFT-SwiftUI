@@ -7,15 +7,20 @@
 
 import SwiftUI
 
+private enum Constants {
+    static let imageSize: CGFloat = 36
+    static let cornerRadius: CGFloat = 12
+}
+
 struct PaymentMethodCollectionRow: View {
     let paymentMethod: PaymentMethod
     let isSelected: Bool
     
     var body: some View {
         HStack(alignment: .center, spacing: 4) {
-            RoundedRectangle(cornerRadius: 12)
+            RoundedRectangle(cornerRadius: Constants.cornerRadius)
                 .fill(.blackUniversal)
-                .frame(width: 36, height: 36)
+                .frame(width: Constants.imageSize, height: Constants.imageSize)
                 .overlay {
                     if let url = paymentMethod.icon {
                         AsyncImage(url: url) { phase in
@@ -50,9 +55,9 @@ struct PaymentMethodCollectionRow: View {
         }
         .frame(height: 46)
         .background(.lightgrey)
-        .clipShape(RoundedRectangle(cornerRadius: 12))
+        .clipShape(RoundedRectangle(cornerRadius: Constants.cornerRadius))
         .overlay(
-            RoundedRectangle(cornerRadius: 8)
+            RoundedRectangle(cornerRadius: Constants.cornerRadius)
                 .stroke(isSelected ? Color.blackAndWhite : Color.clear, lineWidth: 1)
         )
     }

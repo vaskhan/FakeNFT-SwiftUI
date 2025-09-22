@@ -3,10 +3,6 @@
 <plist version="1.0">
 <dict>
 	<key>UIAppFonts</key>
-	<array>
-		<string>SF-Pro-Text-Bold.otf</string>
-		<string>SF-Pro-Text-Medium.otf</string>
-		<string>SF-Pro-Text-Regular.otf</string>
-	</array>
+	<array/>
 </dict>
 </plist>

@@ -31,7 +31,7 @@ struct MainTabView: View {
                     VStack(spacing: 1) {
                         Image(selectedTab == .profile ? "ActiveProfile" : "NoActiveProfile")
                             .renderingMode(.original)
-                        Text("tab_profile")
+                        Text("MainScreen.tabProfile")
                             .font(.appMedium10)
                     }
                 }
@@ -43,7 +43,7 @@ struct MainTabView: View {
                     VStack(spacing: 1) {
                         Image(selectedTab == .catalog ? "ActiveCatalog" : "NoActiveCatalog")
                             .renderingMode(.original)
-                        Text("tab_catalog")
+                        Text("MainScreen.tabCatalog")
                             .font(.appMedium10)
                     }
                 }
@@ -55,7 +55,7 @@ struct MainTabView: View {
                     VStack(spacing: 1) {
                         Image(selectedTab == .basket ? "ActiveBasket" : "NoActiveBasket")
                             .renderingMode(.original)
-                        Text("tab_basket")
+                        Text("MainScreen.tabBasket")
                             .font(.appMedium10)
                     }
                 }
@@ -67,7 +67,7 @@ struct MainTabView: View {
                     VStack(spacing: 1) {
                         Image(selectedTab == .statistics ? "ActiveStatistics" : "NoActiveStatistics")
                             .renderingMode(.original)
-                        Text("tab_statistics")
+                        Text("MainScreen.tabStatistics")
                             .font(.appMedium10)
                     }
                 }

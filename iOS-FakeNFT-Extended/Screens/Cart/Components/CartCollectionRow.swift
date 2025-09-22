@@ -7,12 +7,17 @@
 
 import SwiftUI
 
+private enum Constants {
+    static let imageSize: CGFloat = 108
+    static let cornerRadius: CGFloat = 12
+}
+
 struct CartCollectionRow: View {
     let item: CartItem
     
     var body: some View {
         HStack(alignment: .center, spacing: 20) {
-            RoundedRectangle(cornerRadius: 12)
+            RoundedRectangle(cornerRadius: Constants.cornerRadius)
                 .fill(Color.gray.opacity(0.1))
                 .overlay {
                     if let url = item.cover {
@@ -35,27 +40,22 @@ struct CartCollectionRow: View {
                         }
                     }
                 }
-                .frame(width: 108, height: 108)
-                .clipShape(RoundedRectangle(cornerRadius: 12))
+                .frame(width: Constants.imageSize, height: Constants.imageSize)
+                .clipShape(RoundedRectangle(cornerRadius: Constants.cornerRadius))
             
             VStack(alignment: .leading, spacing: 12) {
                 VStack(alignment: .leading, spacing: 2) {
                     Text(item.title)
                         .font(.appBold17)
                     HStack(alignment: .center, spacing: 2) {
-                        ForEach(0 ..< item.rating, id: \.self) { _ in
-                            Image("YellowStar")
-                                .frame(width: 12, height: 12)
-                        }
-                        ForEach(0 ..< 5 - item.rating, id: \.self) { _ in
-                            Image("WhiteStar")
-                                .frame(width: 12, height: 12)
+                        ForEach(0..<5, id: \.self) { index in
+                            Image(index < item.rating ? "YellowStar" : "WhiteStar")
                         }
                     }
                 }
                 
                 VStack(alignment: .leading, spacing: 2){
-                    Text(String(localized: "Cart.itemPrice"))
+                    Text(String(localized: "CartFlow.Cart.itemPrice"))
                         .font(.appRegular13)
                     Text("\(String(format: "%.2f", item.price)) ETH")
                         .font(.appBold17)
@@ -85,7 +85,7 @@ struct CartCollectionRow: View {
             title: "April",
             cover: URL(string: " "),
             rating: 4,
-            price: 1.453
+            price: 1.000
         )
     )
     .padding()

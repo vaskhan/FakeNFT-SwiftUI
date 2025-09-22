@@ -8,9 +8,9 @@
 import SwiftUI
 
 enum CartSort: String, CaseIterable, Sendable {
-    case byPrice  = "by_price"
-    case byRating = "by_rating"
-    case byName   = "by_name"
+    case byPrice  = "SortingMenu.byPrice"
+    case byRating = "SortingMenu.byRating"
+    case byName   = "SortingMenu.byName"
     
     var localized: String {
         String(localized: String.LocalizationValue(rawValue))
@@ -46,14 +46,14 @@ struct CartView: View {
                         }
                     }
                     .confirmationDialog(
-                        String(localized: "Sorting.title"),
+                        String(localized: "SortingMenu.title"),
                         isPresented: $isSortDialogPresented,
                         titleVisibility: .visible
                     ) {
                         Button(CartSort.byPrice.localized) {}
                         Button(CartSort.byRating.localized) {}
                         Button(CartSort.byName.localized) {}
-                        Button(String(localized: "Close"), role: .cancel) {}
+                        Button(String(localized: "SortingMenu.close"), role: .cancel) {}
                     }
                     HStack {
                         VStack(alignment: .leading, spacing: 2) {
@@ -65,7 +65,7 @@ struct CartView: View {
                                 
                         }
                         .padding(EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 16))
-                        Button(String(localized: "Cart.payButton")) {
+                        Button(String(localized: "CartFlow.Cart.payButton")) {
                             paymentMethodIsOpen = true
                         }
                         .buttonStyle(BlackButton())
@@ -81,7 +81,7 @@ struct CartView: View {
             }
         } else {
             ZStack() {
-                Text(String(localized: "Cart.empty"))
+                Text(String(localized: "CartFlow.Cart.empty"))
                     .font(.appBold17)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
