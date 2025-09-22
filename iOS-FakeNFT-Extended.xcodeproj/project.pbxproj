@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -14,6 +14,11 @@
 		4893EF942E74A3DB00051A95 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4893EF842E74A3DB00051A95 /* Assets.xcassets */; };
 		4893EF972E74BEA000051A95 /* APIEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4893EF962E74BEA000051A95 /* APIEndpoint.swift */; };
 		4893EF992E74C06B00051A95 /* APIRequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4893EF982E74C06B00051A95 /* APIRequestBuilder.swift */; };
+		4893EFCB2E759A1A00051A95 /* SF-Pro-Text-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4893EFC92E759A1A00051A95 /* SF-Pro-Text-Medium.otf */; };
+		4893EFCC2E759A1A00051A95 /* SF-Pro-Text-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4893EFC82E759A1A00051A95 /* SF-Pro-Text-Bold.otf */; };
+		4893EFCD2E759A1A00051A95 /* SF-Pro-Text-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4893EFCA2E759A1A00051A95 /* SF-Pro-Text-Regular.otf */; };
+		4893EFD42E75B29E00051A95 /* AssetSpinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4893EFD32E75B29E00051A95 /* AssetSpinner.swift */; };
+		5D87690F2E75D4250057D69C /* BlackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D87690E2E75D41A0057D69C /* BlackButton.swift */; };
 		ABC5E1732C31F5AF002B4068 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ABC5E1722C31F5AF002B4068 /* Preview Assets.xcassets */; };
 		ABC5E17D2C31F5B0002B4068 /* iOS_FakeNFT_ExtendedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC5E17C2C31F5B0002B4068 /* iOS_FakeNFT_ExtendedTests.swift */; };
 		ABC5E1872C31F5B0002B4068 /* iOS_FakeNFT_ExtendedUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC5E1862C31F5B0002B4068 /* iOS_FakeNFT_ExtendedUITests.swift */; };
@@ -53,6 +58,12 @@
 		4893EF8D2E74A3DB00051A95 /* AppFontName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFontName.swift; sourceTree = "<group>"; };
 		4893EF962E74BEA000051A95 /* APIEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIEndpoint.swift; sourceTree = "<group>"; };
 		4893EF982E74C06B00051A95 /* APIRequestBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRequestBuilder.swift; sourceTree = "<group>"; };
+		4893EFC82E759A1A00051A95 /* SF-Pro-Text-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-Bold.otf"; sourceTree = "<group>"; };
+		4893EFC92E759A1A00051A95 /* SF-Pro-Text-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-Medium.otf"; sourceTree = "<group>"; };
+		4893EFCA2E759A1A00051A95 /* SF-Pro-Text-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-Regular.otf"; sourceTree = "<group>"; };
+		4893EFCE2E759ADA00051A95 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		4893EFD32E75B29E00051A95 /* AssetSpinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetSpinner.swift; sourceTree = "<group>"; };
+		5D87690E2E75D41A0057D69C /* BlackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlackButton.swift; sourceTree = "<group>"; };
 		ABC5E1682C31F5AF002B4068 /* iOS-FakeNFT-Extended.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "iOS-FakeNFT-Extended.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ABC5E1722C31F5AF002B4068 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		ABC5E1782C31F5B0002B4068 /* iOS-FakeNFT-ExtendedTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "iOS-FakeNFT-ExtendedTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -66,6 +77,10 @@
 		ABC5E1AF2C31FB90002B4068 /* RequestConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestConstants.swift; sourceTree = "<group>"; };
 		ABC5E1B62C31FC70002B4068 /* ServicesAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicesAssembly.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		4893EF9A2E74C7BF00051A95 /* Screens */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Screens; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		ABC5E1652C31F5AF002B4068 /* Frameworks */ = {
@@ -114,6 +129,8 @@
 		4893EF8C2E74A3DB00051A95 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				4893EFD32E75B29E00051A95 /* AssetSpinner.swift */,
+				5D87690E2E75D41A0057D69C /* BlackButton.swift */,
 				4893EF8B2E74A3DB00051A95 /* MainTabView.swift */,
 			);
 			path = Components;
@@ -123,6 +140,9 @@
 			isa = PBXGroup;
 			children = (
 				4893EF8D2E74A3DB00051A95 /* AppFontName.swift */,
+				4893EFC82E759A1A00051A95 /* SF-Pro-Text-Bold.otf */,
+				4893EFC92E759A1A00051A95 /* SF-Pro-Text-Medium.otf */,
+				4893EFCA2E759A1A00051A95 /* SF-Pro-Text-Regular.otf */,
 			);
 			path = StyleSystem;
 			sourceTree = "<group>";
@@ -150,13 +170,15 @@
 		ABC5E16A2C31F5AF002B4068 /* iOS-FakeNFT-Extended */ = {
 			isa = PBXGroup;
 			children = (
-				4893EF8C2E74A3DB00051A95 /* Components */,
 				4893EF8A2E74A3DB00051A95 /* App */,
+				4893EF8C2E74A3DB00051A95 /* Components */,
 				ABC5E19A2C31F687002B4068 /* Foundation */,
+				4893EFCE2E759ADA00051A95 /* Info.plist */,
 				ABC5E19E2C31F6C1002B4068 /* Models */,
-				ABC5E1A92C31FABA002B4068 /* Services */,
 				ABC5E1712C31F5AF002B4068 /* Preview Content */,
 				4893EF882E74A3DB00051A95 /* Resources */,
+				4893EF9A2E74C7BF00051A95 /* Screens */,
+				ABC5E1A92C31FABA002B4068 /* Services */,
 				4893EF8E2E74A3DB00051A95 /* StyleSystem */,
 			);
 			path = "iOS-FakeNFT-Extended";
@@ -262,6 +284,9 @@
 			);
 			dependencies = (
 			);
+			fileSystemSynchronizedGroups = (
+				4893EF9A2E74C7BF00051A95 /* Screens */,
+			);
 			name = "iOS-FakeNFT-Extended";
 			packageProductDependencies = (
 				ABC5E1D72C3204A9002B4068 /* Kingfisher */,
@@ -360,6 +385,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4893EFCB2E759A1A00051A95 /* SF-Pro-Text-Medium.otf in Resources */,
+				4893EFCC2E759A1A00051A95 /* SF-Pro-Text-Bold.otf in Resources */,
+				4893EFCD2E759A1A00051A95 /* SF-Pro-Text-Regular.otf in Resources */,
 				ABC5E1732C31F5AF002B4068 /* Preview Assets.xcassets in Resources */,
 				4893EF932E74A3DB00051A95 /* Localizable.strings in Resources */,
 				4893EF942E74A3DB00051A95 /* Assets.xcassets in Resources */,
@@ -396,6 +424,8 @@
 				4893EF922E74A3DB00051A95 /* AppFontName.swift in Sources */,
 				ABC5E1A42C31F800002B4068 /* NetworkClient.swift in Sources */,
 				ABC5E1A12C31F6D7002B4068 /* Nft.swift in Sources */,
+				4893EFD42E75B29E00051A95 /* AssetSpinner.swift in Sources */,
+				5D87690F2E75D4250057D69C /* BlackButton.swift in Sources */,
 				ABC5E1A82C31FA90002B4068 /* DateFormatters+Presets.swift in Sources */,
 				ABC5E1B02C31FB90002B4068 /* RequestConstants.swift in Sources */,
 			);
@@ -576,6 +606,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"iOS-FakeNFT-Extended/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "iOS-FakeNFT-Extended/Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -604,6 +635,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"iOS-FakeNFT-Extended/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "iOS-FakeNFT-Extended/Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
