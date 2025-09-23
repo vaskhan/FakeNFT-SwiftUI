@@ -76,4 +76,11 @@ struct MainTabView: View {
     }
 }
 
-#Preview { MainTabView(initialTab: .catalog) }
+#Preview {
+    MainTabView(initialTab: .catalog)
+        .environment(
+            ServicesAssembly(
+                networkClient: DefaultNetworkClient()
+            )
+        )
+}
