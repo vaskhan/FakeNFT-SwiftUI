@@ -26,7 +26,7 @@ struct MainTabView: View {
         TabView(selection: $selectedTab) {
             
             // Profile
-            Text("Profile Screen")
+            ProfileView()
                 .tabItem {
                     VStack(spacing: 1) {
                         Image(selectedTab == .profile ? "ActiveProfile" : "NoActiveProfile")
