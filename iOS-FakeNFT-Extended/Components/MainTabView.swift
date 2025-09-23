@@ -80,8 +80,7 @@ struct MainTabView: View {
     MainTabView(initialTab: .catalog)
         .environment(
             ServicesAssembly(
-                networkClient: DefaultNetworkClient(),
-                nftStorage: NftStorageImpl()
+                networkClient: DefaultNetworkClient()
             )
         )
 }

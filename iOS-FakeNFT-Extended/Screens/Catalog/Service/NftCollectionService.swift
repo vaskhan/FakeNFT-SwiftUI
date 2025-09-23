@@ -36,7 +36,10 @@ actor NftCollectionService: NftCollectionServiceProtocol {
                 id: dto.id,
                 title: dto.name,
                 coverURL: URL(string: dto.cover),
-                itemsCount: dto.nfts.count
+                itemsCount: dto.nfts.count,
+                description: dto.description,
+                author: dto.author,
+                nftIDs: dto.nfts
             )
         }
     }

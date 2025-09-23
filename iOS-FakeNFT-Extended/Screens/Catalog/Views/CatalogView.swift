@@ -16,38 +16,36 @@ struct CatalogView: View {
     
     var body: some View {
         NavigationStack {
-            Group {
-                if let vm = viewModel {
+            if let vm = viewModel {
+                if vm.isLoading {
+                    AssetSpinner()
+                } else if let error = vm.errorMessage {
+                    VStack(spacing: 12) {
+                        Text(error).multilineTextAlignment(.center)
+                        Button(String(localized: "Error.repeat", defaultValue: "Retry")) {
+                            Task { await vm.load() }
+                        }
+                        .buttonStyle(.borderedProminent)
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .padding(.top, 32)
+                    
+                } else if vm.collections.isEmpty {
+                    Text(String(localized: "Catalog.empty", defaultValue: "Коллекций пока нет"))
+                        .font(.appRegular15)
+                        .foregroundStyle(.secondary)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .padding(.top, 32)
+                    
+                } else {
                     ScrollView {
-                        if vm.isLoading {
-                            AssetSpinner()
-                        } else if let error = vm.errorMessage {
-                            VStack(spacing: 12) {
-                                Text(error).multilineTextAlignment(.center)
-                                Button(String(localized: "CatalogFlow.Error.repeat", defaultValue: "Retry")) {
-                                    Task { await vm.load() }
-                                }
-                                .buttonStyle(.borderedProminent)
-                            }
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
-                            .padding(.top, 32)
-                            
-                        } else if vm.collections.isEmpty {
-                            Text(String(localized: "CatalogFlow.Catalog.empty", defaultValue: "Коллекций пока нет"))
-                                .font(.appRegular15)
-                                .foregroundStyle(.secondary)
-                                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                                .padding(.top, 32)
-                            
-                        } else {
-                            LazyVStack(spacing: 0) {
-                                ForEach(vm.collections) { collection in
-                                    NavigationLink(value: collection) {
-                                        CollectionRowView(collection: collection)
-                                            .padding(.horizontal, 16)
-                                            .padding(.top, 20)
-                                            .padding(.bottom, 8)
-                                    }
+                        LazyVStack(spacing: 0) {
+                            ForEach(vm.collections) { collection in
+                                NavigationLink(value: collection) {
+                                    CollectionRowView(collection: collection)
+                                        .padding(.horizontal, 16)
+                                        .padding(.top, 20)
+                                        .padding(.bottom, 8)
                                 }
                             }
                         }
@@ -60,7 +58,7 @@ struct CatalogView: View {
                         }
                     }
                     .confirmationDialog(
-                        String(localized: "SortingMenu.title", defaultValue: "Сортировка"),
+                        String(localized: "Sorting.title", defaultValue: "Сортировка"),
                         isPresented: $isSortDialogPresented,
                         titleVisibility: .visible
                     ) {
@@ -70,15 +68,11 @@ struct CatalogView: View {
                         Button(CatalogSort.byItemsCount.localized) {
                             vm.changeSort(to: .byItemsCount)
                         }
-                        Button(String(localized: "SortingMenu.close", defaultValue: "Закрыть"), role: .cancel) { }
+                        Button(String(localized: "Close", defaultValue: "Закрыть"), role: .cancel) { }
                     }
                     .navigationDestination(for: NftCollection.self) { collection in
-                        // TODO: Screen Collection
-                        Text("Коллекция «\(collection.title)»")
-                            .font(.appBold32)
+                        CollectionView(collection: collection, services: services)
                     }
-                } else {
-                    AssetSpinner()
                 }
             }
         }
@@ -91,4 +85,3 @@ struct CatalogView: View {
         }
     }
 }
-

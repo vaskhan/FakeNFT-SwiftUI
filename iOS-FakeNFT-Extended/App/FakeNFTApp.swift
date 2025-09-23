@@ -11,8 +11,7 @@ import SwiftUI
 @main
 struct FakeNFTApp: App {
     private let services = ServicesAssembly(
-        networkClient: DefaultNetworkClient(),
-        nftStorage: NftStorageImpl()
+        networkClient: DefaultNetworkClient()
     )
     
     var body: some Scene {

@@ -53,14 +53,14 @@ struct CollectionRowView: View {
     }
 }
 
-#Preview {
-    CollectionRowView(
-        collection: NftCollection(
-            id: "1",
-            title: "CryptoCats",
-            coverURL: URL(string: "https://picsum.photos/seed/fakenft/400/300"),
-            itemsCount: 42
-        )
-    )
-    .padding()
-}
+//#Preview {
+//    CollectionRowView(
+//        collection: NftCollection(
+//            id: "1",
+//            title: "CryptoCats",
+//            coverURL: URL(string: "https://picsum.photos/seed/fakenft/400/300"),
+//            itemsCount: 42
+//        )
+//    )
+//    .padding()
+//}

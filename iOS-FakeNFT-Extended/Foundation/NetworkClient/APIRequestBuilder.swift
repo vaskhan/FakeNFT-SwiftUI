@@ -8,7 +8,7 @@
 
 import Foundation
 
-// Поддерживаемые HTTP-методы (для типобезопасности).
+// Поддерживаемые HTTP-методы
 enum HTTPMethod: String {
     case get    = "GET"
     case put    = "PUT"
@@ -17,7 +17,7 @@ enum HTTPMethod: String {
     case delete = "DELETE"
 }
 
-// Универсальный билдер для создания URLRequest из эндпоинтов.
+// Билдер для создания URLRequest из эндпоинтов
 struct APIRequestBuilder {
     static func makeRequest(
         from endpoint: (url: String, method: HTTPMethod),
