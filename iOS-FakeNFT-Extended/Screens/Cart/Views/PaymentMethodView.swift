@@ -78,13 +78,13 @@ struct PaymentMethodView: View {
         
     }
 }
-
-#Preview {
-    PaymentMethodView(viewModel: PaymentMethodViewModel(), isPresented: .constant(true))
-        .environment(
-            ServicesAssembly(
-                networkClient: DefaultNetworkClient(),
-                nftStorage: NftStorageImpl()
-            )
-        )
-}
+//
+//#Preview {
+//    PaymentMethodView(viewModel: PaymentMethodViewModel(), isPresented: .constant(true))
+//        .environment(
+//            ServicesAssembly(
+//                networkClient: DefaultNetworkClient(),
+//                nftStorage: NftStorageImpl()
+//            )
+//        )
+//}

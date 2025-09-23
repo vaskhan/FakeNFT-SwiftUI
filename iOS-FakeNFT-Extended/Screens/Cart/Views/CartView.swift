@@ -90,12 +90,12 @@ struct CartView: View {
     }
 }
 
-#Preview {
-    CartView(viewModel: CartViewModel())
-        .environment(
-            ServicesAssembly(
-                networkClient: DefaultNetworkClient(),
-                nftStorage: NftStorageImpl()
-            )
-        )
-}
+//#Preview {
+//    CartView(viewModel: CartViewModel())
+//        .environment(
+//            ServicesAssembly(
+//                networkClient: DefaultNetworkClient(),
+//                nftStorage: NftStorageImpl()
+//            )
+//        )
+//}
