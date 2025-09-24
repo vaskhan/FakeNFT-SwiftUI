@@ -164,8 +164,6 @@
 				4893EF8C2E74A3DB00051A95 /* Components */,
 				4893EF8A2E74A3DB00051A95 /* App */,
 				ABC5E19A2C31F687002B4068 /* Foundation */,
-				4893EFCE2E759ADA00051A95 /* Info.plist */,
-				ABC5E19E2C31F6C1002B4068 /* Models */,
 				ABC5E1A92C31FABA002B4068 /* Services */,
 				ABC5E1712C31F5AF002B4068 /* Preview Content */,
 				4893EF882E74A3DB00051A95 /* Resources */,
@@ -398,7 +396,6 @@
 				ACABAAE32E79F4C300830E48 /* BlackButton.swift in Sources */,
 				ACABB7862E809A1100830E48 /* ProfileRoute.swift in Sources */,
 				ACABAAE12E79F49B00830E48 /* AssetSpinner.swift in Sources */,
-				ABC5E1A12C31F6D7002B4068 /* Nft.swift in Sources */,
 				ABC5E1A82C31FA90002B4068 /* DateFormatters+Presets.swift in Sources */,
 				ABC5E1B02C31FB90002B4068 /* RequestConstants.swift in Sources */,
 			);
