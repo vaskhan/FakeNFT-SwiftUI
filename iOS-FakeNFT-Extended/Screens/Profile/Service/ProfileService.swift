@@ -10,6 +10,7 @@ import Foundation
 protocol ProfileServiceProtocol: Sendable {
     func loadProfile() async throws -> UserModel
     func saveProfile(_ user: UserModel) async throws
+    func updateLikes(_ likes: [String]) async throws
 }
 
 actor ProfileService: ProfileServiceProtocol {
@@ -28,7 +29,7 @@ actor ProfileService: ProfileServiceProtocol {
         )
         
         let (profileData, _)  = try await networkClient.send(urlRequest: request)
-    
+        
         let decoder = JSONDecoder()
         
         do {
@@ -56,18 +57,12 @@ actor ProfileService: ProfileServiceProtocol {
     
     func saveProfile(_ user: UserModel) async throws {
         // Подготавливаем параметры для запроса
-        var parameters: [String: Any] = [
+        let parameters: [String: Any] = [
             "name": user.name,
             "website": user.website,
             "description": user.description ?? "",
             "likes": user.likes
         ]
-        
-        if let avatarString = user.avatar {
-            parameters["avatar"] = avatarString
-        } else {
-            parameters["avatar"] = nil // или null в зависимости от требований API
-        }
         
         // Создаем запрос с помощью специального билдера
         let request = try APIPutRequestBuilder.makeFormURLEncodedRequest(
@@ -87,6 +82,21 @@ actor ProfileService: ProfileServiceProtocol {
                 print("Тело ответа: \(responseBody)")
             }
             
+            throw URLError(.badServerResponse)
+        }
+        
+        print("Профиль успешно сохранен")
+    }
+    
+    func updateLikes(_ likes: [String]) async throws {
+        let params: [String: Any] = ["likes": likes]
+        let req = try APIPutRequestBuilder.makeFormURLEncodedRequest(
+            from: APIEndpoint.Profile.update,
+            parameters: params
+        )
+        let (data, resp) = try await networkClient.send(urlRequest: req)
+        guard resp.statusCode == 200 else {
+            if let body = String(data: data, encoding: .utf8) { print(body) }
             throw URLError(.badServerResponse)
         }
     }
