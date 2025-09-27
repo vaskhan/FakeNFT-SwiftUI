@@ -14,9 +14,9 @@ struct FavouriteNftCell: View {
     private let name: String
     private let rating: Int
     private let price: Double
-    private let onLikeToggle: (String) async -> Void
+    private let onLikeToggle: (String, Bool) async -> Void
     
-    init(nftId: String, isLiked: Bool = true, imageName: String, name: String, rating: Int, price: Double, onLikeToggle: @escaping (String) async -> Void) {
+    init(nftId: String, isLiked: Bool = true, imageName: String, name: String, rating: Int, price: Double, onLikeToggle: @escaping (String, Bool) async -> Void) {
         self.nftId = nftId
         self.isLiked = isLiked
         self.imageName = imageName
@@ -53,10 +53,11 @@ struct FavouriteNftCell: View {
                         // Иконка сердечка
                         Button(action: {
                             Task {
-                                await onLikeToggle(nftId)
+                                let newLikeState = !isLiked
+                                await onLikeToggle(nftId, newLikeState)
                                 // Обновляем локальное состояние после успешного выполнения
                                 await MainActor.run {
-                                    isLiked = false
+                                    isLiked = newLikeState
                                 }
                             }
                         }) {

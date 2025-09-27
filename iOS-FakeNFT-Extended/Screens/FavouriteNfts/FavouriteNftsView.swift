@@ -11,12 +11,14 @@ struct FavouriteNftsView: View {
     @Environment(ServicesAssembly.self) private var services: ServicesAssembly?
     @State private var viewModels: [String: FavouriteNftsViewModel] = [:]
     @State private var currentLikesIds: [String]
+    @State private var allDisplayedNFTs: [String]
     
     let likesIds: [String]
     
     init(likesIds: [String]) {
         self.likesIds = likesIds
         self._currentLikesIds = State(initialValue: likesIds)
+        self._allDisplayedNFTs = State(initialValue: likesIds)
     }
     
     private enum FavouriteNFTViewConstants {
@@ -58,12 +60,13 @@ struct FavouriteNftsView: View {
                 ForEach(likesIds, id: \.self) { nftId in
                     FavouriteNftCell(
                         nftId: nftId,
+                        isLiked: currentLikesIds.contains(nftId),
                         imageName: viewModels[nftId]?.images ?? "",
                         name: viewModels[nftId]?.name ?? "",
                         rating: viewModels[nftId]?.rating ?? 0,
                         price: viewModels[nftId]?.price ?? 0,
-                        onLikeToggle: { nftId in
-                            await toggleLike(for: nftId)
+                        onLikeToggle: { nftId, newLikeState in
+                            await toggleLike(for: nftId, newState: newLikeState)
                         }
                     )
                     .task {
@@ -77,11 +80,19 @@ struct FavouriteNftsView: View {
     
     // MARK: - Private Methods
     
-    private func toggleLike(for nftId: String) async {
-        // Удаляем NFT из текущего списка лайков
-        currentLikesIds.removeAll { $0 == nftId }
+    private func toggleLike(for nftId: String, newState: Bool) async {
+        if newState {
+            if !currentLikesIds.contains(nftId) {
+                currentLikesIds.append(nftId)
+            }
+        } else {
+            currentLikesIds.removeAll { $0 == nftId }
+        }
         
-        // Отправляем обновленный список на сервер
+        if !allDisplayedNFTs.contains(nftId) {
+            allDisplayedNFTs.append(nftId)
+        }
+
         await updateFavoriteListOnServer()
     }
     
@@ -90,6 +101,10 @@ struct FavouriteNftsView: View {
         
         let viewModel = FavouriteNftsViewModel(favouriteNftService: services.favouriteNftService)
         await viewModel.updateNftFavoriteList(ids: currentLikesIds)
+
+        if let error = viewModel.errorMessage {
+            print("Ошибка при обновлении лайков: \(error)")
+        }
     }
         
     private func loadNftData(for nftId: String) async {

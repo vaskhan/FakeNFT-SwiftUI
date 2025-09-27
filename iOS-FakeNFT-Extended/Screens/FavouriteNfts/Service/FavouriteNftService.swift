@@ -55,28 +55,17 @@ actor FavouriteNftService: FavouriteNftServiceProtocol {
     
     // Обновление списка NFT, передавать весь список NFT пользователя
     func updateFavoriteNftList(nftList: [String]) async throws {
-        // Подготавливаем параметры для запроса
-        var parameters: [String: Any] = [
-            "likes": nftList
-        ]
-        
-        // Создаем запрос с помощью специального билдера
+        let parameters: [String: Any] = ["likes": nftList.isEmpty ? "null" : nftList]
+
         let request = try APIPutRequestBuilder.makeFormURLEncodedRequest(
             from: APIEndpoint.Profile.update,
             parameters: parameters
         )
         
-        // Отправка запроса и получение ответа
         let (data, response) = try await networkClient.send(urlRequest: request)
-        
-        // Проверка статус кода
+
         if response.statusCode != 200 {
-            print("Ошибка сохранения профиля: статус код \(response.statusCode)")
-            
-            // Можно также вывести тело ответа для отладки
-            if let responseBody = String(data: data, encoding: .utf8) {
-                print("Тело ответа: \(responseBody)")
-            }
+            print("Ошибка обновления лайков: статус код \(response.statusCode)")
             
             throw URLError(.badServerResponse)
         }
