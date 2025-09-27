@@ -20,35 +20,50 @@ final class CollectionViewModel {
     var state: State = .loading
     
     let collection: NftCollection
-        var nftItems: [NftItem] = []
-
-        var favoriteIds: Set<String> = []
-        var cartIds: Set<String> = []
-
-        private let nftService: NftServiceProtocol
-
-        init(collection: NftCollection, nftService: NftServiceProtocol) {
-            self.collection = collection
-            self.nftService = nftService
-        }
-
-        func load() async {
-            state = .loading
-            do {
-                let items = try await nftService.loadItems(ids: collection.nftIDs)
-                self.nftItems = items
-                state = .loaded
-            } catch {
-                state = .error("Не удалось загрузить коллекцию")
-            }
-        }
+    var nftItems: [NftItem] = []
     
-    // MARK: - Локальные действия
+    var favoriteIds: Set<String> = []
+    var cartIds: Set<String> = []
+    
+    private let nftService: NftServiceProtocol
+    private let cartService: CartServiceProtocol
+    private let profileService: ProfileServiceProtocol
+    
+    init(collection: NftCollection, nftService: NftServiceProtocol, cartService: CartServiceProtocol, profileService: ProfileServiceProtocol) {
+        self.collection = collection
+        self.nftService = nftService
+        self.cartService = cartService
+        self.profileService = profileService
+    }
+    
+    func load() async {
+        state = .loading
+        do {
+            async let itemsTask: [NftItem] = nftService.loadItems(ids: collection.nftIDs)
+            async let orderTask: OrderDTO = cartService.loadCart()
+            async let userTask: UserModel = profileService.loadProfile()
+            
+            let (items, order, user) = try await (itemsTask, orderTask, userTask)
+            self.nftItems = items
+            self.cartIds = Set(order.nfts ?? [])
+            self.favoriteIds = Set(user.likes)
+            
+            state = .loaded
+        } catch {
+            state = .error("Не удалось загрузить данные")
+            print("Ошибка при загрузке: \(error)")
+        }
+    }
+    
     func toggleFavorite(for nftId: String) {
         if favoriteIds.contains(nftId) {
             favoriteIds.remove(nftId)
         } else {
             favoriteIds.insert(nftId)
+        }
+        
+        Task {
+            try? await profileService.updateLikes(Array(favoriteIds))
         }
     }
     
@@ -57,6 +72,14 @@ final class CollectionViewModel {
             cartIds.remove(nftId)
         } else {
             cartIds.insert(nftId)
+        }
+        
+        Task {
+            do {
+                try await cartService.updateCart(Array(cartIds))
+            } catch {
+                print("updateCart error: \(error)")
+            }
         }
     }
 }

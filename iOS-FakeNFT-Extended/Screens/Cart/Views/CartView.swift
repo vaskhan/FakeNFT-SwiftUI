@@ -27,9 +27,9 @@ struct CartView: View {
         if let viewModel = viewModel {
             NavigationStack {
                 VStack() {
-                    ScrollView() {
+                    ScrollView {
                         LazyVStack(spacing: 8) {
-                            ForEach(viewModel.mockedItems, id: \.id) { item in
+                            ForEach(viewModel.items, id: \.id) { item in
                                 CartCollectionRow(item: item)
                             }
                         }
@@ -57,9 +57,9 @@ struct CartView: View {
                     }
                     HStack {
                         VStack(alignment: .leading, spacing: 2) {
-                            Text("\(viewModel.mockedItems.count) NFT")
+                            Text("\(viewModel.items.count) NFT")
                                 .font(.appRegular15)
-                            Text("\(viewModel.mockedItems.map({$0.price}).reduce(0, +), specifier: "%.2f") ETH")
+                            Text("\(viewModel.items.map({$0.price}).reduce(0, +), specifier: "%.2f") ETH")
                                 .font(.appBold17)
                                 .foregroundColor(.greenUniversal)
                                 
@@ -88,14 +88,4 @@ struct CartView: View {
             .background(.whiteAndBlack)
         }
     }
-}
-
-#Preview {
-    CartView(viewModel: CartViewModel())
-        .environment(
-            ServicesAssembly(
-                networkClient: DefaultNetworkClient(),
-                nftStorage: NftStorageImpl()
-            )
-        )
 }
