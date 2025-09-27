@@ -30,7 +30,7 @@ struct ProfileView: View {
                         NavigationLink(value: "myNFTs") {
                             HStack {
                                 Text("Мои NFT (\(viewModel?.nftsCount ?? 0))")
-                                    .font(.system(size: 17, weight: .bold))
+                                    .font(.appBold17)
                                     .foregroundColor(.blackAndWhite)
                                 
                                 Spacer()
@@ -41,10 +41,10 @@ struct ProfileView: View {
                             }
                         }
                         
-                        NavigationLink(value: "favoriteNFTs") {
+                        NavigationLink(value: ProfileRoute.favoriteNFTs(likesList: viewModel?.likesList ?? [])) {
                             HStack {
                                 Text("Избранные NFT (\(viewModel?.likesCount ?? 0))")
-                                    .font(.system(size: 17, weight: .bold))
+                                    .font(.appBold17)
                                     .foregroundColor(.blackAndWhite)
                                 
                                 Spacer()
@@ -74,7 +74,7 @@ struct ProfileView: View {
                 case .myNFTs:
                     MyNftView()
                 case .favoriteNFTs:
-                    FavouriteNftsView()
+                    FavouriteNftsView(likesIds: viewModel?.likesList ?? [])
                 case .profileEditing:
                     if let viewModel, let services = services {
                         ProfileEditingView(
@@ -108,13 +108,13 @@ struct ProfileView: View {
     // MARK: - UI Components
     private var userName: some View {
         Text(viewModel?.userName ?? "")
-            .font(.system(size: 22, weight: .bold))
+            .font(.appBold22)
             .foregroundColor(.blackAndWhite)
     }
     
     private var personalInfo: some View {
         Text(viewModel?.userDescription ?? "")
-            .font(.system(size: 13, weight: .regular))
+            .font(.appRegular13)
             .foregroundColor(viewModel?.userDescription != nil ? .blackAndWhite : .gray)
     }
     
@@ -123,13 +123,13 @@ struct ProfileView: View {
             if let website = viewModel?.userWebsite, let url = URL(string: website) {
                 Link(destination: url) {
                     Text(website)
-                        .font(.system(size: 15, weight: .regular))
+                        .font(.appRegular15)
                         .foregroundColor(.blueUniversal)
                         .lineLimit(1)
                 }
             } else if let website = viewModel?.userWebsite {
                 Text(website)
-                    .font(.system(size: 15, weight: .regular))
+                    .font(.appRegular15)
                     .foregroundColor(.blueUniversal)
                     .lineLimit(1)
             }

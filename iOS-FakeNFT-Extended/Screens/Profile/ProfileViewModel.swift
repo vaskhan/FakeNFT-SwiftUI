@@ -27,6 +27,7 @@ final class ProfileViewModel: ProfileViewModelProtocol {
     var userWebsite: String? { profile?.website }
     var likesCount: Int? { profile?.likes.count }
     var nftsCount: Int? { profile?.nfts.count }
+    var likesList: [String] { profile?.likes ?? [] }
     
     func getUserInfo() async {
         guard !isLoading else { return }
