@@ -75,6 +75,11 @@ struct ProfileView: View {
                     MyNftView()
                 case .favoriteNFTs:
                     FavouriteNftsView(likesIds: viewModel?.likesList ?? [])
+                    .onDisappear {
+                        Task {
+                            await refreshData()
+                        }
+                    }
                 case .profileEditing:
                     if let viewModel, let services = services {
                         ProfileEditingView(
@@ -100,7 +105,7 @@ struct ProfileView: View {
             if viewModel == nil, let services = services {
                 let newViewModel = ProfileViewModel(profileService: services.profileService)
                 self.viewModel = newViewModel
-                await newViewModel.getUserInfo()
+                await viewModel?.getUserInfo()
             }
         }
     }
@@ -134,5 +139,11 @@ struct ProfileView: View {
                     .lineLimit(1)
             }
         }
+    }
+    
+    // MARK: - Private Methods
+    
+    private func refreshData() async {
+        await viewModel?.getUserInfo()
     }
 }
