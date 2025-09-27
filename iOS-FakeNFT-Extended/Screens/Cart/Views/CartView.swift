@@ -21,81 +21,105 @@ struct CartView: View {
     @Environment(ServicesAssembly.self) private var services
     @State var viewModel: CartViewModel?
     @State private var paymentMethodIsOpen = false
+    @State private var deleteDialogIsOpen = false
     @State private var isSortDialogPresented = false
     
     var body: some View {
-        if let viewModel = viewModel {
-            NavigationStack {
-                VStack() {
-                    ScrollView() {
-                        LazyVStack(spacing: 8) {
-                            ForEach(viewModel.mockedItems, id: \.id) { item in
-                                CartCollectionRow(item: item)
+        NavigationStack {
+            if let viewModel = viewModel {
+                if viewModel.isLoading {
+                    AssetSpinner()
+                } else if viewModel.items.isEmpty {
+                    ZStack() {
+                        Text(String(localized: "CartFlow.Cart.empty"))
+                            .font(.appBold17)
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(.whiteAndBlack)
+                    .navigationBarBackButtonHidden(true)
+                } else {
+                    VStack() {
+                        ScrollView() {
+                            LazyVStack(spacing: 8) {
+                                ForEach(viewModel.items, id: \.id) { item in
+                                    CartCollectionRow(
+                                        item: item,
+                                        onToggleDelete: {
+                                            Task { await viewModel.removeItem(item) }
+                                        }
+                                    )
+                                }
                             }
                         }
-                    }
-                    .padding(EdgeInsets(top: 16, leading: 16, bottom: 0, trailing: 16))
-                    .scrollIndicators(.hidden)
-                    .toolbar {
-                        ToolbarItem(placement: .topBarTrailing) {
-                            Button {
-                                isSortDialogPresented = true
-                            } label: {
-                                Image(.list)
+                        .padding(EdgeInsets(top: 16, leading: 16, bottom: 0, trailing: 16))
+                        .scrollIndicators(.hidden)
+                        .toolbar {
+                            ToolbarItem(placement: .topBarTrailing) {
+                                Button {
+                                    isSortDialogPresented = true
+                                } label: {
+                                    Image(.list)
+                                }
                             }
                         }
-                    }
-                    .confirmationDialog(
-                        String(localized: "SortingMenu.title"),
-                        isPresented: $isSortDialogPresented,
-                        titleVisibility: .visible
-                    ) {
-                        Button(CartSort.byPrice.localized) {}
-                        Button(CartSort.byRating.localized) {}
-                        Button(CartSort.byName.localized) {}
-                        Button(String(localized: "SortingMenu.close"), role: .cancel) {}
-                    }
-                    HStack {
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text("\(viewModel.mockedItems.count) NFT")
-                                .font(.appRegular15)
-                            Text("\(viewModel.mockedItems.map({$0.price}).reduce(0, +), specifier: "%.2f") ETH")
-                                .font(.appBold17)
-                                .foregroundColor(.greenUniversal)
+                        .confirmationDialog(
+                            String(localized: "SortingMenu.title"),
+                            isPresented: $isSortDialogPresented,
+                            titleVisibility: .visible
+                        ) {
+                            Button(CartSort.byPrice.localized) { viewModel.sortItems(by: .byPrice) }
+                            Button(CartSort.byRating.localized) { viewModel.sortItems(by: .byRating) }
+                            Button(CartSort.byName.localized) { viewModel.sortItems(by: .byName) }
+                            Button(String(localized: "SortingMenu.close"), role: .cancel) {}
+                        }
+                        HStack {
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text("\(viewModel.items.count) NFT")
+                                    .font(.appRegular15)
+                                Text("\(viewModel.items.map({$0.price}).reduce(0, +), specifier: "%.2f") ETH")
+                                    .font(.appBold17)
+                                    .foregroundColor(.greenUniversal)
                                 
+                            }
+                            .padding(EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 16))
+                            Button(String(localized: "CartFlow.Cart.payButton")) {
+                                paymentMethodIsOpen = true
+                            }
+                            .buttonStyle(BlackButton())
+                            .padding()
                         }
-                        .padding(EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 16))
-                        Button(String(localized: "CartFlow.Cart.payButton")) {
-                            paymentMethodIsOpen = true
-                        }
-                        .buttonStyle(BlackButton())
-                        .padding()
+                        .background(.lightgrey)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
                     }
-                    .background(.lightgrey)
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
-                }
-                .background(.whiteAndBlack)
-                .navigationDestination(isPresented: $paymentMethodIsOpen) {
-                    PaymentMethodView(viewModel: PaymentMethodViewModel(), isPresented: $paymentMethodIsOpen)
+                    .background(.whiteAndBlack)
+                    .navigationDestination(isPresented: $paymentMethodIsOpen) {
+                        PaymentMethodView(cartViewModel: $viewModel, paymentMethodIsOpen: $paymentMethodIsOpen)
+                    }
+                    .toolbar(.visible, for: .tabBar)
                 }
             }
-        } else {
-            ZStack() {
-                Text(String(localized: "CartFlow.Cart.empty"))
-                    .font(.appBold17)
+            
+        }
+        .onAppear {
+            Task {
+                if let viewModel {
+                    await viewModel.loadItems()
+                } else {
+                    viewModel = CartViewModel(cartService: services.cartService, nftService: services.nftService)
+                    await viewModel?.loadItems()
+                }
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(.whiteAndBlack)
         }
     }
 }
 
-//#Preview {
-//    CartView(viewModel: CartViewModel())
-//        .environment(
-//            ServicesAssembly(
-//                networkClient: DefaultNetworkClient(),
-//                nftStorage: NftStorageImpl()
-//            )
-//        )
-//}
+
+
+#Preview {
+    CartView()
+        .environment(
+            ServicesAssembly(
+                networkClient: DefaultNetworkClient()
+            )
+        )
+}
