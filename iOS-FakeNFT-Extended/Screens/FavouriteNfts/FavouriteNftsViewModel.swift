@@ -19,6 +19,12 @@ final class FavouriteNftsViewModel: FavouriteNftViewModelProtocol {
         self.favouriteNftService = favouriteNftService
     }
     
+    //Вычисляемые свойства
+    var name: String? { nft?.name }
+    var images: String? { nft?.images[0] }
+    var rating: Int? { nft?.rating }
+    var price: Double? { nft?.price }
+    
     func getNftInfo(id: String) async {
         guard !isLoading else { return }
         isLoading = true

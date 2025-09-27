@@ -9,21 +9,36 @@ import SwiftUI
 
 struct FavouriteNftCell: View {
     @State private var isLiked = true
-    private let imageName = "nft_image" // Замените на ваше изображение
-    private let name = "Pixi"
-    private let rating = 2 // Пример рейтинга от 0 до 5
-    private let price = "1.78 ETH"
+    private let imageName: String
+    private let name: String
+    private let rating: Int
+    private let price: Double
     
+    init(isLiked: Bool = true, imageName: String, name: String, rating: Int, price: Double) {
+        self.isLiked = isLiked
+        self.imageName = imageName
+        self.name = name
+        self.rating = rating
+        self.price = price
+    }
     
     var body: some View {
         HStack(alignment: .top, spacing: 12) {
             // Левая часть с изображением
             ZStack(alignment: .topTrailing) {
-                Image(imageName)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 80, height: 80)
-                    .cornerRadius(12)
+                let url = URL(string: imageName)
+                AsyncImage(url: url) { phase in
+                    switch phase {
+                    case .empty: Color.gray.opacity(0.1)
+                    case .success(let image):
+                        image
+                            .resizable()
+                            .scaledToFill()
+                        
+                    case .failure: Color.gray.opacity(0.1)
+                    @unknown default: Color.gray.opacity(0.1)
+                    }
+                }
 
                 // Иконка сердечка
                 Button(action: { isLiked.toggle() }) {
@@ -43,15 +58,13 @@ struct FavouriteNftCell: View {
                     .font(.appBold17)
                     .foregroundColor(.primary)
 
-                HStack(spacing: 2) {
+                HStack(alignment: .center, spacing: 2) {
                     ForEach(0..<5, id: \.self) { index in
-                        Image(systemName: index < rating ? "star.fill" : "star.fill")
-                            .foregroundColor(index < rating ? .yellowUniversal : .lightgrey)
-                            .font(.system(size: 12))
+                        Image(index < rating ? "YellowStar" : "WhiteStar")
                     }
                 }
 
-                Text(price)
+                Text("\(String(format: "%.2f", price)) ETH")
                     .font(.appRegular15)
                     .foregroundColor(.primary)
             }
@@ -62,6 +75,7 @@ struct FavouriteNftCell: View {
         .padding(.vertical, 8)
     }
 }
-#Preview {
-    FavouriteNftCell()
-}
+
+//#Preview {
+//    FavouriteNftCell(imageName: "https://code.s3.yandex.net/Mobile/iOS/NFT/Pink/Calder/1.png", name: "Fhntv", rating: 3, price: 19.84)
+//}

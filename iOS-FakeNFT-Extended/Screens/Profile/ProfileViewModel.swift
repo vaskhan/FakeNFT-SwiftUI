@@ -20,7 +20,7 @@ final class ProfileViewModel: ProfileViewModelProtocol {
         self.profileService = profileService
     }
     
-    // Вычисляемые свойства остаются без изменений
+    // Вычисляемые свойства
     var userName: String? { profile?.name }
     var userAvatar: String? { profile?.avatar }
     var userDescription: String? { profile?.description }

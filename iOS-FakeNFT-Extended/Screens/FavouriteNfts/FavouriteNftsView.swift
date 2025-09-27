@@ -8,6 +8,9 @@ import SwiftUI
 
 struct FavouriteNftsView: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(ServicesAssembly.self) private var services: ServicesAssembly?
+    @State private var viewModels: [String: FavouriteNftsViewModel] = [:]
+    
     let likesIds: [String]
     
     private enum FavouriteNFTViewConstants {
@@ -47,13 +50,29 @@ struct FavouriteNftsView: View {
         ScrollView() {
             LazyVGrid(columns: columns, spacing: 7) {
                 ForEach(likesIds, id: \.self) { nftId in
-                    FavouriteNftCell()
+                    FavouriteNftCell(
+                        imageName: viewModels[nftId]?.images ?? "",
+                        name: viewModels[nftId]?.name ?? "" ,
+                        rating: viewModels[nftId]?.rating ?? 0,
+                        price: viewModels[nftId]?.price ?? 0
+                    )
+                    .task {
+                        await loadNftData(for: nftId)
+                    }
                 }
             }
             .padding(EdgeInsets(top: 16, leading: 16, bottom: 0, trailing: 16))
         }
+    }
+    
+    // MARK: - Private Methods
         
-        Text("\(FavouriteNFTViewConstants.favoritesTitle) \(likesIds.count)")
+    private func loadNftData(for nftId: String) async {
+        guard viewModels[nftId] == nil, let services = services else { return }
+        
+        let viewModel = FavouriteNftsViewModel(favouriteNftService: services.favouriteNftService)
+        viewModels[nftId] = viewModel
+        await viewModel.getNftInfo(id: nftId)
     }
 }
 
@@ -82,6 +101,6 @@ private extension View {
     }
 }
 
-#Preview {
-    FavouriteNftsView(likesIds: ["1ce4f491-877d-48d0-9428-0e0129a80ec9", "ba441c43-cf07-4f94-9ea8-082b3436c729", "5093c01d-e79e-4281-96f1-76db5880ba70"])
-}
+//#Preview {
+//    FavouriteNftsView(viewModel: FavouriteNftsViewModel(favouriteNftService: <#any FavouriteNftServiceProtocol#>), likesIds: ["1ce4f491-877d-48d0-9428-0e0129a80ec9", "ba441c43-cf07-4f94-9ea8-082b3436c729", "5093c01d-e79e-4281-96f1-76db5880ba70"])
+//}
