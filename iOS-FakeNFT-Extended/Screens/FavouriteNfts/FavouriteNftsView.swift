@@ -92,7 +92,7 @@ struct FavouriteNftsView: View {
         if !allDisplayedNFTs.contains(nftId) {
             allDisplayedNFTs.append(nftId)
         }
-
+        
         await updateFavoriteListOnServer()
     }
     
@@ -101,12 +101,12 @@ struct FavouriteNftsView: View {
         
         let viewModel = FavouriteNftsViewModel(favouriteNftService: services.favouriteNftService)
         await viewModel.updateNftFavoriteList(ids: currentLikesIds)
-
+        
         if let error = viewModel.errorMessage {
             print("Ошибка при обновлении лайков: \(error)")
         }
     }
-        
+    
     private func loadNftData(for nftId: String) async {
         guard viewModels[nftId] == nil, let services = services else { return }
         

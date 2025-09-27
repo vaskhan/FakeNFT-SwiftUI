@@ -49,13 +49,13 @@ struct FavouriteNftCell: View {
                         .frame(width: 80, height: 80)
                         .aspectRatio(1, contentMode: .fit)
                         .clipShape(RoundedRectangle(cornerRadius: 12))
-
+                        
                         // Иконка сердечка
                         Button(action: {
                             Task {
                                 let newLikeState = !isLiked
                                 await onLikeToggle(nftId, newLikeState)
-                                // Обновляем локальное состояние после успешного выполнения
+                                
                                 await MainActor.run {
                                     isLiked = newLikeState
                                 }
@@ -67,25 +67,25 @@ struct FavouriteNftCell: View {
                         .padding(5)
                     }
                 }
-
+            
             // Правая часть с информацией
             VStack(alignment: .leading, spacing: 4) {
                 Text(name)
                     .font(.appBold17)
                     .foregroundColor(.primary)
-
+                
                 HStack(alignment: .center, spacing: 2) {
                     ForEach(0..<5, id: \.self) { index in
                         Image(index < rating ? "YellowStar" : "WhiteStar")
                     }
                 }
-
+                
                 Text("\(String(format: "%.2f", price)) ETH")
                     .font(.appRegular15)
                     .foregroundColor(.primary)
             }
             .padding(.top, 8)
-
+            
             Spacer()
         }
         .padding(.vertical, 8)

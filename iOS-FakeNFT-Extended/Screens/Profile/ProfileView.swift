@@ -15,7 +15,7 @@ struct ProfileView: View {
     var body: some View {
         NavigationStack(path: $navigationModel.path) {
             ZStack {
-
+                
                 VStack(alignment: .leading, spacing: 20) {
                     HStack(spacing: 16) {
                         ProfilePhotoView(avatarString: viewModel?.userAvatar ?? "")
@@ -26,35 +26,53 @@ struct ProfileView: View {
                     
                     personalInfo
                     personalSite
-                    VStack(spacing: 32) {
-                        NavigationLink(value: "myNFTs") {
-                            HStack {
-                                Text("Мои NFT (\(viewModel?.nftsCount ?? 0))")
-                                    .font(.appBold17)
-                                    .foregroundColor(.blackAndWhite)
+                    List {
+                        Section {
+                            ZStack {
+                                NavigationLink(value: "myNFTs") {
+                                    EmptyView()
+                                }
+                                .opacity(0)
                                 
-                                Spacer()
+                                HStack {
+                                    Text("Мои NFT (\(viewModel?.nftsCount ?? 0))")
+                                        .font(.appBold17)
+                                        .foregroundColor(.blackAndWhite)
+                                    
+                                    Spacer()
+                                    
+                                    Image(.chevronRight)
+                                        .renderingMode(.template)
+                                        .foregroundStyle(.blackAndWhite)
+                                }
+                                .contentShape(Rectangle())
+                            }
+                            
+                            ZStack {
+                                NavigationLink(value: ProfileRoute.favoriteNFTs(likesList: viewModel?.likesList ?? [])) {
+                                    EmptyView()
+                                }
+                                .opacity(0)
                                 
-                                Image(.chevronRight)
-                                    .renderingMode(.template)
-                                    .foregroundStyle(.blackAndWhite)
+                                HStack {
+                                    Text("Избранные NFT (\(viewModel?.likesCount ?? 0))")
+                                        .font(.appBold17)
+                                        .foregroundColor(.blackAndWhite)
+                                    
+                                    Spacer()
+                                    
+                                    Image(.chevronRight)
+                                        .renderingMode(.template)
+                                        .foregroundStyle(.blackAndWhite)
+                                }
+                                .contentShape(Rectangle())
                             }
                         }
-                        
-                        NavigationLink(value: ProfileRoute.favoriteNFTs(likesList: viewModel?.likesList ?? [])) {
-                            HStack {
-                                Text("Избранные NFT (\(viewModel?.likesCount ?? 0))")
-                                    .font(.appBold17)
-                                    .foregroundColor(.blackAndWhite)
-                                
-                                Spacer()
-                                
-                                Image(.chevronRight)
-                                    .renderingMode(.template)
-                                    .foregroundStyle(.blackAndWhite)
-                            }
-                        }
+                        .listRowInsets(EdgeInsets(top: 16, leading: 0, bottom: 16, trailing: 0))
+                        .listRowSeparator(.hidden)
+                        .listRowBackground(Color.clear)
                     }
+                    .listStyle(.plain)
                     .padding(.top, 56)
                     
                     Spacer()
@@ -75,11 +93,11 @@ struct ProfileView: View {
                     MyNftView()
                 case .favoriteNFTs:
                     FavouriteNftsView(likesIds: viewModel?.likesList ?? [])
-                    .onDisappear {
-                        Task {
-                            await refreshData()
+                        .onDisappear {
+                            Task {
+                                await refreshData()
+                            }
                         }
-                    }
                 case .profileEditing:
                     if let viewModel, let services = services {
                         ProfileEditingView(

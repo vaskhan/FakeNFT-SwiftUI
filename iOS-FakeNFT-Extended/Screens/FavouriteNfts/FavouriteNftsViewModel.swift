@@ -29,7 +29,7 @@ final class FavouriteNftsViewModel: FavouriteNftViewModelProtocol {
         guard !isLoading else { return }
         isLoading = true
         errorMessage = nil
-
+        
         do {
             nft = try await favouriteNftService.loadNft(nft: id)
         } catch {
@@ -45,7 +45,7 @@ final class FavouriteNftsViewModel: FavouriteNftViewModelProtocol {
         errorMessage = nil
         
         do {
-             try await favouriteNftService.updateFavoriteNftList(nftList: ids)
+            try await favouriteNftService.updateFavoriteNftList(nftList: ids)
         } catch {
             errorMessage = String(localized: "Error.network", defaultValue: "A network error occurred")
         }
