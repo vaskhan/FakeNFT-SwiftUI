@@ -38,4 +38,18 @@ final class FavouriteNftsViewModel: FavouriteNftViewModelProtocol {
         
         isLoading = false
     }
+    
+    func updateNftFavoriteList(ids: [String]) async {
+        guard !isLoading else { return }
+        isLoading = true
+        errorMessage = nil
+        
+        do {
+             try await favouriteNftService.updateFavoriteNftList(nftList: ids)
+        } catch {
+            errorMessage = String(localized: "Error.network", defaultValue: "A network error occurred")
+        }
+        
+        isLoading = false
+    }
 }

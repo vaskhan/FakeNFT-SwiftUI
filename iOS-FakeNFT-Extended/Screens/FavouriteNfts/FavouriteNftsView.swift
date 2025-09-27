@@ -10,8 +10,14 @@ struct FavouriteNftsView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(ServicesAssembly.self) private var services: ServicesAssembly?
     @State private var viewModels: [String: FavouriteNftsViewModel] = [:]
+    @State private var currentLikesIds: [String]
     
     let likesIds: [String]
+    
+    init(likesIds: [String]) {
+        self.likesIds = likesIds
+        self._currentLikesIds = State(initialValue: likesIds)
+    }
     
     private enum FavouriteNFTViewConstants {
         static let favoritesTitle = "Избранные NFT"
@@ -51,10 +57,14 @@ struct FavouriteNftsView: View {
             LazyVGrid(columns: columns, spacing: 7) {
                 ForEach(likesIds, id: \.self) { nftId in
                     FavouriteNftCell(
+                        nftId: nftId,
                         imageName: viewModels[nftId]?.images ?? "",
-                        name: viewModels[nftId]?.name ?? "" ,
+                        name: viewModels[nftId]?.name ?? "",
                         rating: viewModels[nftId]?.rating ?? 0,
-                        price: viewModels[nftId]?.price ?? 0
+                        price: viewModels[nftId]?.price ?? 0,
+                        onLikeToggle: { nftId in
+                            await toggleLike(for: nftId)
+                        }
                     )
                     .task {
                         await loadNftData(for: nftId)
@@ -66,6 +76,21 @@ struct FavouriteNftsView: View {
     }
     
     // MARK: - Private Methods
+    
+    private func toggleLike(for nftId: String) async {
+        // Удаляем NFT из текущего списка лайков
+        currentLikesIds.removeAll { $0 == nftId }
+        
+        // Отправляем обновленный список на сервер
+        await updateFavoriteListOnServer()
+    }
+    
+    private func updateFavoriteListOnServer() async {
+        guard let services = services else { return }
+        
+        let viewModel = FavouriteNftsViewModel(favouriteNftService: services.favouriteNftService)
+        await viewModel.updateNftFavoriteList(ids: currentLikesIds)
+    }
         
     private func loadNftData(for nftId: String) async {
         guard viewModels[nftId] == nil, let services = services else { return }

@@ -8,49 +8,64 @@
 import SwiftUI
 
 struct FavouriteNftCell: View {
+    let nftId: String
     @State private var isLiked = true
     private let imageName: String
     private let name: String
     private let rating: Int
     private let price: Double
+    private let onLikeToggle: (String) async -> Void
     
-    init(isLiked: Bool = true, imageName: String, name: String, rating: Int, price: Double) {
+    init(nftId: String, isLiked: Bool = true, imageName: String, name: String, rating: Int, price: Double, onLikeToggle: @escaping (String) async -> Void) {
+        self.nftId = nftId
         self.isLiked = isLiked
         self.imageName = imageName
         self.name = name
         self.rating = rating
         self.price = price
+        self.onLikeToggle = onLikeToggle
     }
     
     var body: some View {
         HStack(alignment: .top, spacing: 12) {
             // Левая часть с изображением
-            ZStack(alignment: .topTrailing) {
-                let url = URL(string: imageName)
-                AsyncImage(url: url) { phase in
-                    switch phase {
-                    case .empty: Color.gray.opacity(0.1)
-                    case .success(let image):
-                        image
-                            .resizable()
-                            .scaledToFill()
-                        
-                    case .failure: Color.gray.opacity(0.1)
-                    @unknown default: Color.gray.opacity(0.1)
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color.gray.opacity(0.1))
+                .overlay {
+                    ZStack(alignment: .topTrailing) {
+                        let url = URL(string: imageName)
+                        AsyncImage(url: url) { phase in
+                            switch phase {
+                            case .empty: Color.gray.opacity(0.1)
+                            case .success(let image):
+                                image
+                                    .resizable()
+                                    .scaledToFill()
+                                
+                            case .failure: Color.gray.opacity(0.1)
+                            @unknown default: Color.gray.opacity(0.1)
+                            }
+                        }
+                        .frame(width: 80, height: 80)
+                        .aspectRatio(1, contentMode: .fit)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+
+                        // Иконка сердечка
+                        Button(action: {
+                            Task {
+                                await onLikeToggle(nftId)
+                                // Обновляем локальное состояние после успешного выполнения
+                                await MainActor.run {
+                                    isLiked = false
+                                }
+                            }
+                        }) {
+                            Image(isLiked ? "FilHeart" : "EmptyHeart")
+                        }
+                        .frame(width: 21, height: 18)
+                        .padding(5)
                     }
                 }
-
-                // Иконка сердечка
-                Button(action: { isLiked.toggle() }) {
-                    Image(systemName: isLiked ? "heart.fill" : "heart")
-                        .foregroundColor(.red)
-                        .padding(4)
-                        .background(Color.white.opacity(0.9))
-                        .clipShape(Circle())
-                }
-                .offset(x: 6, y: -6) // Смещение для выхода за границы изображения
-            }
-            .frame(width: 80, height: 80)
 
             // Правая часть с информацией
             VStack(alignment: .leading, spacing: 4) {

@@ -10,4 +10,6 @@ import SwiftUI
 @MainActor
 protocol FavouriteNftViewModelProtocol {
     func getNftInfo(id: String) async
+    
+    func updateNftFavoriteList(ids: [String]) async
 }
