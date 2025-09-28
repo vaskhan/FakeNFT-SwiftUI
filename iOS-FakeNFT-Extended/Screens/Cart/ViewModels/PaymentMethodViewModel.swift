@@ -38,12 +38,12 @@ final class PaymentMethodViewModel {
         guard !paymentInProcess else { return false }
         paymentInProcess = true
         print("Payment in processing...")
-        let isSuccess = false
+        var isSuccess = false
         guard let selectedCurrency else {
             preconditionFailure("selectedCurrency is nil!")
         }
         do {
-            let isSuccess = try await cartService.buy(currencyId: selectedCurrency.id)
+            isSuccess = try await cartService.buy(currencyId: selectedCurrency.id)
         } catch {
             print(error)
         }

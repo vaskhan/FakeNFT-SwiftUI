@@ -12,6 +12,9 @@ import Foundation
 final class CartViewModel {
     var items: [CartItem] = []
     var isLoading: Bool = false
+    var selectedSort: CartSort = UserDefaults.standard.cartSort {
+        didSet { UserDefaults.standard.cartSort = selectedSort }
+    }
     
     private let cartService: CartServiceProtocol
     private let nftService: NftServiceProtocol
@@ -40,6 +43,7 @@ final class CartViewModel {
                 )
             }
             items = cartItems
+            sortItems(by: selectedSort)
             print("Items successfully loaded")
         } catch {
             print("Error: \(error)")
@@ -77,5 +81,14 @@ final class CartViewModel {
                 return $0.rating > $1.rating
             }
         }
+    }
+}
+
+extension UserDefaults {
+    private enum Keys { static let cartSort: String = "cart_sort" }
+    
+    var cartSort: CartSort {
+        get { CartSort(rawValue: string(forKey: Keys.cartSort) ?? "") ?? .byName }
+        set { set(newValue.rawValue, forKey: Keys.cartSort) }
     }
 }

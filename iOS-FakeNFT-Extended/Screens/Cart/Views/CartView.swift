@@ -67,9 +67,18 @@ struct CartView: View {
                             isPresented: $isSortDialogPresented,
                             titleVisibility: .visible
                         ) {
-                            Button(CartSort.byPrice.localized) { viewModel.sortItems(by: .byPrice) }
-                            Button(CartSort.byRating.localized) { viewModel.sortItems(by: .byRating) }
-                            Button(CartSort.byName.localized) { viewModel.sortItems(by: .byName) }
+                            Button(CartSort.byPrice.localized) {
+                                viewModel.sortItems(by: .byPrice)
+                                viewModel.selectedSort = .byPrice
+                            }
+                            Button(CartSort.byRating.localized) {
+                                viewModel.sortItems(by: .byRating)
+                                viewModel.selectedSort = .byRating
+                            }
+                            Button(CartSort.byName.localized) {
+                                viewModel.sortItems(by: .byName)
+                                viewModel.selectedSort = .byName
+                            }
                             Button(String(localized: "SortingMenu.close"), role: .cancel) {}
                         }
                         HStack {
