@@ -28,7 +28,7 @@ enum APIEndpoint {
             ("\(baseURL)/nft", .get)
 
         // Получить данные конкретного NFT по идентификатору
-        static func details(id: Int) -> (url: String, method: HTTPMethod) {
+        static func details(id: String) -> (url: String, method: HTTPMethod) {
             ("\(baseURL)/nft/\(id)", .get)
         }
     }
