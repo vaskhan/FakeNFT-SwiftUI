@@ -4,8 +4,9 @@ import Foundation
 @MainActor
 final class ServicesAssembly {
     private let networkClient: NetworkClient
-
+    
     let profileService: ProfileServiceProtocol
+    let favouriteNftService: FavouriteNftServiceProtocol
     let nftCollectionService: NftCollectionServiceProtocol
     let nftService: NftServiceProtocol
     let cartService: CartServiceProtocol
@@ -13,6 +14,7 @@ final class ServicesAssembly {
     init(networkClient: NetworkClient) {
         self.networkClient = networkClient
         self.profileService = ProfileService(networkClient: networkClient)
+        self.favouriteNftService = FavouriteNftService(networkClient: networkClient)
         self.nftCollectionService = NftCollectionService(networkClient: networkClient)
         self.nftService = NftService(networkClient: networkClient)
         self.cartService = CartService(networkClient: networkClient)

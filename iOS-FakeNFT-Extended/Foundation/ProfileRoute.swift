@@ -7,6 +7,6 @@
 
 enum ProfileRoute: Hashable {
     case myNFTs
-    case favoriteNFTs
+    case favoriteNFTs(likesList: [String])
     case profileEditing
 }
