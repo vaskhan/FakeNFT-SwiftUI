@@ -15,7 +15,7 @@ enum APIEndpoint {
     enum Profile {
         //Получение профиля пользователя
         static let get: (url: String, method: HTTPMethod) =
-            ("\(baseURL)/profile/1", .get)
+        ("\(baseURL)/profile/1", .get)
         
         // Обновить данные профиля пользователя
         static let update: (url: String, method: HTTPMethod) =
@@ -50,6 +50,10 @@ enum APIEndpoint {
         // Изменить заказ
         static let update: (url: String, method: HTTPMethod) =
         ("\(baseURL)/orders/1", .put)
+        
+        // Получить список nft в корзине
+        static let list: (url: String, method: HTTPMethod) =
+        ("\(baseURL)/orders/1", .get)
     }
     
     enum Currencies {

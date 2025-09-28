@@ -17,7 +17,9 @@ struct CollectionView: View {
     init(collection: NftCollection, services: ServicesAssembly) {
         _viewModel = State(wrappedValue: CollectionViewModel(
             collection: collection,
-            nftService: services.nftService
+            nftService: services.nftService,
+            cartService: services.cartService,
+            profileService: services.profileService
         ))
     }
     

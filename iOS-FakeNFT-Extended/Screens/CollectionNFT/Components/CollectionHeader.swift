@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CollectionHeader: View {
     let collection: NftCollection
-
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             // Обложка
@@ -25,7 +25,7 @@ struct CollectionHeader: View {
                                 image
                                     .resizable()
                                     .scaledToFill()
-                                    
+                                
                             case .failure:
                                 Image(systemName: "photo")
                                     .font(.appBold32)
@@ -45,22 +45,27 @@ struct CollectionHeader: View {
                 .font(.appBold22)
                 .foregroundStyle(.blackAndWhite)
                 .padding(.horizontal, 16)
-
+            
             // Автор
             if let author = collection.author, !author.isEmpty {
                 HStack(spacing: 4) {
                     Text("Автор коллекции:")
                         .font(.appRegular13)
                         .foregroundStyle(.blackAndWhite)
-                    Text(author)
-                        .font(.appRegular15)
-                        .foregroundStyle(.blueUniversal)
-                    //TODO: ссылку на вебвью
+                    
+                    NavigationLink {
+                        WebViewScreen()
+                    } label: {
+                        Text(author)
+                            .font(.appRegular15)
+                            .foregroundStyle(.blueUniversal)
+                    }
+                    .buttonStyle(.plain)
                 }
                 .padding(.horizontal, 16)
                 .padding(.top, 8)
             }
-
+            
             // Описание
             if let description = collection.description, !description.isEmpty {
                 Text(description)
