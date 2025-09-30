@@ -15,7 +15,7 @@ struct ProfileView: View {
     var body: some View {
         NavigationStack(path: $navigationModel.path) {
             ZStack {
-
+                
                 VStack(alignment: .leading, spacing: 20) {
                     HStack(spacing: 16) {
                         ProfilePhotoView(avatarString: viewModel?.userAvatar ?? "")
@@ -26,35 +26,53 @@ struct ProfileView: View {
                     
                     personalInfo
                     personalSite
-                    VStack(spacing: 32) {
-                        NavigationLink(value: "myNFTs") {
-                            HStack {
-                                Text("Мои NFT (\(viewModel?.nftsCount ?? 0))")
-                                    .font(.system(size: 17, weight: .bold))
-                                    .foregroundColor(.blackAndWhite)
+                    List {
+                        Section {
+                            ZStack {
+                                NavigationLink(value: "myNFTs") {
+                                    EmptyView()
+                                }
+                                .opacity(0)
                                 
-                                Spacer()
+                                HStack {
+                                    Text("Мои NFT (\(viewModel?.nftsCount ?? 0))")
+                                        .font(.appBold17)
+                                        .foregroundColor(.blackAndWhite)
+                                    
+                                    Spacer()
+                                    
+                                    Image(.chevronRight)
+                                        .renderingMode(.template)
+                                        .foregroundStyle(.blackAndWhite)
+                                }
+                                .contentShape(Rectangle())
+                            }
+                            
+                            ZStack {
+                                NavigationLink(value: ProfileRoute.favoriteNFTs(likesList: viewModel?.likesList ?? [])) {
+                                    EmptyView()
+                                }
+                                .opacity(0)
                                 
-                                Image(.chevronRight)
-                                    .renderingMode(.template)
-                                    .foregroundStyle(.blackAndWhite)
+                                HStack {
+                                    Text("Избранные NFT (\(viewModel?.likesCount ?? 0))")
+                                        .font(.appBold17)
+                                        .foregroundColor(.blackAndWhite)
+                                    
+                                    Spacer()
+                                    
+                                    Image(.chevronRight)
+                                        .renderingMode(.template)
+                                        .foregroundStyle(.blackAndWhite)
+                                }
+                                .contentShape(Rectangle())
                             }
                         }
-                        
-                        NavigationLink(value: "favoriteNFTs") {
-                            HStack {
-                                Text("Избранные NFT (\(viewModel?.likesCount ?? 0))")
-                                    .font(.system(size: 17, weight: .bold))
-                                    .foregroundColor(.blackAndWhite)
-                                
-                                Spacer()
-                                
-                                Image(.chevronRight)
-                                    .renderingMode(.template)
-                                    .foregroundStyle(.blackAndWhite)
-                            }
-                        }
+                        .listRowInsets(EdgeInsets(top: 16, leading: 0, bottom: 16, trailing: 0))
+                        .listRowSeparator(.hidden)
+                        .listRowBackground(Color.clear)
                     }
+                    .listStyle(.plain)
                     .padding(.top, 56)
                     
                     Spacer()
@@ -74,7 +92,12 @@ struct ProfileView: View {
                 case .myNFTs:
                     MyNftView()
                 case .favoriteNFTs:
-                    FavouriteNftsView()
+                    FavouriteNftsView(likesIds: viewModel?.likesList ?? [])
+                        .onDisappear {
+                            Task {
+                                await refreshData()
+                            }
+                        }
                 case .profileEditing:
                     if let viewModel, let services = services {
                         ProfileEditingView(
@@ -100,7 +123,7 @@ struct ProfileView: View {
             if viewModel == nil, let services = services {
                 let newViewModel = ProfileViewModel(profileService: services.profileService)
                 self.viewModel = newViewModel
-                await newViewModel.getUserInfo()
+                await viewModel?.getUserInfo()
             }
         }
     }
@@ -108,13 +131,13 @@ struct ProfileView: View {
     // MARK: - UI Components
     private var userName: some View {
         Text(viewModel?.userName ?? "")
-            .font(.system(size: 22, weight: .bold))
+            .font(.appBold22)
             .foregroundColor(.blackAndWhite)
     }
     
     private var personalInfo: some View {
         Text(viewModel?.userDescription ?? "")
-            .font(.system(size: 13, weight: .regular))
+            .font(.appRegular13)
             .foregroundColor(viewModel?.userDescription != nil ? .blackAndWhite : .gray)
     }
     
@@ -123,16 +146,22 @@ struct ProfileView: View {
             if let website = viewModel?.userWebsite, let url = URL(string: website) {
                 Link(destination: url) {
                     Text(website)
-                        .font(.system(size: 15, weight: .regular))
+                        .font(.appRegular15)
                         .foregroundColor(.blueUniversal)
                         .lineLimit(1)
                 }
             } else if let website = viewModel?.userWebsite {
                 Text(website)
-                    .font(.system(size: 15, weight: .regular))
+                    .font(.appRegular15)
                     .foregroundColor(.blueUniversal)
                     .lineLimit(1)
             }
         }
+    }
+    
+    // MARK: - Private Methods
+    
+    private func refreshData() async {
+        await viewModel?.getUserInfo()
     }
 }

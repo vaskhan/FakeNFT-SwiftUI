@@ -20,13 +20,14 @@ final class ProfileViewModel: ProfileViewModelProtocol {
         self.profileService = profileService
     }
     
-    // Вычисляемые свойства остаются без изменений
+    // Вычисляемые свойства
     var userName: String? { profile?.name }
     var userAvatar: String? { profile?.avatar }
     var userDescription: String? { profile?.description }
     var userWebsite: String? { profile?.website }
     var likesCount: Int? { profile?.likes.count }
     var nftsCount: Int? { profile?.nfts.count }
+    var likesList: [String] { profile?.likes ?? [] }
     
     func getUserInfo() async {
         guard !isLoading else { return }
