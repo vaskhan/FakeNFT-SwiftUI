@@ -29,7 +29,7 @@ struct ProfileView: View {
                     List {
                         Section {
                             ZStack {
-                                NavigationLink(value: "myNFTs") {
+                                NavigationLink(value: ProfileRoute.myNFTs(myNftList: viewModel?.myNftsList ?? [])) {
                                     EmptyView()
                                 }
                                 .opacity(0)
@@ -90,7 +90,12 @@ struct ProfileView: View {
             .navigationDestination(for: ProfileRoute.self) { destination in
                 switch destination {
                 case .myNFTs:
-                    MyNftView()
+                    MyNftView(myNfts: viewModel?.myNftsList ?? [])
+                        .onDisappear {
+                            Task {
+                                await refreshData()
+                            }
+                        }
                 case .favoriteNFTs:
                     FavouriteNftsView(likesIds: viewModel?.likesList ?? [])
                         .onDisappear {

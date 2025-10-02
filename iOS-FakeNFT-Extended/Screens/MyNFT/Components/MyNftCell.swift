@@ -19,16 +19,14 @@ struct MyNftCell: View {
     private let name: String
     private let rating: Int
     private let price: Double
-    private let onLikeToggle: (String, Bool) async -> Void
     
-    init(nftId: String, isLiked: Bool = true, imageName: String, name: String, rating: Int, price: Double, onLikeToggle: @escaping (String, Bool) async -> Void) {
+    init(nftId: String, isLiked: Bool = true, imageName: String, name: String, rating: Int, price: Double) {
         self.nftId = nftId
         self.isLiked = isLiked
         self.imageName = imageName
         self.name = name
         self.rating = rating
         self.price = price
-        self.onLikeToggle = onLikeToggle
     }
     
     var body: some View {
@@ -62,11 +60,11 @@ struct MyNftCell: View {
             
             VStack(alignment: .leading, spacing: 12) {
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("Имя NFT")
+                    Text(name)
                         .font(.appBold17)
                     HStack(alignment: .center, spacing: 2) {
                         ForEach(0..<5, id: \.self) { index in
-                            Image(index < 5 ? "YellowStar" : "WhiteStar")
+                            Image(index < rating ? "YellowStar" : "WhiteStar")
                         }
                     }
                 }
@@ -80,7 +78,7 @@ struct MyNftCell: View {
                 VStack(alignment: .leading, spacing: 2){
                     Text(String(localized: "CartFlow.Cart.itemPrice"))
                         .font(.appRegular13)
-                    Text("\(String(format: "%.2f", 1,78)) ETH")
+                    Text("\(String(format: "%.2f", price)) ETH")
                         .font(.appBold17)
                 }
             }
