@@ -1,19 +1,19 @@
 //
-//  BlackButton.swift
+//  BlackButtonRegular.swift
 //  iOS-FakeNFT-Extended
 //
-//  Created by Анна Рыкунова on 13.09.2025.
+//  Created by Анна Рыкунова on 25.09.2025.
 //
 
 import SwiftUI
 
-struct BlackButton: ButtonStyle {
+struct BlackButtonRegular: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .font(.appBold17)
+            .font(.appRegular17)
             .frame(maxWidth: .infinity)
             .padding(.horizontal, 8)
-            .padding(.vertical, 19)
+            .padding(.vertical, 16)
             .background(.blackAndWhite)
             .foregroundStyle(.whiteAndBlack)
             .clipShape(RoundedRectangle(cornerRadius: 16))
@@ -22,6 +22,6 @@ struct BlackButton: ButtonStyle {
 
 #Preview {
     Button("Оплатить") {}
-        .buttonStyle(BlackButton())
+        .buttonStyle(BlackButtonRegular())
         .padding()
 }

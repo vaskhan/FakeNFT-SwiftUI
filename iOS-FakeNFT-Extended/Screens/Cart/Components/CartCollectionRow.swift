@@ -14,6 +14,8 @@ private enum Constants {
 
 struct CartCollectionRow: View {
     let item: CartItem
+    let onToggleDelete: () -> Void
+    @State var deleteDialogIsOpen = false
     
     var body: some View {
         HStack(alignment: .center, spacing: 20) {
@@ -67,10 +69,13 @@ struct CartCollectionRow: View {
             
             VStack {
                 Button {
-                    //TODO добавить функцию удаления из корзины
+                    deleteDialogIsOpen = true
                 } label: {
                     Image("FullBasket")
                         .frame(width: 40, height: 40)
+                }
+                .fullScreenCover(isPresented: $deleteDialogIsOpen) {
+                    DeleteFromCartView(item: item, onToggleDelete: onToggleDelete)
                 }
             }
             
@@ -86,7 +91,7 @@ struct CartCollectionRow: View {
             cover: URL(string: " "),
             rating: 4,
             price: 1.000
-        )
+        ), onToggleDelete: {}
     )
     .padding()
 }

@@ -24,11 +24,25 @@
 "CartFlow.Cart.empty"     = "Корзина пуста";
 "CartFlow.Cart.itemPrice" = "Цена";
 
+/* MARK: - Delete from cart */
+"CartFlow.DeleteFromCart.question" = "Вы уверены, что хотите удалить объект из корзины?";
+"CartFlow.DeleteFromCart.delete" = "Удалить";
+"CartFlow.DeleteFromCart.return" = "Вернуться";
+
 /* MARK: - Payment method */
 "CartFlow.Payment.agreement1" = "Совершая покупку, вы соглашаетесь с условиями";
 "CartFlow.Payment.agreement2" = "Пользовательского соглашения";
 "CartFlow.Payment.payButton"  = "Оплатить";
 "CartFlow.Payment.title"      = "Выберите способ оплаты";
+
+/* MARK: - Success payment */
+"CartFlow.SuccessPayment.title" = "Успех! Оплата прошла, поздравляем с покупкой!";
+"CartFlow.SuccessPayment.backToCart" = "Вернуться в корзину";
+
+/* MARK: - Unsuccess payment */
+"CartFlow.UnsuccessPayment.title" = "Не удалось произвести оплату";
+"CartFlow.UnsuccessPayment.cancel" = "Отмена";
+"CartFlow.UnsuccessPayment.retry" = "Повторить";
 
 /* MARK: - Profile */
 "ProfileFlow.MyNft.title"           = "Мои NFT";

@@ -47,16 +47,22 @@ enum APIEndpoint {
     }
     
     enum Orders {
-        // Изменить заказ
-        static let update: (url: String, method: HTTPMethod) =
-        ("\(baseURL)/orders/1", .put)
-        
         // Получить список nft в корзине
         static let list: (url: String, method: HTTPMethod) =
         ("\(baseURL)/orders/1", .get)
+        // Изменить заказ
+        static let update: (url: String, method: HTTPMethod) =
+        ("\(baseURL)/orders/1", .put)
+        // Оплата заказа валютой с заданным id
+        static func buy(id: String) -> (url: String, method: HTTPMethod) {
+            ("\(baseURL)/orders/1/payment/\(id)", .get)
+        }
     }
     
     enum Currencies {
+        // Получить список валют
+        static let list: (url: String, method: HTTPMethod) =
+        ("\(baseURL)/currencies", .get)
         // Получить данные валюты по идентификатору
         static func details(id: Int) -> (url: String, method: HTTPMethod) {
             ("\(baseURL)/currencies/\(id)", .get)

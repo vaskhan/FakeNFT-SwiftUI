@@ -24,11 +24,25 @@
 "CartFlow.Cart.empty"     = "Cart is empty";
 "CartFlow.Cart.itemPrice" = "Price";
 
+/* MARK: - Delete from cart */
+"CartFlow.DeleteFromCart.question" = "Are you sure you want to delete this item from your cart?";
+"CartFlow.DeleteFromCart.delete" = "Delete";
+"CartFlow.DeleteFromCart.return" = "Back";
+
 /* MARK: - Payment method */
 "CartFlow.Payment.agreement1" = "By making a purchase, you agree to the terms of the";
 "CartFlow.Payment.agreement2" = "User agreement";
 "CartFlow.Payment.payButton"  = "Pay";
 "CartFlow.Payment.title"      = "Choose payment method";
+
+/* MARK: - Success payment */
+"CartFlow.SuccessPayment.title" = "Success! Payment completed, congratulations on your purchase!";
+"CartFlow.SuccessPayment.backToCart" = "Back to cart";
+
+/* MARK: - Unsuccess payment */
+"CartFlow.UnsuccessPayment.title" = "Payment failed";
+"CartFlow.UnsuccessPayment.cancel" = "Cancel";
+"CartFlow.UnsuccessPayment.retry" = "Retry";
 
 /* MARK: - Profile */
 "ProfileFlow.MyNft.title"           = "My NFTs";
@@ -53,5 +67,3 @@
 "ProfileFlow.PhotoEdit.exit"            = "Exit";
 "ProfileFlow.PhotoEdit.stay"            = "Stay";
 "ProfileFlow.PhotoEdit.confirmation"    = "Are you sure you want to get out?";
-
-
