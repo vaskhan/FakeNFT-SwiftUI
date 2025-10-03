@@ -35,7 +35,7 @@ struct ProfileView: View {
                                 .opacity(0)
                                 
                                 HStack {
-                                    Text("Мои NFT (\(viewModel?.nftsCount ?? 0))")
+                                    Text(String(localized: "ProfileFlow.MyNft.title") + " (\(viewModel?.nftsCount ?? 0))")
                                         .font(.appBold17)
                                         .foregroundColor(.blackAndWhite)
                                     
@@ -55,7 +55,7 @@ struct ProfileView: View {
                                 .opacity(0)
                                 
                                 HStack {
-                                    Text("Избранные NFT (\(viewModel?.likesCount ?? 0))")
+                                    Text(String(localized: "ProfileFlow.FavouriteNft.title") +  " (\(viewModel?.likesCount ?? 0))")
                                         .font(.appBold17)
                                         .foregroundColor(.blackAndWhite)
                                     

@@ -13,18 +13,18 @@ private enum Constants {
 }
 
 struct MyNftCell: View {
-    let nftId: String
     @State private var isLiked = true
     private let imageName: String
     private let name: String
+    private let author: String
     private let rating: Int
     private let price: Double
     
-    init(nftId: String, isLiked: Bool = true, imageName: String, name: String, rating: Int, price: Double) {
-        self.nftId = nftId
+    init(isLiked: Bool = true, imageName: String, name: String, author: String, rating: Int, price: Double) {
         self.isLiked = isLiked
         self.imageName = imageName
         self.name = name
+        self.author = author
         self.rating = rating
         self.price = price
     }
@@ -59,7 +59,7 @@ struct MyNftCell: View {
                 .clipShape(RoundedRectangle(cornerRadius: Constants.cornerRadius))
             
             VStack(alignment: .leading, spacing: 12) {
-                VStack(alignment: .leading, spacing: 2) {
+                VStack(alignment: .leading, spacing: 4) {
                     Text(name)
                         .font(.appBold17)
                     HStack(alignment: .center, spacing: 2) {
@@ -67,6 +67,8 @@ struct MyNftCell: View {
                             Image(index < rating ? "YellowStar" : "WhiteStar")
                         }
                     }
+                    Text(String(localized: "ProfileFlow.MyNft.by") + " \(author)")
+                        .font(.appRegular15)
                 }
             }
             .padding(EdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 0))

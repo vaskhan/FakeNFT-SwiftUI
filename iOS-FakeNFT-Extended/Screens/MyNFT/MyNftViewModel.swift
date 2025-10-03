@@ -24,10 +24,19 @@ final class MyNftViewModel: MyNftViewModelProtocol {
     }
     
     //Вычисляемые свойства
-    var name: String? { nft?.name }
+    var name: String? {
+        guard let firstImageUrlString = nft?.images.first else { return nil }
+        let components = firstImageUrlString.split(separator: "/")
+        if components.count >= 2 {
+            return String(components[components.count - 2])
+        } else {
+            return nil
+        }
+    }
     var images: String? { nft?.images[0] }
     var rating: Int? { nft?.rating }
     var price: Double? { nft?.price }
+    var author: String? { nft?.name }
     
     func getNftInfo(id: String) async {
         guard !isLoading else { return }

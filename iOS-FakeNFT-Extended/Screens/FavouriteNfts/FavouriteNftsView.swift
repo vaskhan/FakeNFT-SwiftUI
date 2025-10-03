@@ -22,8 +22,8 @@ struct FavouriteNftsView: View {
     }
     
     private enum FavouriteNFTViewConstants {
-        static let favoritesTitle = "Избранные NFT"
-        static let emptyMessage = "У вас еще нет избранных NFT"
+        static let favoritesTitle = String(localized: "ProfileFlow.FavouriteNft.title")
+        static let emptyMessage = String(localized: "ProfileFlow.FavouriteNft.empty")
         static let backButtonImage = "NavigationChevronLeft"
     }
     
@@ -140,7 +140,3 @@ private extension View {
             .navigationBarTitleDisplayMode(.inline)
     }
 }
-
-//#Preview {
-//    FavouriteNftsView(viewModel: FavouriteNftsViewModel(favouriteNftService: <#any FavouriteNftServiceProtocol#>), likesIds: ["1ce4f491-877d-48d0-9428-0e0129a80ec9", "ba441c43-cf07-4f94-9ea8-082b3436c729", "5093c01d-e79e-4281-96f1-76db5880ba70"])
-//}
