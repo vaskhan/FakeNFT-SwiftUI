@@ -148,18 +148,15 @@ struct ProfileView: View {
     
     private var personalSite: some View {
         Group {
-            if let website = viewModel?.userWebsite, let url = URL(string: website) {
-                Link(destination: url) {
+            if let website = viewModel?.userWebsite {
+                NavigationLink {
+                    WebViewScreen(urlString: website)
+                } label: {
                     Text(website)
                         .font(.appRegular15)
                         .foregroundColor(.blueUniversal)
                         .lineLimit(1)
                 }
-            } else if let website = viewModel?.userWebsite {
-                Text(website)
-                    .font(.appRegular15)
-                    .foregroundColor(.blueUniversal)
-                    .lineLimit(1)
             }
         }
     }
