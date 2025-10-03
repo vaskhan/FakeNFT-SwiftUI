@@ -115,28 +115,3 @@ struct FavouriteNftsView: View {
         await viewModel.getNftInfo(id: nftId)
     }
 }
-
-// MARK: - View Extension
-
-private extension View {
-    func commonToolbar(title: String?, onBack: @escaping () -> Void) -> some View {
-        self
-            .toolbar(.hidden, for: .tabBar)
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button(action: onBack) {
-                        Image("NavigationChevronLeft")
-                    }
-                }
-                
-                if let title = title {
-                    ToolbarItem(placement: .principal) {
-                        Text(title)
-                            .font(.appBold17)
-                    }
-                }
-            }
-            .navigationBarBackButtonHidden(true)
-            .navigationBarTitleDisplayMode(.inline)
-    }
-}

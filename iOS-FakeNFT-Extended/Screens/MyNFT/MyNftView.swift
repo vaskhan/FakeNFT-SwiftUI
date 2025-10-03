@@ -13,11 +13,29 @@ private enum MyNFTViewConstants {
     static let backButtonImage = "NavigationChevronLeft"
 }
 
+enum MyNftSort: String, CaseIterable, Sendable {
+    case byPrice
+    case byRating
+    case byName
+    
+    var localized: String {
+        switch self {
+        case .byPrice:
+            return String(localized: "SortingMenu.byPrice")
+        case .byRating:
+            return String(localized: "SortingMenu.byRating")
+        case .byName:
+            return String(localized: "SortingMenu.byName")
+        }
+    }
+}
+
 struct MyNftView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(ServicesAssembly.self) private var services: ServicesAssembly?
     @State private var isSortDialogPresented = false
     @State private var viewModels: [String: MyNftViewModel] = [:]
+    @State private var currentSort: MyNftSort = .byRating
     
     let myNfts: [String]
     
@@ -49,7 +67,7 @@ struct MyNftView: View {
         ScrollView {
             ScrollView {
                 LazyVStack(spacing: 8) {
-                    ForEach(myNfts, id: \.self) { nftId in
+                    ForEach(sortedNfts, id: \.self) { nftId in
                         MyNftCell(
                             imageName: viewModels[nftId]?.images ?? "",
                             name: viewModels[nftId]?.name ?? "",
@@ -78,9 +96,9 @@ struct MyNftView: View {
             isPresented: $isSortDialogPresented,
             titleVisibility: .visible
         ) {
-            Button(CartSort.byPrice.localized) {}
-            Button(CartSort.byRating.localized) {}
-            Button(CartSort.byName.localized) {}
+            Button(MyNftSort.byPrice.localized) { currentSort = .byPrice }
+            Button(MyNftSort.byRating.localized) { currentSort = .byRating }
+            Button(MyNftSort.byName.localized) { currentSort = .byName }
             Button(String(localized: "SortingMenu.close"), role: .cancel) {}
         }
     }
@@ -92,33 +110,25 @@ struct MyNftView: View {
         viewModels[nftId] = viewModel
         await viewModel.getNftInfo(id: nftId)
     }
-}
-
-// MARK: - View Extension
-
-private extension View {
-    func commonToolbar(title: String?, onBack: @escaping () -> Void) -> some View {
-        self
-            .toolbar(.hidden, for: .tabBar)
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button(action: onBack) {
-                        Image("NavigationChevronLeft")
-                    }
-                }
-                
-                if let title = title {
-                    ToolbarItem(placement: .principal) {
-                        Text(title)
-                            .font(.appBold17)
-                    }
-                }
+    
+    // Вычисляемое свойство для отсортированных NFT
+    private var sortedNfts: [String] {
+        let loadedNfts = myNfts.compactMap { nftId -> (id: String, vm: MyNftViewModel)? in
+            guard let vm = viewModels[nftId], vm.nft != nil else { return nil }
+            return (nftId, vm)
+        }
+        
+        let sorted = loadedNfts.sorted { first, second in
+            switch currentSort {
+            case .byPrice:
+                return (first.vm.price ?? 0) < (second.vm.price ?? 0)
+            case .byRating:
+                return (first.vm.rating ?? 0) < (second.vm.rating ?? 0)
+            case .byName:
+                return (first.vm.name ?? "") < (second.vm.name ?? "")
             }
-            .navigationBarBackButtonHidden(true)
-            .navigationBarTitleDisplayMode(.inline)
+        }
+        
+        return sorted.map { $0.id } + myNfts.filter { viewModels[$0]?.nft == nil }
     }
-}
-
-#Preview {
-    MyNftView(myNfts: ["123"])
 }

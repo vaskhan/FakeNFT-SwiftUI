@@ -27,6 +27,7 @@
 		ACABAAE12E79F49B00830E48 /* AssetSpinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACABAAE02E79F49B00830E48 /* AssetSpinner.swift */; };
 		ACABAAE32E79F4C300830E48 /* BlackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACABAAE22E79F4C300830E48 /* BlackButton.swift */; };
 		ACABB7862E809A1100830E48 /* ProfileRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACABB7852E809A0400830E48 /* ProfileRoute.swift */; };
+		ACABBEA52E90695200830E48 /* View+CommonToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACABBEA42E90695200830E48 /* View+CommonToolbar.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +70,7 @@
 		ACABAAE02E79F49B00830E48 /* AssetSpinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetSpinner.swift; sourceTree = "<group>"; };
 		ACABAAE22E79F4C300830E48 /* BlackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlackButton.swift; sourceTree = "<group>"; };
 		ACABB7852E809A0400830E48 /* ProfileRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRoute.swift; sourceTree = "<group>"; };
+		ACABBEA42E90695200830E48 /* View+CommonToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+CommonToolbar.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -125,6 +127,7 @@
 				4893EF8B2E74A3DB00051A95 /* MainTabView.swift */,
 				ACABAAE02E79F49B00830E48 /* AssetSpinner.swift */,
 				ACABAAE22E79F4C300830E48 /* BlackButton.swift */,
+				ACABBEA42E90695200830E48 /* View+CommonToolbar.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -385,6 +388,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ACABBEA52E90695200830E48 /* View+CommonToolbar.swift in Sources */,
 				ABC5E1B72C31FC70002B4068 /* ServicesAssembly.swift in Sources */,
 				ABC5E19D2C31F6A6002B4068 /* NftStorage.swift in Sources */,
 				4893EF992E74C06B00051A95 /* APIRequestBuilder.swift in Sources */,
