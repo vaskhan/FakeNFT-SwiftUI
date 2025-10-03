@@ -43,3 +43,12 @@
 "CartFlow.UnsuccessPayment.title" = "Payment failed";
 "CartFlow.UnsuccessPayment.cancel" = "Cancel";
 "CartFlow.UnsuccessPayment.retry" = "Retry";
+
+/* MARK: - Onboarding */
+"Onboarding.Story1.title" = "Explore";
+"Onboarding.Story1.description" = "Join us and discover a new world of unique NFTs for collectors";
+"Onboarding.Story2.title" = "Collect";
+"Onboarding.Story2.description" = "Expand your collection with exclusive images created by a neural network!";
+"Onboarding.Story3.title" = "Compete";
+"Onboarding.Story3.description" = "See other people's stats and show everyone that you have the most valuable collection";
+"Onboarding.button" = "What's inside?";
