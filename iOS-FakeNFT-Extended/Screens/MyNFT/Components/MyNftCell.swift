@@ -6,10 +6,7 @@
 //
 import SwiftUI
 
-private enum Constants {
-    static let imageSize: CGFloat = 108
-    static let cornerRadius: CGFloat = 12
-}
+
 
 struct MyNftCell: View {
     let nftId: String
@@ -30,6 +27,11 @@ struct MyNftCell: View {
         self.rating = rating
         self.price = price
         self.onLikeToggle = onLikeToggle
+    }
+    
+    private enum Constants {
+        static let imageSize: CGFloat = 108
+        static let cornerRadius: CGFloat = 12
     }
     
     var body: some View {

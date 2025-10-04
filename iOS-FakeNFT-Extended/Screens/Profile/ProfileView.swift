@@ -11,6 +11,11 @@ struct ProfileView: View {
     @State private var profileDataService: ProfileDataService?
     @State private var navigationModel = ProfileNavigationModel()
     
+    private enum Constants {
+        static let basePadding: CGFloat = 16
+        static let largePadding: CGFloat = 20
+    }
+    
     var body: some View {
         NavigationStack(path: $navigationModel.path) {
             ZStack {
@@ -69,8 +74,8 @@ struct ProfileView: View {
     
     @ViewBuilder
     private func profileContentView(profileDataService: ProfileDataService) -> some View {
-        VStack(alignment: .leading, spacing: 20) {
-            HStack(spacing: 16) {
+        VStack(alignment: .leading, spacing: Constants.largePadding) {
+            HStack(spacing: Constants.basePadding) {
                 ProfilePhotoView(avatarString: profileDataService.profile?.avatar ?? "")
                 userName(profileDataService: profileDataService)
                 Spacer()
@@ -122,17 +127,17 @@ struct ProfileView: View {
                         .contentShape(Rectangle())
                     }
                 }
-                .listRowInsets(EdgeInsets(top: 16, leading: 0, bottom: 16, trailing: 0))
+                .listRowInsets(EdgeInsets(top: Constants.basePadding, leading: 0, bottom: Constants.basePadding, trailing: 0))
                 .listRowSeparator(.hidden)
                 .listRowBackground(Color.clear)
             }
             .listStyle(.plain)
-            .padding(.top, 56)
+            .padding(.top, Constants.largePadding * 2)
             
             Spacer()
         }
-        .padding(.horizontal, 20)
-        .padding(.top, 20)
+        .padding(.horizontal, Constants.basePadding)
+        .padding(.top, Constants.largePadding)
         .disabled(profileDataService.isLoading)
         .overlay {
             if profileDataService.isLoading {

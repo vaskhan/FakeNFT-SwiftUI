@@ -25,10 +25,16 @@ struct FavouriteNftCell: View {
         self.onLikeToggle = onLikeToggle
     }
     
+    private enum Constants {
+        static let imageSize: CGFloat = 80
+        static let cornerRadius: CGFloat = 12
+        static let basePadding: CGFloat = 20
+    }
+    
     var body: some View {
-        HStack(alignment: .top, spacing: 12) {
+        HStack(alignment: .top, spacing: Constants.basePadding) {
             // Левая часть с изображением
-            RoundedRectangle(cornerRadius: 12)
+            RoundedRectangle(cornerRadius: Constants.imageSize)
                 .fill(Color.gray.opacity(0.1))
                 .overlay {
                     ZStack(alignment: .topTrailing) {
@@ -44,9 +50,9 @@ struct FavouriteNftCell: View {
                             @unknown default: Color.gray.opacity(0.1)
                             }
                         }
-                        .frame(width: 80, height: 80)
+                        .frame(width: Constants.imageSize, height: Constants.imageSize)
                         .aspectRatio(1, contentMode: .fit)
-                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                        .clipShape(RoundedRectangle(cornerRadius: Constants.cornerRadius))
                         
                         // Иконка сердечка
                         Button(action: {

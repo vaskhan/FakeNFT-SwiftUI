@@ -17,6 +17,11 @@ struct FavouriteNftsView: View {
     let nftService: NftServiceProtocol
     @State private var viewModel: FavouriteNftsViewModel?
     
+    private enum Constants {
+        static let basePadding: CGFloat = 16
+        static let rowPadding: CGFloat = 20
+    }
+    
     var body: some View {
         ZStack {
             // Основной контент
@@ -78,7 +83,7 @@ struct FavouriteNftsView: View {
                 LazyVGrid(columns: [
                     GridItem(.flexible()),
                     GridItem(.flexible()),
-                ], spacing: 7) {
+                ], spacing: Constants.rowPadding ) {
                     ForEach(viewModel.nftItems, id: \.id) { nftItem in
                         FavouriteNftCell(
                             nftId: nftItem.id,
@@ -97,7 +102,7 @@ struct FavouriteNftsView: View {
                         )
                     }
                 }
-                .padding(EdgeInsets(top: 16, leading: 16, bottom: 0, trailing: 16))
+                .padding(EdgeInsets(top: Constants.basePadding, leading: Constants.basePadding, bottom: 0, trailing: Constants.basePadding))
             }
             
             // Спиннер для случаев, когда данные обновляются, но уже есть контент
@@ -106,7 +111,6 @@ struct FavouriteNftsView: View {
                     .ignoresSafeArea()
                 
                 AssetSpinner()
-                    .frame(width: 75, height: 75)
             }
         }
     }

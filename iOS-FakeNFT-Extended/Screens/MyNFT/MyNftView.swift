@@ -39,6 +39,11 @@ struct MyNftView: View {
     @State private var viewModel: MyNftViewModel?
     @State private var currentSort: MyNftSort = .byRating
     
+    private enum Constants {
+        static let basePadding: CGFloat = 16
+        static let rightListPadding: CGFloat = 39
+    }
+    
     var body: some View {
         ZStack {
             // Основной контент
@@ -60,7 +65,6 @@ struct MyNftView: View {
                     .ignoresSafeArea()
                 
                 AssetSpinner()
-                    .frame(width: 75, height: 75)
             }
         }
         .commonToolbar(
@@ -100,33 +104,34 @@ struct MyNftView: View {
             .font(.appBold17)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
-    
+
     @ViewBuilder
     private func nftTableView(viewModel: MyNftViewModel) -> some View {
         ZStack {
-            ScrollView {
-                LazyVStack(spacing: 32) {
-                    ForEach(viewModel.sortedNftItems(by: currentSort), id: \.id) { nftItem in
-                        MyNftCell(
-                            nftId: nftItem.id,
-                            isLiked: profileDataService.profile?.likes.contains(nftItem.id) == true,
-                            imageName: viewModel.images(for: nftItem) ?? "",
-                            name: viewModel.name(for: nftItem) ?? "",
-                            author: viewModel.author(for: nftItem) ?? "",
-                            rating: nftItem.rating,
-                            price: nftItem.price ?? 0,
-                            onLikeToggle: { nftId, newLikeState in
-                                await viewModel.toggleFavorite(
-                                    for: nftId,
-                                    newLikeState: newLikeState,
-                                    profileDataService: profileDataService
-                                )
-                            }
-                        )
-                    }
+            List {
+                ForEach(viewModel.sortedNftItems(by: currentSort), id: \.id) { nftItem in
+                    MyNftCell(
+                        nftId: nftItem.id,
+                        isLiked: profileDataService.profile?.likes.contains(nftItem.id) == true,
+                        imageName: viewModel.images(for: nftItem) ?? "",
+                        name: viewModel.name(for: nftItem) ?? "",
+                        author: viewModel.author(for: nftItem) ?? "",
+                        rating: nftItem.rating,
+                        price: nftItem.price ?? 0,
+                        onLikeToggle: { nftId, newLikeState in
+                            await viewModel.toggleFavorite(
+                                for: nftId,
+                                newLikeState: newLikeState,
+                                profileDataService: profileDataService
+                            )
+                        }
+                    )
+                    .listRowInsets(EdgeInsets(top: Constants.basePadding, leading: 0, bottom: Constants.basePadding, trailing: 0))
+                    .listRowSeparator(.hidden) // Скрыть разделители, если нужно
                 }
-                .padding(EdgeInsets(top: 16, leading: 16, bottom: 0, trailing: 39))
             }
+            .padding(EdgeInsets(top: Constants.basePadding, leading: Constants.basePadding, bottom: 0, trailing: Constants.rightListPadding))
+            .listStyle(PlainListStyle()) // Убрать стили списка по умолчанию
             .scrollIndicators(.hidden)
             
             // Спиннер для случаев, когда данные обновляются, но уже есть контент
@@ -135,7 +140,6 @@ struct MyNftView: View {
                     .ignoresSafeArea()
                 
                 AssetSpinner()
-                    .frame(width: 75, height: 75)
             }
         }
         .toolbar {
