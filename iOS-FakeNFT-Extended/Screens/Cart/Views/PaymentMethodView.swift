@@ -46,9 +46,13 @@ struct PaymentMethodView: View {
                                 VStack(alignment: .leading, spacing: 6) {
                                     Text(String(localized: "CartFlow.Payment.agreement1"))
                                         .font(.appRegular13)
-                                    Text(String(localized: "CartFlow.Payment.agreement2"))
-                                        .font(.appRegular13)
-                                        .foregroundColor(.blueUniversal)
+                                    NavigationLink {
+                                        WebViewScreen()
+                                    } label: {
+                                        Text(String(localized: "CartFlow.Payment.agreement2"))
+                                            .font(.appRegular13)
+                                            .foregroundStyle(.blueUniversal)
+                                    }
                                 }
                                 .padding(EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 16))
                                 Button(String(localized: "CartFlow.Payment.payButton")) {

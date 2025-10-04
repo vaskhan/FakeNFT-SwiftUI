@@ -10,6 +10,7 @@ import SwiftUI
 
 @main
 struct FakeNFTApp: App {
+    @State private var isOnboardingShown: Bool = !OnboardingHelper.shared.isOnboarded
     private let services = ServicesAssembly(
         networkClient: DefaultNetworkClient()
     )
@@ -19,6 +20,9 @@ struct FakeNFTApp: App {
             MainTabView(initialTab: .catalog)
                 .environment(services)
                 .tint(Color(.blueUniversal))
+                .fullScreenCover(isPresented: $isOnboardingShown) {
+                    StoriesView(storiesViewModel: StoriesViewModel())
+                }
         }
     }
 }
