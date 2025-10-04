@@ -28,7 +28,7 @@ struct ProfileView: View {
                     List {
                         Section {
                             ZStack {
-                                NavigationLink(value: ProfileRoute.myNFTs(myNftList: viewModel?.myNftsList ?? [])) {
+                                NavigationLink(value: ProfileRoute.myNFTs) {
                                     EmptyView()
                                 }
                                 .opacity(0)
@@ -88,8 +88,17 @@ struct ProfileView: View {
             }
             .navigationDestination(for: ProfileRoute.self) { destination in
                 switch destination {
-                case .myNFTs(let myNftList):
-                    MyNftView(myNfts: myNftList)
+                case .myNFTs:
+                    if let profileDataService = profileDataService {
+                        MyNftView(
+                            myNfts: profileDataService.profile?.nfts ?? [],
+                            likesList: Binding(
+                                get: { profileDataService.profile?.likes ?? [] },
+                                set: { profileDataService.updateLikes($0) }
+                            ),
+                            profileDataService: profileDataService
+                        )
+                    }
                 case .favoriteNFTs:
                     if let profileDataService = profileDataService {
                         FavouriteNftsView(

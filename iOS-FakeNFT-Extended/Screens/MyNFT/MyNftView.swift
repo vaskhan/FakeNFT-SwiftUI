@@ -35,11 +35,15 @@ struct MyNftView: View {
     @State private var isSortDialogPresented = false
     @State private var viewModel: MyNftViewModel?
     @State private var currentSort: MyNftSort = .byRating
+    @Binding var likesList: [String]
     
     private let myNfts: [String]
+    private let profileDataService: ProfileDataService
     
-    init(myNfts: [String]) {
+    init(myNfts: [String], likesList: Binding<[String]>, profileDataService: ProfileDataService) {
         self.myNfts = myNfts
+        self._likesList = likesList
+        self.profileDataService = profileDataService
     }
     
     var body: some View {
@@ -62,7 +66,10 @@ struct MyNftView: View {
         )
         .onAppear {
             if viewModel == nil, let services = services {
-                viewModel = MyNftViewModel(nftService: services.nftService)
+                viewModel = MyNftViewModel(
+                    profileDataService: profileDataService,
+                    nftService: services.nftService
+                )
             }
         }
         .task {
@@ -85,11 +92,19 @@ struct MyNftView: View {
                 LazyVStack(spacing: 8) {
                     ForEach(viewModel.sortedNftItems(by: currentSort), id: \.id) { nftItem in
                         MyNftCell(
+                            nftId: nftItem.id,
+                            isLiked: viewModel.favoriteIds.contains(nftItem.id),
                             imageName: viewModel.images(for: nftItem) ?? "",
                             name: viewModel.name(for: nftItem) ?? "",
                             author: viewModel.author(for: nftItem) ?? "",
                             rating: nftItem.rating,
-                            price: nftItem.price ?? 0
+                            price: nftItem.price ?? 0,
+                            onLikeToggle: { nftId, newLikeState in
+                                viewModel.toggleFavorite(for: nftId) { newLikes in
+                                    // Обновляем binding при изменении лайков
+                                    likesList = newLikes
+                                }
+                            }
                         )
                     }
                 }

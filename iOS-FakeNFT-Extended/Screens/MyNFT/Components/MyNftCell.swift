@@ -12,20 +12,24 @@ private enum Constants {
 }
 
 struct MyNftCell: View {
-    @State private var isLiked = true
+    let nftId: String
+    @State private var isLiked: Bool
     private let imageName: String
     private let name: String
     private let author: String
     private let rating: Int
     private let price: Double
+    private let onLikeToggle: (String, Bool) async -> Void
     
-    init(isLiked: Bool = true, imageName: String, name: String, author: String, rating: Int, price: Double) {
+    init(nftId: String, isLiked: Bool = true, imageName: String, name: String, author: String, rating: Int, price: Double, onLikeToggle: @escaping (String, Bool) async -> Void) {
+        self.nftId = nftId
         self.isLiked = isLiked
         self.imageName = imageName
         self.name = name
         self.author = author
         self.rating = rating
         self.price = price
+        self.onLikeToggle = onLikeToggle
     }
     
     var body: some View {
@@ -33,29 +37,47 @@ struct MyNftCell: View {
             RoundedRectangle(cornerRadius: Constants.cornerRadius)
                 .fill(Color.gray.opacity(0.1))
                 .overlay {
-                    if let url = URL(string: imageName) {
-                        AsyncImage(url: url) { phase in
-                            switch phase {
-                            case .empty:
-                                ProgressView()
-                            case .success(let image):
-                                image
-                                    .resizable()
-                                    .scaledToFill()
-                            case .failure:
-                                Image("NFTcard")
-                                    .resizable()
-                                    .scaledToFill()
-                                    .font(.appBold32)
-                            @unknown default:
-                                EmptyView()
+                    ZStack(alignment: .topTrailing) {
+                        if let url = URL(string: imageName) {
+                            AsyncImage(url: url) { phase in
+                                switch phase {
+                                case .empty:
+                                    ProgressView()
+                                case .success(let image):
+                                    image
+                                        .resizable()
+                                        .scaledToFill()
+                                case .failure:
+                                    Image("NFTcard")
+                                        .resizable()
+                                        .scaledToFill()
+                                        .font(.appBold32)
+                                @unknown default:
+                                    EmptyView()
+                                }
                             }
+                        } else {
+                            Image("NFTcard")
+                                .resizable()
+                                .scaledToFill()
+                                .font(.appBold32)
                         }
-                    } else {
-                        Image("NFTcard")
-                            .resizable()
-                            .scaledToFill()
-                            .font(.appBold32)
+                        
+                        // Иконка сердечка
+                        Button(action: {
+                            Task {
+                                let newLikeState = !isLiked
+                                await onLikeToggle(nftId, newLikeState)
+                                
+                                await MainActor.run {
+                                    isLiked = newLikeState
+                                }
+                            }
+                        }) {
+                            Image(isLiked ? "FilHeart" : "EmptyHeart")
+                        }
+                        .frame(width: 21, height: 18)
+                        .padding(5)
                     }
                 }
                 .frame(width: Constants.imageSize, height: Constants.imageSize)
