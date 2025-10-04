@@ -13,7 +13,7 @@ final class ProfileDataService {
     var isLoading: Bool = false
     var errorMessage: String?
     
-    private let profileService: ProfileServiceProtocol
+    let profileService: ProfileServiceProtocol
     
     init(profileService: ProfileServiceProtocol) {
         self.profileService = profileService

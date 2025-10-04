@@ -12,16 +12,10 @@ final class FavouriteNftsViewModel {
     var isLoading: Bool = false
     var errorMessage: String?
     var nftItems: [NftItem] = []
-    var favoriteIds: Set<String> = []
     
-    // состояние для отслеживания обновляющихся NFT
-    var updatingNftIds: Set<String> = []
-    
-    private let profileDataService: ProfileDataService
     private let nftService: NftServiceProtocol
     
-    init(profileDataService: ProfileDataService, nftService: NftServiceProtocol) {
-        self.profileDataService = profileDataService
+    init(nftService: NftServiceProtocol) {
         self.nftService = nftService
     }
     
@@ -31,56 +25,40 @@ final class FavouriteNftsViewModel {
         errorMessage = nil
         
         do {
+            print("Загрузка избранных NFT - начало")
             nftItems = try await nftService.loadItems(ids: ids)
-            favoriteIds = Set(ids)
             isLoading = false
+            print("Загрузка избранных NFT - успех")
         } catch {
+            print("Загрузка избранных NFT - ошибка")
             errorMessage = String(localized: "Error.network", defaultValue: "A network error occurred")
             isLoading = false
         }
     }
     
-    func toggleFavorite(for nftId: String, completion: @escaping ([String]) -> Void) {
-        // Блокировка повторного нажатия на NFT
-        guard !updatingNftIds.contains(nftId) else { return }
-        
-        var newFavorites = Array(favoriteIds)
-        
-        if favoriteIds.contains(nftId) {
-            newFavorites.removeAll { $0 == nftId }
-            updatingNftIds.insert(nftId)
-        } else {
-            newFavorites.append(nftId)
-        }
-        
-        favoriteIds = Set(newFavorites)
-        
-        Task {
-            await updateFavoriteList(ids: newFavorites, removedNftId: nftId, completion: completion)
-        }
-    }
-    
-    private func updateFavoriteList(ids: [String], removedNftId: String, completion: @escaping ([String]) -> Void) async {
+    func toggleFavorite(for nftId: String, newLikeState: Bool, profileDataService: ProfileDataService) async {
         guard !isLoading else { return }
         
-        do {
-            try await nftService.updateFavoriteNftList(nftList: ids)
-            favoriteIds = Set(ids)
-
-            nftItems.removeAll { $0.id == removedNftId }
-
-            profileDataService.updateLikes(ids)
-            
-            completion(ids)
-            
-        } catch {
-            errorMessage = String(localized: "Error.network", defaultValue: "A network error occurred")
-            // В случае ошибки возвращаем лайк
-            var restoredFavorites = Array(favoriteIds)
-            restoredFavorites.append(removedNftId)
-            favoriteIds = Set(restoredFavorites)
+        var currentLikes = profileDataService.profile?.likes ?? []
+        
+        if newLikeState {
+            // Добавление лайка
+            if !currentLikes.contains(nftId) {
+                currentLikes.append(nftId)
+            }
+        } else {
+            // Удаление лайка
+            currentLikes.removeAll { $0 == nftId }
+            nftItems.removeAll { $0.id == nftId }
         }
         
-        updatingNftIds.remove(removedNftId)
+        // Обновление данных локально
+        profileDataService.updateLikes(currentLikes)
+        
+        do {
+            try await nftService.updateFavoriteNftList(nftList: currentLikes)
+        } catch {
+            errorMessage = String(localized: "Error.network", defaultValue: "A network error occurred")
+        }
     }
 }

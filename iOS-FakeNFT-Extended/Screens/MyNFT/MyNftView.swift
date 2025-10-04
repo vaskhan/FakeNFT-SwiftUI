@@ -29,35 +29,38 @@ enum MyNftSort: String, CaseIterable, Sendable {
     }
 }
 
+import SwiftUI
+
 struct MyNftView: View {
     @Environment(\.dismiss) private var dismiss
-    @Environment(ServicesAssembly.self) private var services: ServicesAssembly?
+    @Bindable var profileDataService: ProfileDataService
+    let nftService: NftServiceProtocol
     @State private var isSortDialogPresented = false
     @State private var viewModel: MyNftViewModel?
     @State private var currentSort: MyNftSort = .byRating
-    @Binding var likesList: [String]
-    
-    private let myNfts: [String]
-    private let profileDataService: ProfileDataService
-    
-    init(myNfts: [String], likesList: Binding<[String]>, profileDataService: ProfileDataService) {
-        self.myNfts = myNfts
-        self._likesList = likesList
-        self.profileDataService = profileDataService
-    }
     
     var body: some View {
-        Group {
-            if let viewModel = viewModel {
-                if viewModel.nftItems.isEmpty && !viewModel.isLoading {
-                    emptyView
+        ZStack {
+            // Основной контент
+            Group {
+                if let viewModel = viewModel {
+                    if viewModel.nftItems.isEmpty && !viewModel.isLoading {
+                        emptyView
+                    } else {
+                        nftTableView(viewModel: viewModel)
+                    }
                 } else {
-                    nftTableView(viewModel: viewModel)
+                    Color.clear // Заполнитель, чтобы ZStack занимал все пространство
                 }
-            } else {
+            }
+            
+            // Спиннер поверх всего контента
+            if shouldShowFullScreenSpinner {
+                Color(.lightgrey) // Фон на весь экран
+                    .ignoresSafeArea()
+                
                 AssetSpinner()
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .background(.lightgrey)
+                    .frame(width: 75, height: 75)
             }
         }
         .commonToolbar(
@@ -65,53 +68,76 @@ struct MyNftView: View {
             onBack: { dismiss() }
         )
         .onAppear {
-            if viewModel == nil, let services = services {
-                viewModel = MyNftViewModel(
-                    profileDataService: profileDataService,
-                    nftService: services.nftService
-                )
+            if viewModel == nil {
+                viewModel = MyNftViewModel(nftService: nftService)
             }
         }
         .task {
-            await viewModel?.loadNftItems(ids: myNfts)
+            if let myNfts = profileDataService.profile?.nfts {
+                await viewModel?.loadNftItems(ids: myNfts)
+            }
         }
+    }
+    
+    // Вычисляемое свойство для определения, когда показывать полноэкранный спиннер
+    private var shouldShowFullScreenSpinner: Bool {
+        // Показываем спиннер когда:
+        // 1. ViewModel еще не создан ИЛИ
+        // 2. ViewModel создан, но данные загружаются и список пуст
+        if viewModel == nil {
+            return true
+        }
+        
+        if let viewModel = viewModel, viewModel.isLoading && viewModel.nftItems.isEmpty {
+            return true
+        }
+        
+        return false
     }
     
     private var emptyView: some View {
         Text(MyNFTViewConstants.emptyMessage)
             .font(.appBold17)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
     
     @ViewBuilder
     private func nftTableView(viewModel: MyNftViewModel) -> some View {
-        ScrollView {
-            if viewModel.isLoading {
-                ProgressView()
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-            } else {
+        ZStack {
+            ScrollView {
                 LazyVStack(spacing: 8) {
                     ForEach(viewModel.sortedNftItems(by: currentSort), id: \.id) { nftItem in
                         MyNftCell(
                             nftId: nftItem.id,
-                            isLiked: viewModel.favoriteIds.contains(nftItem.id),
+                            isLiked: profileDataService.profile?.likes.contains(nftItem.id) == true,
                             imageName: viewModel.images(for: nftItem) ?? "",
                             name: viewModel.name(for: nftItem) ?? "",
                             author: viewModel.author(for: nftItem) ?? "",
                             rating: nftItem.rating,
                             price: nftItem.price ?? 0,
                             onLikeToggle: { nftId, newLikeState in
-                                viewModel.toggleFavorite(for: nftId) { newLikes in
-                                    // Обновляем binding при изменении лайков
-                                    likesList = newLikes
-                                }
+                                await viewModel.toggleFavorite(
+                                    for: nftId,
+                                    newLikeState: newLikeState,
+                                    profileDataService: profileDataService
+                                )
                             }
                         )
                     }
                 }
                 .padding(EdgeInsets(top: 16, leading: 16, bottom: 0, trailing: 39))
             }
+            .scrollIndicators(.hidden)
+            
+            // Спиннер для случаев, когда данные обновляются, но уже есть контент
+            if viewModel.isLoading && !viewModel.nftItems.isEmpty {
+                Color.black.opacity(0.1)
+                    .ignoresSafeArea()
+                
+                AssetSpinner()
+                    .frame(width: 75, height: 75)
+            }
         }
-        .scrollIndicators(.hidden)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button { isSortDialogPresented = true } label: {
