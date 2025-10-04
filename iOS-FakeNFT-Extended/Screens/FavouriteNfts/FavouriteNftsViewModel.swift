@@ -19,6 +19,16 @@ final class FavouriteNftsViewModel {
         self.nftService = nftService
     }
     
+    func name(for nftItem: NftItem) -> String? {
+        guard let firstImageUrlString = nftItem.imageURL?.absoluteString else { return nil }
+        let components = firstImageUrlString.split(separator: "/")
+        if components.count >= 2 {
+            return String(components[components.count - 2])
+        } else {
+            return nftItem.title
+        }
+    }
+    
     func loadNftItems(ids: [String]) async {
         guard !isLoading else { return }
         isLoading = true

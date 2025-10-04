@@ -82,8 +82,45 @@ struct ProfileView: View {
             
             List {
                 Section {
-                    myNFTsRow(profileDataService: profileDataService)
-                    favoriteNFTsRow(profileDataService: profileDataService)
+                    ZStack {
+                        NavigationLink(value: ProfileRoute.myNFTs) {
+                            EmptyView()
+                        }
+                        .opacity(0)
+                        
+                        HStack {
+                            Text(String(localized: "ProfileFlow.MyNft.title") + " (\(profileDataService.profile?.nfts.count ?? 0))")
+                                .font(.appBold17)
+                                .foregroundColor(.blackAndWhite)
+                            
+                            Spacer()
+                            
+                            Image(.chevronRight)
+                                .renderingMode(.template)
+                                .foregroundStyle(.blackAndWhite)
+                        }
+                        .contentShape(Rectangle())
+                    }
+                    
+                    ZStack {
+                        NavigationLink(value: ProfileRoute.favoriteNFTs) {
+                            EmptyView()
+                        }
+                        .opacity(0)
+                        
+                        HStack {
+                            Text(String(localized: "ProfileFlow.FavouriteNft.title") + " (\(profileDataService.profile?.likes.count ?? 0))")
+                                .font(.appBold17)
+                                .foregroundColor(.blackAndWhite)
+                            
+                            Spacer()
+                            
+                            Image(.chevronRight)
+                                .renderingMode(.template)
+                                .foregroundStyle(.blackAndWhite)
+                        }
+                        .contentShape(Rectangle())
+                    }
                 }
                 .listRowInsets(EdgeInsets(top: 16, leading: 0, bottom: 16, trailing: 0))
                 .listRowSeparator(.hidden)
@@ -142,38 +179,6 @@ struct ProfileView: View {
                         .foregroundColor(.blueUniversal)
                         .lineLimit(1)
                 }
-            }
-        }
-    }
-    
-    private func myNFTsRow(profileDataService: ProfileDataService) -> some View {
-        NavigationLink(value: ProfileRoute.myNFTs) {
-            HStack {
-                Text(String(localized: "ProfileFlow.MyNft.title") + " (\(profileDataService.profile?.nfts.count ?? 0))")
-                    .font(.appBold17)
-                    .foregroundColor(.blackAndWhite)
-                
-                Spacer()
-                
-                Image(.chevronRight)
-                    .renderingMode(.template)
-                    .foregroundStyle(.blackAndWhite)
-            }
-        }
-    }
-    
-    private func favoriteNFTsRow(profileDataService: ProfileDataService) -> some View {
-        NavigationLink(value: ProfileRoute.favoriteNFTs) {
-            HStack {
-                Text(String(localized: "ProfileFlow.FavouriteNft.title") + " (\(profileDataService.profile?.likes.count ?? 0))")
-                    .font(.appBold17)
-                    .foregroundColor(.blackAndWhite)
-                
-                Spacer()
-                
-                Image(.chevronRight)
-                    .renderingMode(.template)
-                    .foregroundStyle(.blackAndWhite)
             }
         }
     }

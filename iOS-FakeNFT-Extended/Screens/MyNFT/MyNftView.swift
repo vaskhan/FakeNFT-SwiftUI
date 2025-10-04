@@ -105,7 +105,7 @@ struct MyNftView: View {
     private func nftTableView(viewModel: MyNftViewModel) -> some View {
         ZStack {
             ScrollView {
-                LazyVStack(spacing: 8) {
+                LazyVStack(spacing: 32) {
                     ForEach(viewModel.sortedNftItems(by: currentSort), id: \.id) { nftItem in
                         MyNftCell(
                             nftId: nftItem.id,

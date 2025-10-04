@@ -84,7 +84,7 @@ struct FavouriteNftsView: View {
                             nftId: nftItem.id,
                             isLiked: profileDataService.profile?.likes.contains(nftItem.id) == true,
                             imageURL: nftItem.imageURL,
-                            name: nftItem.title,
+                            name: viewModel.name(for: nftItem) ?? "",
                             rating: nftItem.rating,
                             price: nftItem.price ?? 0,
                             onLikeToggle: { nftId, newLikeState in
