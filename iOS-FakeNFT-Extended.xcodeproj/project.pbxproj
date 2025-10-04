@@ -27,6 +27,7 @@
 		ACABAAE12E79F49B00830E48 /* AssetSpinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACABAAE02E79F49B00830E48 /* AssetSpinner.swift */; };
 		ACABAAE32E79F4C300830E48 /* BlackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACABAAE22E79F4C300830E48 /* BlackButton.swift */; };
 		ACABB7862E809A1100830E48 /* ProfileRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACABB7852E809A0400830E48 /* ProfileRoute.swift */; };
+		ACABBE8A2E905F8000830E48 /* NftService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACABBE462E905F8000830E48 /* NftService.swift */; };
 		ACABBEA52E90695200830E48 /* View+CommonToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACABBEA42E90695200830E48 /* View+CommonToolbar.swift */; };
 /* End PBXBuildFile section */
 
@@ -70,6 +71,7 @@
 		ACABAAE02E79F49B00830E48 /* AssetSpinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetSpinner.swift; sourceTree = "<group>"; };
 		ACABAAE22E79F4C300830E48 /* BlackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlackButton.swift; sourceTree = "<group>"; };
 		ACABB7852E809A0400830E48 /* ProfileRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRoute.swift; sourceTree = "<group>"; };
+		ACABBE462E905F8000830E48 /* NftService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftService.swift; sourceTree = "<group>"; };
 		ACABBEA42E90695200830E48 /* View+CommonToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+CommonToolbar.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -231,6 +233,7 @@
 		ABC5E1A92C31FABA002B4068 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				ACABBE462E905F8000830E48 /* NftService.swift */,
 				ABC5E1AC2C31FB6C002B4068 /* Requests */,
 				ABC5E1B62C31FC70002B4068 /* ServicesAssembly.swift */,
 			);
@@ -389,6 +392,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				ACABBEA52E90695200830E48 /* View+CommonToolbar.swift in Sources */,
+				ACABBE8A2E905F8000830E48 /* NftService.swift in Sources */,
 				ABC5E1B72C31FC70002B4068 /* ServicesAssembly.swift in Sources */,
 				ABC5E19D2C31F6A6002B4068 /* NftStorage.swift in Sources */,
 				4893EF992E74C06B00051A95 /* APIRequestBuilder.swift in Sources */,

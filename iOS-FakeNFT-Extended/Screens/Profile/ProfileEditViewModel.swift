@@ -4,7 +4,6 @@
 //
 //  Created by Артем Солодовников on 21.09.2025.
 //
-
 import SwiftUI
 import Observation
 
@@ -13,7 +12,7 @@ import Observation
 final class ProfileEditingViewModel {
     // Зависимости
     private let profileService: ProfileServiceProtocol
-    private let profileViewModel: ProfileViewModel
+    private let profileDataService: ProfileDataService
     
     // Состояние редактирования
     var editedName: String
@@ -28,19 +27,21 @@ final class ProfileEditingViewModel {
     var isLoading = false
     var errorMessage: String?
     
-    init(profileViewModel: ProfileViewModel, profileService: ProfileServiceProtocol) {
-        self.profileViewModel = profileViewModel
+    init(profileDataService: ProfileDataService, profileService: ProfileServiceProtocol) {
+        self.profileDataService = profileDataService
         self.profileService = profileService
-        self.editedName = profileViewModel.userName ?? ""
-        self.editedDescription = profileViewModel.userDescription ?? ""
-        self.editedWebsite = profileViewModel.userWebsite ?? ""
-        self.editedAvatar = profileViewModel.userAvatar
+        
+        // Инициализируем данные из profileDataService
+        self.editedName = profileDataService.profile?.name ?? ""
+        self.editedDescription = profileDataService.profile?.description ?? ""
+        self.editedWebsite = profileDataService.profile?.website ?? ""
+        self.editedAvatar = profileDataService.profile?.avatar
     }
     
     var hasChanges: Bool {
-        editedName != profileViewModel.userName ||
-        editedDescription != profileViewModel.userDescription ||
-        editedWebsite != profileViewModel.userWebsite
+        editedName != (profileDataService.profile?.name ?? "") ||
+        editedDescription != (profileDataService.profile?.description ?? "") ||
+        editedWebsite != (profileDataService.profile?.website ?? "")
     }
     
     func saveProfile() async {
@@ -50,7 +51,7 @@ final class ProfileEditingViewModel {
         errorMessage = nil
         
         // Получаем текущий профиль и обновляем его данными из формы
-        guard var currentProfile = profileViewModel.profile else {
+        guard var currentProfile = profileDataService.profile else {
             errorMessage = "Профиль не загружен"
             isLoading = false
             return
@@ -63,7 +64,8 @@ final class ProfileEditingViewModel {
         
         do {
             try await profileService.saveProfile(currentProfile)
-            await profileViewModel.getUserInfo()
+            // Обновляем данные в общей службе
+            profileDataService.profile = currentProfile
             print("Профиль успешно сохранен")
         } catch {
             errorMessage = String(localized: "Error.network", defaultValue: "A network error occurred")
@@ -77,7 +79,7 @@ final class ProfileEditingViewModel {
         errorMessage = nil
         
         // Получаем текущий профиль и обновляем аватар
-        guard var currentProfile = profileViewModel.profile else {
+        guard var currentProfile = profileDataService.profile else {
             errorMessage = "Профиль не загружен"
             isLoading = false
             return
@@ -87,7 +89,8 @@ final class ProfileEditingViewModel {
         
         do {
             try await profileService.saveProfile(currentProfile)
-            await profileViewModel.getUserInfo() // Обновляем основную VM
+            // Обновляем данные в общей службе
+            profileDataService.profile = currentProfile
             editedAvatar = avatar
             
             print("Аватар успешно сохранен")

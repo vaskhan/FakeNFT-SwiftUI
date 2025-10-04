@@ -4,7 +4,6 @@
 //
 //  Created by Артем Солодовников on 16.09.2025.
 //
-
 import SwiftUI
 
 struct ProfileEditingView: View {
@@ -12,13 +11,11 @@ struct ProfileEditingView: View {
     @State private var viewModel: ProfileEditingViewModel
     @State private var isShowingExitAlert = false
     
-    init(profileViewModel: ProfileViewModel, profileService: ProfileServiceProtocol) {
-        self._viewModel = State(
-            initialValue: ProfileEditingViewModel(
-                profileViewModel: profileViewModel,
-                profileService: profileService
-            )
-        )
+    init(profileDataService: ProfileDataService, profileService: ProfileServiceProtocol) {
+        self._viewModel = State(initialValue: ProfileEditingViewModel(
+            profileDataService: profileDataService,
+            profileService: profileService
+        ))
     }
     
     var body: some View {
@@ -92,11 +89,11 @@ struct ProfileEditingView: View {
                 }
             }
             .alert(String(localized: "ProfileFlow.PhotoEdit.confirmation"), isPresented: $isShowingExitAlert) {
-                    Button(String(localized: "ProfileFlow.PhotoEdit.stay"), role: .cancel) {}
-                    Button(String(localized: "ProfileFlow.PhotoEdit.exit")) {
-                        dismiss()
-                    }
+                Button(String(localized: "ProfileFlow.PhotoEdit.stay"), role: .cancel) {}
+                Button(String(localized: "ProfileFlow.PhotoEdit.exit")) {
+                    dismiss()
                 }
+            }
             
             if viewModel.isLoading {
                 // На дизайне затемнения фона нет, но лоадер теряется в таком случае

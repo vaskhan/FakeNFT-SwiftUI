@@ -4,9 +4,8 @@
 //
 //  Created by Артем Солодовников on 21.09.2025.
 //
-
 enum ProfileRoute: Hashable {
     case myNFTs(myNftList: [String])
-    case favoriteNFTs(likesList: [String])
+    case favoriteNFTs
     case profileEditing
 }

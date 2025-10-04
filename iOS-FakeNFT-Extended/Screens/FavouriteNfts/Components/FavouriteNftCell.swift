@@ -4,22 +4,21 @@
 //
 //  Created by Артем Солодовников on 23.09.2025.
 //
-
 import SwiftUI
 
 struct FavouriteNftCell: View {
     let nftId: String
-    @State private var isLiked = true
-    private let imageName: String
+    @State private var isLiked: Bool
+    private let imageURL: URL?
     private let name: String
     private let rating: Int
     private let price: Double
     private let onLikeToggle: (String, Bool) async -> Void
     
-    init(nftId: String, isLiked: Bool = true, imageName: String, name: String, rating: Int, price: Double, onLikeToggle: @escaping (String, Bool) async -> Void) {
+    init(nftId: String, isLiked: Bool = true, imageURL: URL?, name: String, rating: Int, price: Double, onLikeToggle: @escaping (String, Bool) async -> Void) {
         self.nftId = nftId
         self.isLiked = isLiked
-        self.imageName = imageName
+        self.imageURL = imageURL
         self.name = name
         self.rating = rating
         self.price = price
@@ -33,8 +32,7 @@ struct FavouriteNftCell: View {
                 .fill(Color.gray.opacity(0.1))
                 .overlay {
                     ZStack(alignment: .topTrailing) {
-                        let url = URL(string: imageName)
-                        AsyncImage(url: url) { phase in
+                        AsyncImage(url: imageURL) { phase in
                             switch phase {
                             case .empty: Color.gray.opacity(0.1)
                             case .success(let image):
@@ -91,7 +89,3 @@ struct FavouriteNftCell: View {
         .padding(.vertical, 8)
     }
 }
-
-//#Preview {
-//    FavouriteNftCell(imageName: "https://code.s3.yandex.net/Mobile/iOS/NFT/Pink/Calder/1.png", name: "Fhntv", rating: 3, price: 19.84)
-//}

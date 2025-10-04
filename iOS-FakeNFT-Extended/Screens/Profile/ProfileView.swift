@@ -4,18 +4,17 @@
 //
 //  Created by Артем Солодовников on 13.09.2025.
 //
-
 import SwiftUI
 
 struct ProfileView: View {
     @Environment(ServicesAssembly.self) private var services: ServicesAssembly?
     @State private var viewModel: ProfileViewModel?
     @State private var navigationModel = ProfileNavigationModel()
+    @State private var profileDataService: ProfileDataService?
     
     var body: some View {
         NavigationStack(path: $navigationModel.path) {
             ZStack {
-                
                 VStack(alignment: .leading, spacing: 20) {
                     HStack(spacing: 16) {
                         ProfilePhotoView(avatarString: viewModel?.userAvatar ?? "")
@@ -49,7 +48,7 @@ struct ProfileView: View {
                             }
                             
                             ZStack {
-                                NavigationLink(value: ProfileRoute.favoriteNFTs(likesList: viewModel?.likesList ?? [])) {
+                                NavigationLink(value: ProfileRoute.favoriteNFTs) {
                                     EmptyView()
                                 }
                                 .opacity(0)
@@ -89,24 +88,22 @@ struct ProfileView: View {
             }
             .navigationDestination(for: ProfileRoute.self) { destination in
                 switch destination {
-                case .myNFTs:
-                    MyNftView(myNfts: viewModel?.myNftsList ?? [])
-                        .onDisappear {
-                            Task {
-                                await refreshData()
-                            }
-                        }
+                case .myNFTs(let myNftList):
+                    MyNftView(myNfts: myNftList)
                 case .favoriteNFTs:
-                    FavouriteNftsView(likesIds: viewModel?.likesList ?? [])
-                        .onDisappear {
-                            Task {
-                                await refreshData()
-                            }
-                        }
+                    if let profileDataService = profileDataService {
+                        FavouriteNftsView(
+                            likesList: Binding(
+                                get: { profileDataService.profile?.likes ?? [] },
+                                set: { profileDataService.updateLikes($0) }
+                            ),
+                            profileDataService: profileDataService
+                        )
+                    }
                 case .profileEditing:
-                    if let viewModel, let services = services {
+                    if let profileDataService = profileDataService, let services = services {
                         ProfileEditingView(
-                            profileViewModel: viewModel,
+                            profileDataService: profileDataService,
                             profileService: services.profileService
                         )
                     }
@@ -126,8 +123,9 @@ struct ProfileView: View {
         }
         .task {
             if viewModel == nil, let services = services {
-                let newViewModel = ProfileViewModel(profileService: services.profileService)
-                self.viewModel = newViewModel
+                let dataService = ProfileDataService(profileService: services.profileService)
+                self.profileDataService = dataService
+                self.viewModel = ProfileViewModel(profileDataService: dataService)
                 await viewModel?.getUserInfo()
             }
         }
@@ -159,11 +157,5 @@ struct ProfileView: View {
                 }
             }
         }
-    }
-    
-    // MARK: - Private Methods
-    
-    private func refreshData() async {
-        await viewModel?.getUserInfo()
     }
 }
