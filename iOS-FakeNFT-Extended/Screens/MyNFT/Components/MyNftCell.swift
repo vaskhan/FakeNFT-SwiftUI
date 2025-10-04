@@ -4,7 +4,6 @@
 //
 //  Created by Артем Солодовников on 28.09.2025.
 //
-
 import SwiftUI
 
 private enum Constants {
@@ -30,7 +29,6 @@ struct MyNftCell: View {
     }
     
     var body: some View {
-        
         HStack(alignment: .center, spacing: 20) {
             RoundedRectangle(cornerRadius: Constants.cornerRadius)
                 .fill(Color.gray.opacity(0.1))
@@ -53,6 +51,11 @@ struct MyNftCell: View {
                                 EmptyView()
                             }
                         }
+                    } else {
+                        Image("NFTcard")
+                            .resizable()
+                            .scaledToFill()
+                            .font(.appBold32)
                     }
                 }
                 .frame(width: Constants.imageSize, height: Constants.imageSize)
@@ -76,7 +79,6 @@ struct MyNftCell: View {
             Spacer()
             
             VStack {
-                
                 VStack(alignment: .leading, spacing: 2){
                     Text(String(localized: "CartFlow.Cart.itemPrice"))
                         .font(.appRegular13)
@@ -84,11 +86,6 @@ struct MyNftCell: View {
                         .font(.appBold17)
                 }
             }
-            
         }
     }
 }
-
-//#Preview {
-//    FavouriteNftCell(imageName: "https://code.s3.yandex.net/Mobile/iOS/NFT/Pink/Calder/1.png", name: "Fhntv", rating: 3, price: 19.84)
-//}
