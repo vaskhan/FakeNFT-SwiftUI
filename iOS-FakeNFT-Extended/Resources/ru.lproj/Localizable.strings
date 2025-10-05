@@ -43,3 +43,27 @@
 "CartFlow.UnsuccessPayment.title" = "Не удалось произвести оплату";
 "CartFlow.UnsuccessPayment.cancel" = "Отмена";
 "CartFlow.UnsuccessPayment.retry" = "Повторить";
+
+/* MARK: - Profile */
+"ProfileFlow.MyNft.title"           = "Мои NFT";
+"ProfileFlow.MyNft.by"              = "от";
+"ProfileFlow.MyNft.empty"           = "У Вас еще нет NFT";
+"ProfileFlow.FavouriteNft.empty"    = "У Вас ещё нет избранных NFT";
+"ProfileFlow.FavouriteNft.title"    = "Избранные NFT";
+
+/* MARK: - Profile Editing */
+"ProfileFlow.Editing.name"          = "Имя";
+"ProfileFlow.Editing.description"   = "Описание";
+"ProfileFlow.Editing.site"          = "Сайт";
+"ProfileFlow.Editing.save"          = "Сохранить";
+
+"ProfileFlow.PhotoEdit.title"       = "Фото профиля";
+"ProfileFlow.PhotoEdit.change"      = "Изменить фото";
+"ProfileFlow.PhotoEdit.delete"      = "Удалить фото";
+"ProfileFlow.PhotoEdit.cancel"      = "Отмена";
+"ProfileFlow.PhotoEdit.linkTitle"   = "Ссылка на фото";
+"ProfileFlow.PhotoEdit.enterURL"    = "Введите URL";
+
+"ProfileFlow.PhotoEdit.exit"            = "Выйти";
+"ProfileFlow.PhotoEdit.stay"            = "Остаться";
+"ProfileFlow.PhotoEdit.confirmation"    = "Уверены, что хотите выйти?";

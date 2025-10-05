@@ -10,9 +10,14 @@ import WebKit
 
 struct WebViewScreen: View {
     @Environment(\.dismiss) private var dismiss
+    let urlString: String?
+    
+    init(urlString: String? = nil) {
+        self.urlString = urlString
+    }
     
     var body: some View {
-        WebView()
+        WebView(urlString: urlString)
             .navigationBarBackButtonHidden(true)
             .toolbar(.hidden, for: .tabBar)
             .toolbar {
@@ -27,11 +32,17 @@ struct WebViewScreen: View {
 
 // MARK: - WebView wrapper
 struct WebView: UIViewRepresentable {
+    let urlString: String?
+    
+    init(urlString: String? = nil) {
+        self.urlString = urlString
+    }
+    
     func makeUIView(context: Context) -> WKWebView {
         let web = WKWebView()
-        if let url = URL(string: "https://practicum.yandex.ru/ios-developer/") {
-            web.load(URLRequest(url: url))
-        }
+        let defaultURL = "https://practicum.yandex.ru/ios-developer/"
+        let urlToLoad = URL(string: urlString ?? defaultURL)!
+        web.load(URLRequest(url: urlToLoad))
         return web
     }
     
