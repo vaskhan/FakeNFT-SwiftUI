@@ -67,3 +67,13 @@
 "ProfileFlow.PhotoEdit.exit"            = "Выйти";
 "ProfileFlow.PhotoEdit.stay"            = "Остаться";
 "ProfileFlow.PhotoEdit.confirmation"    = "Уверены, что хотите выйти?";
+
+/* MARK: - Onboarding */
+"Onboarding.Story1.title" = "Исследуйте";
+"Onboarding.Story1.description" = "Присоединяйтесь и откройте новый мир уникальных NFT для коллекционеров";
+"Onboarding.Story2.title" = "Коллекционируйте";
+"Onboarding.Story2.description" = "Пополняйте свою коллекцию эксклюзивными картинками, созданными нейросетью!";
+"Onboarding.Story3.title" = "Состязайтесь";
+"Onboarding.Story3.description" = "Смотрите статистику других и покажите всем, что у вас самая ценная коллекция";
+"Onboarding.button" = "Что внутри?";
+
