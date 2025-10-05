@@ -44,6 +44,30 @@
 "CartFlow.UnsuccessPayment.cancel" = "Cancel";
 "CartFlow.UnsuccessPayment.retry" = "Retry";
 
+/* MARK: - Profile */
+"ProfileFlow.MyNft.title"           = "My NFTs";
+"ProfileFlow.MyNft.by"              = "by";
+"ProfileFlow.MyNft.empty"           = "You don't have NFT yet";
+"ProfileFlow.FavouriteNft.empty"    = "You don't have favourite NFT yet";
+"ProfileFlow.FavouriteNft.title"    = "Favourite NFTs";
+
+/* MARK: - Profile Editing */
+"ProfileFlow.Editing.name"          = "Name";
+"ProfileFlow.Editing.description"   = "Description";
+"ProfileFlow.Editing.site"          = "Site";
+"ProfileFlow.Editing.save"          = "Save";
+
+"ProfileFlow.PhotoEdit.title"       = "Profile photo";
+"ProfileFlow.PhotoEdit.change"      = "Change photo";
+"ProfileFlow.PhotoEdit.delete"      = "Delete photo";
+"ProfileFlow.PhotoEdit.cancel"      = "Cancel";
+"ProfileFlow.PhotoEdit.linkTitle"   = "Link to the photo";
+"ProfileFlow.PhotoEdit.enterURL"    = "Enter the url";
+
+"ProfileFlow.PhotoEdit.exit"            = "Exit";
+"ProfileFlow.PhotoEdit.stay"            = "Stay";
+"ProfileFlow.PhotoEdit.confirmation"    = "Are you sure you want to get out?";
+
 /* MARK: - Onboarding */
 "Onboarding.Story1.title" = "Explore";
 "Onboarding.Story1.description" = "Join us and discover a new world of unique NFTs for collectors";
@@ -52,3 +76,4 @@
 "Onboarding.Story3.title" = "Compete";
 "Onboarding.Story3.description" = "See other people's stats and show everyone that you have the most valuable collection";
 "Onboarding.button" = "What's inside?";
+

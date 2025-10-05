@@ -4,7 +4,6 @@
 //
 //  Created by Артем Солодовников on 16.09.2025.
 //
-
 import SwiftUI
 
 struct ProfileEditingView: View {
@@ -12,13 +11,11 @@ struct ProfileEditingView: View {
     @State private var viewModel: ProfileEditingViewModel
     @State private var isShowingExitAlert = false
     
-    init(profileViewModel: ProfileViewModel, profileService: ProfileServiceProtocol) {
-        self._viewModel = State(
-            initialValue: ProfileEditingViewModel(
-                profileViewModel: profileViewModel,
-                profileService: profileService
-            )
-        )
+    init(profileDataService: ProfileDataService, profileService: ProfileServiceProtocol) {
+        self._viewModel = State(initialValue: ProfileEditingViewModel(
+            profileDataService: profileDataService,
+            profileService: profileService
+        ))
     }
     
     var body: some View {
@@ -43,14 +40,14 @@ struct ProfileEditingView: View {
                         }
                 }
                 
-                LabeledTextField(title: "Имя", text: $viewModel.editedName)
-                LabeledTextEditor(title: "Описание", text: $viewModel.editedDescription)
-                LabeledTextField(title: "Сайт", text: $viewModel.editedWebsite)
+                LabeledTextField(title: String(localized: "ProfileFlow.Editing.name"), text: $viewModel.editedName)
+                LabeledTextEditor(title: String(localized: "ProfileFlow.Editing.description"), text: $viewModel.editedDescription)
+                LabeledTextField(title: String(localized: "ProfileFlow.Editing.site"), text: $viewModel.editedWebsite)
                 
                 Spacer()
                 
                 if viewModel.hasChanges && !viewModel.isLoading {
-                    Button("Сохранить") {
+                    Button(String(localized: "ProfileFlow.Editing.save")) {
                         Task {
                             await viewModel.saveProfile()
                             dismiss()
@@ -62,41 +59,41 @@ struct ProfileEditingView: View {
             }
             .padding(.horizontal, 16)
             .disabled(viewModel.isLoading)
-            .confirmationDialog("Фото профиля",
+            .confirmationDialog(String(localized: "ProfileFlow.PhotoEdit.title"),
                                 isPresented: $viewModel.showImageActionDialog,
                                 titleVisibility: .visible
             ) {
-                Button("Изменить фото") {
+                Button(String(localized: "ProfileFlow.PhotoEdit.change")) {
                     viewModel.showImageActionDialog = false
                     viewModel.avatarUrlString = viewModel.editedAvatar ?? ""
                     viewModel.showAvatarAlert = true
                 }
-                Button("Удалить фото", role: .destructive) {
+                Button(String(localized: "ProfileFlow.PhotoEdit.delete"), role: .destructive) {
                     Task {
                         await viewModel.deleteAvatar()
                     }
                 }
-                Button("Отмена", role: .cancel) {}
+                Button(String(localized: "ProfileFlow.PhotoEdit.cancel"), role: .cancel) {}
             }
-            .alert("Ссылка на фото", isPresented: $viewModel.showAvatarAlert) {
-                TextField("Введите URL", text: $viewModel.avatarUrlString)
+            .alert(String(localized: "ProfileFlow.PhotoEdit.linkTitle"), isPresented: $viewModel.showAvatarAlert) {
+                TextField(String(localized: "ProfileFlow.PhotoEdit.enterURL"), text: $viewModel.avatarUrlString)
                     .keyboardType(.URL)
                     .autocapitalization(.none)
                     .disableAutocorrection(true)
                 
-                Button("Отмена", role: .cancel) { }
-                Button("Сохранить") {
+                Button(String(localized: "ProfileFlow.PhotoEdit.cancel"), role: .cancel) { }
+                Button(String(localized: "ProfileFlow.Editing.save")) {
                     Task {
                         await viewModel.setAvatar(viewModel.avatarUrlString)
                     }
                 }
             }
-            .alert("Уверены, что хотите выйти?", isPresented: $isShowingExitAlert) {
-                    Button("Остаться", role: .cancel) {}
-                    Button("Выйти") {
-                        dismiss()
-                    }
+            .alert(String(localized: "ProfileFlow.PhotoEdit.confirmation"), isPresented: $isShowingExitAlert) {
+                Button(String(localized: "ProfileFlow.PhotoEdit.stay"), role: .cancel) {}
+                Button(String(localized: "ProfileFlow.PhotoEdit.exit")) {
+                    dismiss()
                 }
+            }
             
             if viewModel.isLoading {
                 // На дизайне затемнения фона нет, но лоадер теряется в таком случае
