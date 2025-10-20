@@ -1,0 +1,79 @@
+/* MARK: - Default */
+"CatalogFlow.Error.network"  = "A network error occurred";
+"CatalogFlow.Error.unknown"  = "An unknown error occurred";
+"CatalogFlow.Error.repeat"   = "Retry";
+"CatalogFlow.Error.title"    = "Error";
+"CatalogFlow.Catalog.empty"  = "Collection is empty";
+
+/* MARK: - TabView */
+"MainScreen.tabBasket"     = "Basket";
+"MainScreen.tabCatalog"    = "Catalog";
+"MainScreen.tabProfile"    = "Profile";
+"MainScreen.tabStatistics" = "Statistics";
+
+/* MARK: - Sorting */
+"SortingMenu.title"    = "Sorting";
+"SortingMenu.byName"   = "By name";
+"SortingMenu.byCount"  = "By count";
+"SortingMenu.byRating" = "By rating";
+"SortingMenu.byPrice"  = "By price";
+"SortingMenu.close"    = "Close";
+
+/* MARK: - Cart */
+"CartFlow.Cart.payButton" = "Go to payment";
+"CartFlow.Cart.empty"     = "Cart is empty";
+"CartFlow.Cart.itemPrice" = "Price";
+
+/* MARK: - Delete from cart */
+"CartFlow.DeleteFromCart.question" = "Are you sure you want to delete this item from your cart?";
+"CartFlow.DeleteFromCart.delete" = "Delete";
+"CartFlow.DeleteFromCart.return" = "Back";
+
+/* MARK: - Payment method */
+"CartFlow.Payment.agreement1" = "By making a purchase, you agree to the terms of the";
+"CartFlow.Payment.agreement2" = "User agreement";
+"CartFlow.Payment.payButton"  = "Pay";
+"CartFlow.Payment.title"      = "Choose payment method";
+
+/* MARK: - Success payment */
+"CartFlow.SuccessPayment.title" = "Success! Payment completed, congratulations on your purchase!";
+"CartFlow.SuccessPayment.backToCart" = "Back to cart";
+
+/* MARK: - Unsuccess payment */
+"CartFlow.UnsuccessPayment.title" = "Payment failed";
+"CartFlow.UnsuccessPayment.cancel" = "Cancel";
+"CartFlow.UnsuccessPayment.retry" = "Retry";
+
+/* MARK: - Profile */
+"ProfileFlow.MyNft.title"           = "My NFTs";
+"ProfileFlow.MyNft.by"              = "by";
+"ProfileFlow.MyNft.empty"           = "You don't have NFT yet";
+"ProfileFlow.FavouriteNft.empty"    = "You don't have favourite NFT yet";
+"ProfileFlow.FavouriteNft.title"    = "Favourite NFTs";
+
+/* MARK: - Profile Editing */
+"ProfileFlow.Editing.name"          = "Name";
+"ProfileFlow.Editing.description"   = "Description";
+"ProfileFlow.Editing.site"          = "Site";
+"ProfileFlow.Editing.save"          = "Save";
+
+"ProfileFlow.PhotoEdit.title"       = "Profile photo";
+"ProfileFlow.PhotoEdit.change"      = "Change photo";
+"ProfileFlow.PhotoEdit.delete"      = "Delete photo";
+"ProfileFlow.PhotoEdit.cancel"      = "Cancel";
+"ProfileFlow.PhotoEdit.linkTitle"   = "Link to the photo";
+"ProfileFlow.PhotoEdit.enterURL"    = "Enter the url";
+
+"ProfileFlow.PhotoEdit.exit"            = "Exit";
+"ProfileFlow.PhotoEdit.stay"            = "Stay";
+"ProfileFlow.PhotoEdit.confirmation"    = "Are you sure you want to get out?";
+
+/* MARK: - Onboarding */
+"Onboarding.Story1.title" = "Explore";
+"Onboarding.Story1.description" = "Join us and discover a new world of unique NFTs for collectors";
+"Onboarding.Story2.title" = "Collect";
+"Onboarding.Story2.description" = "Expand your collection with exclusive images created by a neural network!";
+"Onboarding.Story3.title" = "Compete";
+"Onboarding.Story3.description" = "See other people's stats and show everyone that you have the most valuable collection";
+"Onboarding.button" = "What's inside?";
+

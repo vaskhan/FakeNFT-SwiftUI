@@ -1,0 +1,94 @@
+//
+//  CartViewModel.swift
+//  iOS-FakeNFT-Extended
+//
+//  Created by Анна Рыкунова on 15.09.2025.
+//
+
+import Foundation
+
+@Observable
+@MainActor
+final class CartViewModel {
+    var items: [CartItem] = []
+    var isLoading: Bool = false
+    var selectedSort: CartSort = UserDefaults.standard.cartSort {
+        didSet { UserDefaults.standard.cartSort = selectedSort }
+    }
+    
+    private let cartService: CartServiceProtocol
+    private let nftService: NftServiceProtocol
+    
+    init(cartService: CartServiceProtocol, nftService: NftServiceProtocol) {
+        self.cartService = cartService
+        self.nftService = nftService
+    }
+    
+    func loadItems() async {
+        guard !isLoading else { return }
+        isLoading = true
+        
+        do {
+            let order = try await cartService.loadCart()
+            guard let nfts = order.nfts else { return }
+            let loadedNfts = try await nftService.loadItems(ids: nfts)
+            
+            let cartItems: [CartItem] = loadedNfts.map { item in
+                CartItem(
+                    id: item.id,
+                    title: item.title,
+                    cover: item.imageURL,
+                    rating: item.rating,
+                    price: item.price ?? 0
+                )
+            }
+            items = cartItems
+            sortItems(by: selectedSort)
+            print("Items successfully loaded")
+        } catch {
+            print("Error: \(error)")
+        }
+
+        isLoading = false
+    }
+    
+    func removeItem(_ item: CartItem) async {
+        do {
+            items.removeAll { $0.id == item.id }
+            try await cartService.updateCart(items.compactMap(\.id))
+        } catch {
+            print("Error: \(error)")
+        }
+    }
+    
+    func cleanCart() async {
+        do {
+            try await cartService.updateCart([])
+            items.removeAll()
+        } catch {
+            print(error)
+        }
+    }
+    
+    func sortItems(by sort: CartSort) {
+        items.sort {
+            switch sort {
+            case .byPrice:
+                return $0.price < $1.price
+            case .byName:
+                return $0.title.lowercased() < $1.title.lowercased()
+            case .byRating:
+                return $0.rating > $1.rating
+            }
+        }
+    }
+}
+
+extension UserDefaults {
+    private enum Keys { static let cartSort: String = "cart_sort" }
+    
+    var cartSort: CartSort {
+        get { CartSort(rawValue: string(forKey: Keys.cartSort) ?? "") ?? .byName }
+        set { set(newValue.rawValue, forKey: Keys.cartSort) }
+    }
+}

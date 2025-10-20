@@ -1,71 +1,77 @@
 import Foundation
 
 enum NetworkClientError: Error {
-    case httpStatusCode(Int)
-    case urlRequestError(Error)
-    case urlSessionError
-    case parsingError
-    case incorrectRequest(String)
+    case httpStatusCode(Int)      // Сервер вернул код ошибки
+    case urlRequestError(Error)   // Ошибка формирования запроса
+    case urlSessionError          // Ошибка в работе URLSession
+    case parsingError             // Ошибка при декодировании JSON
 }
 
+// Протокол сетевого клиента
 protocol NetworkClient {
-    func send(request: NetworkRequest) async throws -> Data
-    func send<T: Decodable>(request: NetworkRequest) async throws -> T
+    func send(urlRequest: URLRequest) async throws -> (Data, HTTPURLResponse)
+    func send<T: Decodable>(urlRequest: URLRequest) async throws -> T
 }
 
+// Реализация сетевого клиента на URLSession
 actor DefaultNetworkClient: NetworkClient {
     private let session: URLSession
     private let decoder: JSONDecoder
     private let encoder: JSONEncoder
-
+    private let commonHeaders: [String: String]
+    
     init(
-        session: URLSession = URLSession.shared,
-        decoder: JSONDecoder = JSONDecoder(),
-        encoder: JSONEncoder = JSONEncoder()
+        session: URLSession = .shared,
+        decoder: JSONDecoder = {
+            let decoder = JSONDecoder()
+            // Автоматическая конвертация snake_case → camelCase
+            decoder.keyDecodingStrategy = .convertFromSnakeCase
+            return decoder
+        }(),
+        encoder: JSONEncoder = JSONEncoder(),
+        token: String = RequestConstants.token
     ) {
         self.session = session
         self.decoder = decoder
         self.encoder = encoder
+        self.commonHeaders = [
+            "X-Practicum-Mobile-Token": token
+        ]
     }
-
-    func send(request: NetworkRequest) async throws -> Data {
-        let urlRequest = try create(request: request)
-        let (data, response) = try await session.data(for: urlRequest)
-        guard let response = response as? HTTPURLResponse else {
+    
+    // Отправить запрос и вернуть «сырые» данные
+    func send(urlRequest: URLRequest) async throws -> (Data, HTTPURLResponse) {
+        let prepared = applyCommonHeaders(to: urlRequest)
+        let (data, response) = try await session.data(for: prepared)
+        
+        guard let http = response as? HTTPURLResponse else {
             throw NetworkClientError.urlSessionError
         }
-        guard 200 ..< 300 ~= response.statusCode else {
-            throw NetworkClientError.httpStatusCode(response.statusCode)
+        guard 200..<300 ~= http.statusCode else {
+            throw NetworkClientError.httpStatusCode(http.statusCode)
         }
-        return data
+        return (data, http)
     }
-
-    func send<T: Decodable>(request: NetworkRequest) async throws -> T {
-        let data = try await send(request: request)
-        return try await parse(data: data)
+    
+    // Отправить запрос и сразу распарсить JSON в модель Decodable
+    func send<T: Decodable>(urlRequest: URLRequest) async throws -> T {
+        let (data, _) = try await send(urlRequest: urlRequest)
+        return try parse(data: data)
     }
-
-    // MARK: - Private
-
-    private func create(request: NetworkRequest) throws -> URLRequest {
-        guard let endpoint = request.endpoint else {
-            throw NetworkClientError.incorrectRequest("Empty endpoint")
+    
+    // Добавляет заголовки
+    private func applyCommonHeaders(to request: URLRequest) -> URLRequest {
+        var request = request
+        for (field, value) in commonHeaders {
+            if request.value(forHTTPHeaderField: field) == nil {
+                request.setValue(value, forHTTPHeaderField: field)
+            }
         }
-
-        var urlRequest = URLRequest(url: endpoint)
-        urlRequest.httpMethod = request.httpMethod.rawValue
-
-        if let dto = request.dto,
-           let dtoEncoded = try? encoder.encode(dto) {
-            urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            urlRequest.httpBody = dtoEncoded
-        }
-        urlRequest.addValue(RequestConstants.token, forHTTPHeaderField: "X-Practicum-Mobile-Token")
-
-        return urlRequest
+        return request
     }
-
-    private func parse<T: Decodable>(data: Data) async throws -> T {
+    
+    // Для декодирования ответа сервера в модель Decodable
+    private func parse<T: Decodable>(data: Data) throws -> T {
         do {
             return try decoder.decode(T.self, from: data)
         } catch {
