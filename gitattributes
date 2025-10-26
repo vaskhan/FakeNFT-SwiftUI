@@ -1,0 +1,34 @@
+# --- Force Swift to be recognized ---
+*.swift linguist-language=Swift
+
+# --- Treat web assets as documentation (not counted toward language stats) ---
+*.html linguist-documentation
+*.css linguist-documentation
+*.js linguist-documentation
+
+# --- Mark common folders as documentation or vendored ---
+Docs/** linguist-documentation
+docs/** linguist-documentation
+Website/** linguist-documentation
+site/** linguist-documentation
+Public/** linguist-documentation
+web/** linguist-documentation
+
+# --- Exclude generated or asset files from stats ---
+*.pbxproj linguist-generated
+*.storyboard linguist-generated
+*.xib linguist-generated
+*.svg linguist-generated
+*.png linguist-generated
+*.jpg linguist-generated
+*.jpeg linguist-generated
+*.gif linguist-generated
+*.pdf linguist-generated
+*.xcassets/** linguist-generated
+
+# --- Ignore dependency/vendor code ---
+Pods/** linguist-vendored
+Carthage/** linguist-vendored
+ThirdParty/** linguist-vendored
+Vendor/** linguist-vendored
+Packages/** linguist-vendored
